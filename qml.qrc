@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>InstallView.qml</file>
+        <file>AuthView.qml</file>
+        <file>MainView.qml</file>
+        <file>fonts/LICENSE.txt</file>
+        <file>fonts/RobotoMono-Bold.ttf</file>
+        <file>fonts/RobotoMono-BoldItalic.ttf</file>
+        <file>fonts/RobotoMono-Italic.ttf</file>
+        <file>fonts/RobotoMono-Light.ttf</file>
+        <file>fonts/RobotoMono-LightItalic.ttf</file>
+        <file>fonts/RobotoMono-Medium.ttf</file>
+        <file>fonts/RobotoMono-MediumItalic.ttf</file>
+        <file>fonts/RobotoMono-Regular.ttf</file>
+        <file>fonts/RobotoMono-Thin.ttf</file>
+        <file>fonts/RobotoMono-ThinItalic.ttf</file>
+        <file>images/back.svg</file>
+        <file>images/folder.svg</file>
+        <file>images/log-out.svg</file>
+        <file>images/pc.svg</file>
+        <file>images/settings.svg</file>
+        <file>images/success.png</file>
+        <file>images/sync.gif</file>
+        <file>images/sync.png</file>
+        <file>images/syncing.png</file>
+        <file>images/syncing.svg</file>
+        <file>images/add.svg</file>
+        <file>images/ellipse.svg</file>
+        <file>SelectFolderView.qml</file>
+        <file>SelectedFolderText.qml</file>
+        <file>AddFolder.qml</file>
+    </qresource>
+</RCC>
