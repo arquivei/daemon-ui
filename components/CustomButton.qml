@@ -19,6 +19,7 @@ Button {
             onClicked: { root.clicked() }
         }
     }
+
     contentItem: Text {
         id: buttonContent
         color: '#fff'

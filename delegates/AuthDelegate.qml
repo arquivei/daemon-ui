@@ -1,54 +1,42 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.12
-import './components'
+import QtQml.Models 2.12
+import '../components'
 
-Page {
+ItemDelegate {
     id: root
+
+    property ObjectModel model
+    property Item view
 
     states: [
         State {
-            name: "initial"
+            name: 'initial'
             PropertyChanges { target: loginBtn; visible: true }
             PropertyChanges { target: spinLoader; visible: false }
         },
         State {
-            name: "loading"
+            name: 'loading'
             PropertyChanges { target: loginBtn; visible: false }
             PropertyChanges { target: spinLoader; visible: true }
         },
         State {
-            name: "error"
-            PropertyChanges { target: feedbackText; visible: true; text: "Authentication Failed" }
+            name: 'error'
+            PropertyChanges { target: feedbackText; visible: true; }
             PropertyChanges { target: loginBtn; visible: true }
             PropertyChanges { target: spinLoader; visible: false }
         }
     ]
 
-    signal loginSuccess
-    signal loginError
-
     Component.onCompleted: {
-        root.state = "initial"
-    }
-
-    onLoginSuccess: {
-        var screen = app.uploadFolder ? "MainScreen.qml" : ["MainScreen.qml", "ConfigScreen.qml"]
-        stack.push(screen)
+        model = parent.model
+        view = parent
         root.state = 'initial'
-        emailInput.text = ''
-        passwordInput.text = ''
-    }
-
-    onLoginError: {
-        root.state = "error"
-        emailInput.text = ''
-        passwordInput.text = ''
     }
 
     Title {
         id: title
-        text: "AUTHENTICATION"
+        text: 'AUTHENTICATION'
 
         width: parent.width
         anchors.top: parent.top
@@ -57,35 +45,47 @@ Page {
     Column {
         id: inputsColumn
 
-        spacing: 8
         width: parent.width
+        spacing: 8
         anchors.centerIn: parent
 
         CustomTextInput {
             id: emailInput
             placeholder: 'E-mail'
+            text: model.email
 
             width: parent.width
+
+            Keys.onReleased: {
+                model.email = emailInput.text
+            }
         }
         CustomTextInput {
             id: passwordInput
             placeholder: 'Password'
+            text: model.password
             isPassword: true
 
             width: parent.width
+
+            Keys.onReleased: {
+                model.password = passwordInput.text
+            }
         }
     }
 
     Text {
         id: feedbackText
+        text: model.errorMsg
         visible: false
+        font.family: 'Roboto Mono'
+        font.pixelSize: 12
+        color: '#ff002e'
+
         width: parent.width
         anchors.top: inputsColumn.bottom
         anchors.topMargin: 4
         horizontalAlignment: Text.AlignLeft
-        font.family: "Roboto Mono"
-        font.pixelSize: 12
-        color: '#ff002e'
     }
 
     Column {
@@ -100,15 +100,7 @@ Page {
 
             width: parent.width
 
-            onClicked: {
-                root.state = "loading"
-                simulateAsyncCall(
-                            function () {
-                                root.loginSuccess()
-                            }, function () {
-                                root.loginError()
-                            }, 1000)
-            }
+            onClicked: view.submit()
         }
 
         SpinLoader {
@@ -118,19 +110,5 @@ Page {
             height: loginBtn.height
             width: parent.width
         }
-    }
-
-    function simulateAsyncCall(successCB, errorCB, delay) {
-        function Timer() {
-            return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
-        }
-
-        var callback = emailInput.text.length && passwordInput.text.length ? successCB : errorCB;
-
-        var timer = new Timer();
-        timer.interval = delay;
-        timer.repeat = false;
-        timer.triggered.connect(callback);
-        timer.start();
     }
 }
