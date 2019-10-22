@@ -14,6 +14,7 @@ ApplicationWindow {
     title: 'Arquivei Daemon'
 
     property string uploadFolder
+    property bool isAuthenticated: false
 
     FontLoader {
         id: fontLoader

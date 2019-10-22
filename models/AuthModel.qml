@@ -18,7 +18,11 @@ ObjectModel {
             return Qt.createQmlObject('import QtQuick 2.0; Timer {}', root);
         }
 
-        const callback = email.length && password.length ? successCB : () => errorCB('FAILED :(');
+        if (email.length && password.length) {
+            app.isAuthenticated = true;
+        }
+
+        const callback = app.isAuthenticated ? successCB : () => errorCB('FAILED :(');
         const timer = new Timer();
 
         timer.interval = 1000;

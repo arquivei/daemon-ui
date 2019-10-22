@@ -15,6 +15,6 @@ ObjectModel {
     }
 
     function logout() {
-        console.log('Logout user');
+        app.isAuthenticated = false;
     }
 }

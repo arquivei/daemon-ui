@@ -11,10 +11,16 @@ Page {
 
     property ItemDelegate delegate
     property ObjectModel model
+    readonly property string mainViewString: 'import QtQuick 2.0; import "./delegates"; import "./models"; MainView { delegate: MainDelegate {} model: MainModel {} }'
+    readonly property string configViewString: 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }'
+
+    Component.onCompleted: {
+        if (app.isAuthenticated) {
+            stack.push(Qt.createQmlObject(mainViewString, root));
+        }
+    }
 
     onLoginSuccess: {
-        const configViewString = 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }';
-        const mainViewString = 'import QtQuick 2.0; import "./delegates"; import "./models"; MainView { delegate: MainDelegate {} model: MainModel {} }';
         const mainViewObject = Qt.createQmlObject(mainViewString, root);
         const view = model.uploadFolder ? mainViewObject : [mainViewObject, Qt.createQmlObject(configViewString, root)];
         stack.push(view);
