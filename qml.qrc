@@ -1,9 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>InstallView.qml</file>
-        <file>AuthView.qml</file>
-        <file>MainView.qml</file>
         <file>fonts/LICENSE.txt</file>
         <file>fonts/RobotoMono-Bold.ttf</file>
         <file>fonts/RobotoMono-BoldItalic.ttf</file>
@@ -27,8 +24,24 @@
         <file>images/syncing.svg</file>
         <file>images/add.svg</file>
         <file>images/ellipse.svg</file>
-        <file>SelectFolderView.qml</file>
-        <file>SelectedFolderText.qml</file>
-        <file>AddFolder.qml</file>
+        <file>AuthView.qml</file>
+        <file>components/Title.qml</file>
+        <file>components/CustomTextInput.qml</file>
+        <file>components/CustomButton.qml</file>
+        <file>MainView.qml</file>
+        <file>components/Divider.qml</file>
+        <file>components/FolderPath.qml</file>
+        <file>components/SyncStatus.qml</file>
+        <file>ConfigView.qml</file>
+        <file>components/SpinLoader.qml</file>
+        <file>images/external-link-symbol.svg</file>
+        <file>components/ImageButton.qml</file>
+        <file>images/error.svg</file>
+        <file>delegates/AuthDelegate.qml</file>
+        <file>models/AuthModel.qml</file>
+        <file>delegates/ConfigDelegate.qml</file>
+        <file>models/ConfigModel.qml</file>
+        <file>delegates/MainDelegate.qml</file>
+        <file>models/MainModel.qml</file>
     </qresource>
 </RCC>

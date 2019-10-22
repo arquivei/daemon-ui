@@ -1,56 +1,46 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.13
+import QtQml.Models 2.12
 
 Page {
-    id: authView
+    id: root
 
-    Text {
-        id: viewTitle
-        text: "AUTHENTICATION"
-        horizontalAlignment: Text.AlignHCenter
-        width: parent.width
-        font.family: "Roboto Mono"
-        font.weight: "Bold"
-        font.pixelSize: 14
-    }
+    signal submit
+    signal loginSuccess
+    signal loginError(string errorMsg)
 
-    ColumnLayout {
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
+    property ItemDelegate delegate
+    property ObjectModel model
+    readonly property string mainViewString: 'import QtQuick 2.0; import "./delegates"; import "./models"; MainView { delegate: MainDelegate {} model: MainModel {} }'
+    readonly property string configViewString: 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }'
 
-        TextField {
-            id: emailTextField
-            placeholderText: qsTr("E-mail")
-            Layout.fillWidth: true
-            font.pixelSize: 12
-        }
-
-        TextField {
-            id: passwordTextField
-            placeholderText: qsTr("Password")
-            width: parent.width
-            Layout.fillWidth: true
-            echoMode: "Password"
-            font.pixelSize: 12
+    Component.onCompleted: {
+        if (app.isAuthenticated) {
+            stack.push(Qt.createQmlObject(mainViewString, root));
         }
     }
 
-    Button {
-        id: startButton
-        anchors.bottom: parent.bottom
-        width: parent.width
-        background: Rectangle {
-            color: '#000'
-            radius: 20
-        }
-        contentItem: Text {
-            color: '#fff'
-            text: 'LOGIN'
-            font.family: "Roboto Mono"
-            font.weight: "Bold"
-            horizontalAlignment: Text.AlignHCenter
-        }
-        onClicked: stack.push("MainView.qml")
+    onLoginSuccess: {
+        const mainViewObject = Qt.createQmlObject(mainViewString, root);
+        const view = model.uploadFolder ? mainViewObject : [mainViewObject, Qt.createQmlObject(configViewString, root)];
+        stack.push(view);
+
+        delegate.state = 'initial';
+        model.email = '';
+        model.password = '';
     }
+
+    onLoginError: {
+        delegate.state = 'error';
+        model.email = '';
+        model.password = '';
+        model.errorMsg = errorMsg;
+    }
+
+    onSubmit: {
+        delegate.state = 'loading';
+        model.authenticate(() => root.loginSuccess(), (errMsg) => root.loginError(errMsg));
+    }
+
+    contentItem: delegate
 }

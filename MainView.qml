@@ -1,83 +1,31 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.13
+import QtQml.Models 2.12
 
 Page {
-    id: mainView
+    id: root
 
-    Text {
-        id: viewTitle
-        text: "DAEMON"
-        horizontalAlignment: Text.AlignHCenter
-        width: parent.width
-        font.family: "Roboto Mono"
-        font.weight: "Bold"
-        font.pixelSize: 14
-    }
+    signal openWeb
+    signal openConfig
 
-    ColumnLayout {
-        width: parent.width
-        anchors.bottom: parent.bottom
+    property ItemDelegate delegate
+    property ObjectModel model
 
-        RowLayout {
-            spacing: 8
-
-            Image {
-                id: pcIcon
-                width: 24
-                height: 24
-                fillMode: Image.PreserveAspectFit
-                source: "images/pc.svg"
-            }
-            Text {
-                id: connectionText
-                text: qsTr("PC01 - Connected")
-                font.family: "Roboto Mono"
-                color: "#1CC689"
-            }
-        }
-
-        MenuSeparator {
-            Layout.fillWidth: true
-        }
-
-        RowLayout {
-            spacing: 8
-
-            Image {
-                id: settingsIcon
-                width: 24
-                height: 24
-                fillMode: Image.PreserveAspectFit
-                source: "images/settings.svg"
-            }
-            Text {
-                id: settingsText
-                text: qsTr("Settings")
-                font.family: "Roboto Mono"
-                color: "#0085FF"
-                font.underline: true
-            }
-            MouseArea {
-                id: mouseAreaSettings
-                x: 0
-                y: 0
-                width: parent.width
-                height: parent.height
-                hoverEnabled: true
-                onClicked: {
-                    stack.push("AuthView.qml")
-                }
-                cursorShape: Qt.PointingHandCursor
-            }
-        }
-
-        MenuSeparator {
-            Layout.fillWidth: true
-        }
-
-        Loader {
-            source: window.uploadFolder ? "SelectedFolderText.qml" : "AddFolder.qml"
+    StackView.onStatusChanged: {
+        if (StackView.status === StackView.Activating) {
+            delegate.state = 'syncing';
+            model.syncFolder(() => delegate.state = 'success', () => delegate.state = 'error');
         }
     }
+
+    onOpenWeb: {
+        Qt.openUrlExternally('https://app.arquivei.com.br')
+    }
+
+    onOpenConfig: {
+        const configViewString = 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }';
+        stack.push(Qt.createQmlObject(configViewString, root))
+    }
+
+    contentItem: delegate
 }

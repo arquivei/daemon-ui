@@ -1,41 +1,34 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
-import Qt.labs.platform 1.1
+import './delegates'
+import './models'
 
 ApplicationWindow {
-    id: window
+    id: app
     visible: true
     width: 320
-    height: 240
+    height: 320
     minimumWidth: 320
-    minimumHeight: 240
-    title: qsTr("Arquivei Daemon")
+    minimumHeight: 320
+    title: 'Arquivei Daemon'
 
     property string uploadFolder
+    property bool isAuthenticated: false
 
     FontLoader {
         id: fontLoader
-        source: "fonts/RobotoMono-Regular.ttf"
+        source: 'fonts/RobotoMono-Regular.ttf'
     }
 
     StackView {
         id: stack
-        initialItem: InstallView {}
+        initialItem: AuthView {
+            model: AuthModel {}
+            delegate: AuthDelegate {}
+        }
         anchors.fill: parent
         anchors.margins: 24
-        font.family: "Roboto Mono"
-    }
-
-    SystemTrayIcon {
-        visible: true
-        icon.source: "images/settings.svg"
-
-        menu: Menu {
-            MenuItem {
-                text: qsTr("Quit")
-                onTriggered: Qt.quit()
-            }
-        }
+        font.family: 'Roboto Mono'
     }
 }
