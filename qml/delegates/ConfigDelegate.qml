@@ -79,7 +79,7 @@ ItemDelegate {
     }
 
     ImageButton {
-        source: '../images/back.svg'
+        source: 'qrc:/images/back.svg'
 
         width: 24
         height: 24

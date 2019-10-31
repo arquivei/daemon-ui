@@ -15,6 +15,8 @@ Page {
     readonly property string configViewString: 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }'
 
     Component.onCompleted: {
+        app.isAuthenticated = QmlBridge.isAuthenticated
+        app.uploadFolder = QmlBridge.uploadFolderPath
         if (app.isAuthenticated) {
             stack.push(Qt.createQmlObject(mainViewString, root));
         }

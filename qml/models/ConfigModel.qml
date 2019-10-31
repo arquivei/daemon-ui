@@ -11,6 +11,7 @@ ObjectModel {
     }
 
     function syncUploadFolder() {
+        QmlBridge.setUploadFolder(uploadFolder)
         app.uploadFolder = uploadFolder;
     }
 

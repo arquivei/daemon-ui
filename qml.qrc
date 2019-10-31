@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>fonts/LICENSE.txt</file>
         <file>fonts/RobotoMono-Bold.ttf</file>
         <file>fonts/RobotoMono-BoldItalic.ttf</file>
@@ -24,24 +23,25 @@
         <file>images/syncing.svg</file>
         <file>images/add.svg</file>
         <file>images/ellipse.svg</file>
-        <file>AuthView.qml</file>
-        <file>components/Title.qml</file>
-        <file>components/CustomTextInput.qml</file>
-        <file>components/CustomButton.qml</file>
-        <file>MainView.qml</file>
-        <file>components/Divider.qml</file>
-        <file>components/FolderPath.qml</file>
-        <file>components/SyncStatus.qml</file>
-        <file>ConfigView.qml</file>
-        <file>components/SpinLoader.qml</file>
         <file>images/external-link-symbol.svg</file>
-        <file>components/ImageButton.qml</file>
         <file>images/error.svg</file>
-        <file>delegates/AuthDelegate.qml</file>
-        <file>models/AuthModel.qml</file>
-        <file>delegates/ConfigDelegate.qml</file>
-        <file>models/ConfigModel.qml</file>
-        <file>delegates/MainDelegate.qml</file>
-        <file>models/MainModel.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/AuthView.qml</file>
+        <file>qml/MainView.qml</file>
+        <file>qml/ConfigView.qml</file>
+        <file>qml/components/Title.qml</file>
+        <file>qml/components/CustomTextInput.qml</file>
+        <file>qml/components/CustomButton.qml</file>
+        <file>qml/components/Divider.qml</file>
+        <file>qml/components/FolderPath.qml</file>
+        <file>qml/components/SyncStatus.qml</file>
+        <file>qml/components/SpinLoader.qml</file>
+        <file>qml/components/ImageButton.qml</file>
+        <file>qml/delegates/AuthDelegate.qml</file>
+        <file>qml/delegates/ConfigDelegate.qml</file>
+        <file>qml/delegates/MainDelegate.qml</file>
+        <file>qml/models/AuthModel.qml</file>
+        <file>qml/models/ConfigModel.qml</file>
+        <file>qml/models/MainModel.qml</file>
     </qresource>
 </RCC>

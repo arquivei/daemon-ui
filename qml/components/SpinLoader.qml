@@ -5,7 +5,7 @@ Item {
 
     Image {
         id: spinImage
-        source: "../images/syncing.svg"
+        source: "qrc:/images/syncing.svg"
         anchors.centerIn: parent
         fillMode: Image.PreserveAspectFit
 

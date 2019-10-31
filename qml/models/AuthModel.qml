@@ -19,12 +19,23 @@ ObjectModel {
         }
 
         if (email.length && password.length) {
-            app.isAuthenticated = true;
+            var JsonString = QmlBridge.authenticate(email, password);
+            var JsonObject = JSON.parse(JsonString);
+
+            //retrieve values from JSON again
+            var success = JsonObject.Success;
+            var message = JsonObject.Message;
+
+            if (success == true) {
+                app.isAuthenticated = true;
+            } else {
+                root.errorMsg = message
+            }
         }
 
-        const callback = app.isAuthenticated ? successCB : () => errorCB('FAILED :(');
-        const timer = new Timer();
+        const callback = app.isAuthenticated ? successCB : () => errorCB(root.errorMsg);
 
+        const timer = new Timer();
         timer.interval = 1000;
         timer.repeat = false;
         timer.triggered.connect(callback);

@@ -26,6 +26,6 @@ Page {
         const configViewString = 'import QtQuick 2.0; import "./delegates"; import "./models"; ConfigView { delegate: ConfigDelegate {} model: ConfigModel {} }';
         stack.push(Qt.createQmlObject(configViewString, root))
     }
-
+    
     contentItem: delegate
 }

@@ -7,18 +7,18 @@ import './models'
 ApplicationWindow {
     id: app
     visible: true
-    width: 320
-    height: 320
-    minimumWidth: 320
-    minimumHeight: 320
+    width: 400
+    height: 400
+    minimumWidth: 400
+    minimumHeight: 400
     title: 'Arquivei Daemon'
-
+    
     property string uploadFolder
     property bool isAuthenticated: false
 
     FontLoader {
         id: fontLoader
-        source: 'fonts/RobotoMono-Regular.ttf'
+        source: 'qrc:/fonts/RobotoMono-Regular.ttf'
     }
 
     StackView {

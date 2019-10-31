@@ -39,7 +39,7 @@ ItemDelegate {
     }
 
     ImageButton {
-        source: '../images/external-link-symbol.svg'
+        source: 'qrc:/images/external-link-symbol.svg'
 
         width: 18
         height: 18
@@ -76,6 +76,18 @@ ItemDelegate {
             id: syncStatus
             successUrl: model.webSuccessUrl
             errorUrl: model.webErrorUrl
+        }
+    }
+
+    Connections
+    {
+        target: QmlBridge
+        onIsWorking: {
+            if (isWorking) {
+                root.state = 'syncing'
+            } else {
+                root.state = 'success'
+            }
         }
     }
 }

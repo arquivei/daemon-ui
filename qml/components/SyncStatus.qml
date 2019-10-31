@@ -53,7 +53,7 @@ Item {
 
             Image {
                 id: syncingImg
-                source: "../images/syncing.svg"
+                source: "qrc:/images/syncing.svg"
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
@@ -68,7 +68,7 @@ Item {
 
             Image {
                 id: successImg
-                source: "../images/success.png"
+                source: "qrc:/images/success.png"
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
@@ -76,7 +76,7 @@ Item {
 
             Image {
                 id: errorImg
-                source: "../images/error.svg"
+                source: "qrc:/images/error.svg"
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
