@@ -1,4 +1,4 @@
-package client
+package commands
 
 type CommandName string
 

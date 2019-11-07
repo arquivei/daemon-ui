@@ -4,15 +4,17 @@ import (
 	"bufio"
 	"log"
 	"net"
+
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
 )
 
-type AppClient struct{}
+type Client struct{}
 
-func NewAppClient() AppClient {
-	return AppClient{}
+func NewClient() Client {
+	return Client{}
 }
 
-func (c AppClient) SendCommand(cmd CommandInterface) (msg []byte, err error) {
+func (c Client) SendCommand(cmd commands.CommandInterface) (msg []byte, err error) {
 	conn, err := net.Dial("tcp", "127.0.0.1:56899")
 	if err != nil {
 		return msg, err

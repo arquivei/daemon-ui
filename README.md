@@ -6,6 +6,8 @@ Este projeto contém a GUI do daemon.
 
 Se você não tiver o Go 1.12 ou posterior instalado na sua máquina, siga os passos [Aqui](https://golang.org/doc/install)
 
+Utilizamos um binding do framework Qt para Golang. Portanto, para rodar localmente é necessário instalar as dependências dessa bilioteca seguindo os passos [Aqui](https://github.com/therecipe/qt/wiki/Installation-on-Linux)
+
 ### Clone o projeto no workspace do Go
 
 Clone direto do bitbucket:
@@ -17,14 +19,6 @@ Clone direto do bitbucket:
 Entre no diretório do projeto:
 
 	$ cd $(go env GOPATH)/src/bitbucket.org/arquivei/daemon-ui-poc
-
-### Atualize as dependências
-
-Esperamos que você tenha instalado na sua máquina `git`, `make` e `docker`. 
-
-Utilizamos o `go mod`, para controle de dependências. Para atualizar as dependências, utilize o seguinte commando:
-
-    $ make vendor
 
 Para rodar o programa localmente, apenas execute o seguinte comando:
 

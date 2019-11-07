@@ -1,108 +1,106 @@
 package application
 
 import (
-	"encoding/json"
-	"errors"
-
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
 )
 
 type App struct {
-	client client.AppClient
+	c client.Client
 }
 
 type Application interface {
 	IsWorking() (bool, error)
 	GetUploadFolder() (string, error)
 	SetUploadFolder(path string) error
-	Authenticate(email, password string) (client.AuthResponse, error)
+	Authenticate(email, password string) (commands.AuthResponse, error)
 	IsAuthenticated() (bool, error)
 }
 
-func NewAppConnection(client client.AppClient) Application {
+func NewAppConnection(c client.Client) Application {
 	return &App{
-		client: client,
+		c: c,
 	}
 }
 
-func (app App) IsWorking() (bool, error) {
-	data, err := app.client.SendCommand(
-		client.NewIsWorkingCommand(),
+func (app App) IsWorking() (isWorking bool, err error) {
+	data, err := app.c.SendCommand(
+		commands.NewIsWorkingCommand(),
 	)
 	if err != nil {
-		return false, err
+		return isWorking, err
 	}
 
-	var r client.IsWorkingResponse
-	if err := json.Unmarshal(data, &r); err != nil {
-		return false, err
+	r, err := commands.NewIsWorkingResponse(data)
+	if err != nil {
+		return isWorking, err
 	}
 
-	return r.IsWorking, nil
+	isWorking = r.IsWorking
+	return
 }
 
-func (app App) SetUploadFolder(path string) error {
-	data, err := app.client.SendCommand(
-		client.NewSetUploadFolderCommand(path),
+func (app App) SetUploadFolder(path string) (err error) {
+	data, err := app.c.SendCommand(
+		commands.NewSetUploadFolderCommand(path),
 	)
 	if err != nil {
 		return err
 	}
 
-	var r client.SetUploadFolderResponse
-	if err := json.Unmarshal(data, &r); err != nil {
+	_, err = commands.NewSetUploadFolderResponse(data)
+	if err != nil {
 		return err
 	}
 
-	return nil
+	return
 }
 
-func (app App) GetUploadFolder() (string, error) {
-	data, err := app.client.SendCommand(
-		client.NewGetUploadFolderCommand(),
+func (app App) GetUploadFolder() (folder string, err error) {
+	data, err := app.c.SendCommand(
+		commands.NewGetUploadFolderCommand(),
 	)
 	if err != nil {
-		return "", err
+		return folder, err
 	}
 
-	var r client.GetUploadFolderResponse
-	if err := json.Unmarshal(data, &r); err != nil {
-		return "", err
+	r, err := commands.NewGetUploadFolderResponse(data)
+	if err != nil {
+		return folder, err
 	}
 
-	return r.UploadFolder, nil
+	folder = r.UploadFolder
+	return
 }
 
-func (app App) IsAuthenticated() (bool, error) {
-	data, err := app.client.SendCommand(
-		client.NewIsAuthenticatedCommand(),
+func (app App) IsAuthenticated() (isAuth bool, err error) {
+	data, err := app.c.SendCommand(
+		commands.NewIsAuthenticatedCommand(),
 	)
 	if err != nil {
-		return false, err
+		return isAuth, err
 	}
 
-	var r client.IsAuthenticatedResponse
-	if err := json.Unmarshal(data, &r); err != nil {
-		return false, err
+	r, err := commands.NewIsAuthenticatedResponse(data)
+	if err != nil {
+		return isAuth, err
 	}
 
-	return r.IsAuthenticated, nil
+	isAuth = r.IsAuthenticated
+	return
 }
 
-func (app App) Authenticate(email, password string) (r client.AuthResponse, err error) {
-	data, err := app.client.SendCommand(
-		client.NewAuthenticateCommand(email, password),
+func (app App) Authenticate(email, password string) (r commands.AuthResponse, err error) {
+	data, err := app.c.SendCommand(
+		commands.NewAuthenticateCommand(email, password),
 	)
 	if err != nil {
-		return r.ErrorResponse(), err
+		return r, err
 	}
 
-	if err := json.Unmarshal(data, &r); err != nil {
-		return r.ErrorResponse(), err
-	}
-
-	if r.Error != "" {
-		return r.ErrorResponse(), errors.New(r.Error)
+	r, err = commands.NewAuthResponse(data)
+	if err != nil {
+		return r, err
 	}
 
 	return

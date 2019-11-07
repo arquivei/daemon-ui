@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -9,6 +8,7 @@ import (
 
 	"bitbucket.org/arquivei/daemon-ui-poc/application"
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -47,10 +47,9 @@ func authenticate(email string, password string) string {
 	response, err := appConnection.Authenticate(email, password)
 	if err != nil {
 		log.Println(fmt.Errorf("An unknown error occured to authenticate: %v", err))
+		response = commands.NewAuthResponseError()
 	}
-
-	json, _ := json.Marshal(response)
-	return string(json)
+	return response.Encode()
 }
 
 func setUploadFolder(folder string) {
@@ -64,7 +63,7 @@ func setUploadFolder(folder string) {
 
 func (bridge *QmlBridge) checkingIsWorking() {
 	go func() {
-		for range time.NewTicker(time.Second * 5).C {
+		for range time.NewTicker(time.Second * 2).C {
 			isWorking, err := appConnection.IsWorking()
 			if err != nil {
 				log.Println(fmt.Errorf("An unknown error occured to check is working: %v", err))
@@ -91,7 +90,7 @@ func main() {
 	log.SetOutput(f)
 
 	appConnection = application.NewAppConnection(
-		client.NewAppClient(),
+		client.NewClient(),
 	)
 
 	// Force the software backend always.
