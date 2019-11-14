@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
+	"runtime/debug"
 	"time"
 
 	"bitbucket.org/arquivei/daemon-ui-poc/application"
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	log "github.com/sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -16,6 +16,7 @@ import (
 )
 
 var appConnection application.Application
+var logger *log.Entry
 
 type QmlBridge struct {
 	core.QObject
@@ -31,12 +32,12 @@ type QmlBridge struct {
 func (bridge *QmlBridge) init() {
 	isAuthenticated, err := appConnection.IsAuthenticated()
 	if err != nil {
-		log.Println(fmt.Errorf("Error to check is authenticated: %v", err))
+		logger.WithError(err).Error("Error to check is authenticated")
 	}
 
 	uploadFolder, err := appConnection.GetUploadFolder()
 	if err != nil {
-		log.Println(fmt.Errorf("Error to get current uplad folder: %v", err))
+		logger.WithError(err).Error("Error to get current uplad folder")
 	}
 
 	bridge.SetIsAuthenticated(isAuthenticated)
@@ -46,7 +47,7 @@ func (bridge *QmlBridge) init() {
 func authenticate(email string, password string) string {
 	response, err := appConnection.Authenticate(email, password)
 	if err != nil {
-		log.Println(fmt.Errorf("An unknown error occured to authenticate: %v", err))
+		logger.WithError(err).Error("An unknown error occured to authenticate")
 		response = commands.NewAuthResponseError()
 	}
 	return response.Encode()
@@ -56,7 +57,7 @@ func setUploadFolder(folder string) {
 	path := core.NewQUrl3(folder, 0).ToLocalFile()
 	go func() {
 		if err := appConnection.SetUploadFolder(path); err != nil {
-			log.Println(fmt.Errorf("An unknown error occured to set update folder: %v", err))
+			logger.WithError(err).Error("An unknown error occured to set update folder")
 		}
 	}()
 }
@@ -66,7 +67,7 @@ func (bridge *QmlBridge) checkingIsWorking() {
 		for range time.NewTicker(time.Second * 2).C {
 			isWorking, err := appConnection.IsWorking()
 			if err != nil {
-				log.Println(fmt.Errorf("An unknown error occured to check is working: %v", err))
+				logger.WithError(err).Error("An unknown error occured to check is working")
 			}
 			bridge.IsWorking(isWorking)
 		}
@@ -76,18 +77,20 @@ func (bridge *QmlBridge) checkingIsWorking() {
 func main() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Println("recovered: ", r)
+			log.WithField("error", r).
+				WithField("stacktrace", string(debug.Stack())).
+				Error("Recovered from panic! Closing application.")
 		}
 	}()
 
-	f, err := os.OpenFile("daemon-ui.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		panic(fmt.Errorf("An unknown error occured to open the log file: %v", err))
-	}
+	hostname, _ := os.Hostname()
 
-	defer f.Close()
+	logger = log.WithFields(log.Fields{
+		"beat.name":     "DAEMON",
+		"beat.hostname": hostname,
+	})
 
-	log.SetOutput(f)
+	log.SetLevel(log.DebugLevel)
 
 	appConnection = application.NewAppConnection(
 		client.NewClient(),

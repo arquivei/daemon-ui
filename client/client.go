@@ -2,7 +2,6 @@ package client
 
 import (
 	"bufio"
-	"log"
 	"net"
 
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
@@ -29,8 +28,6 @@ func (c Client) SendCommand(cmd commands.CommandInterface) (msg []byte, err erro
 		return msg, err
 	}
 
-	log.Println("Command to server: " + data)
-
 	// sending message
 	_, err = conn.Write([]byte(data + "\r\n"))
 	if err != nil {
@@ -42,8 +39,6 @@ func (c Client) SendCommand(cmd commands.CommandInterface) (msg []byte, err erro
 	if err != nil {
 		return msg, err
 	}
-
-	log.Println("Message from server: " + resp)
 
 	return []byte(resp), nil
 }
