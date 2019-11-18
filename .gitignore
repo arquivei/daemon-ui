@@ -3,9 +3,9 @@ linux/
 windows/
 data/
 .cover/
+logs/
 coverage.html
 config.json
-daemon-ui.log
 *.cpp
 *.qrc
 *.h

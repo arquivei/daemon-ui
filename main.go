@@ -8,6 +8,7 @@ import (
 	"bitbucket.org/arquivei/daemon-ui-poc/application"
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	fileLog "bitbucket.org/arquivei/daemon-ui-poc/impl/logging/file"
 	log "github.com/sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -91,6 +92,23 @@ func main() {
 	})
 
 	log.SetLevel(log.DebugLevel)
+
+	fileHook := fileLog.NewRotateFileHook(fileLog.RotateFileConfig{
+		Filename: "logs/ui.log",
+		// MaxSize is the maximum size in megabytes of the log file before it gets rotated.
+		MaxSize: 50,
+		// MaxAge is the maximum number of days to retain old log files based on the
+		// timestamp encoded in their filename.  Note that a day is defined as 24
+		// hours and may not exactly correspond to calendar days due to daylight
+		// savings, leap seconds, etc.
+		MaxBackups: 7,
+		// MaxBackups is the maximum number of old log files to retain.
+		MaxAge:    1,
+		Formatter: &log.JSONFormatter{},
+	})
+
+	fileHook.SetLevel(log.DebugLevel)
+	log.AddHook(fileHook)
 
 	appConnection = application.NewAppConnection(
 		client.NewClient(),
