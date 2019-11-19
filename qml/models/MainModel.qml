@@ -20,17 +20,17 @@ ObjectModel {
 
         function success() {
             uploadFolder = app.uploadFolder;
-            webSuccessUrl = 'https://www.google.com';
+            webSuccessUrl = 'https://arquivei.com.br';
             successCB();
         }
 
         function error() {
             uploadFolder = null;
-            webErrorUrl = 'https://br.bing.com';
+            webErrorUrl = 'https://arquivei.com.br';
             errorCB();
         }
 
-        const callback = app.uploadFolder && !app.uploadFolder.includes('Download') ? success : error;
+        const callback = app.uploadFolder ? success : error;
         const timer = new Timer();
 
         timer.interval = 1000;

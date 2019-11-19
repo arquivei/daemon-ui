@@ -8,6 +8,7 @@ const (
 	getUploadFolderCmd = "GET_UPLOAD_FOLDER_CMD"
 	setUploadFolderCmd = "SET_UPLOAD_FOLDER_CMD"
 	isWorkingCmd       = "IS_WORKING_CMD"
+	pingCmd            = "PING_CMD"
 )
 
 type CommandInterface interface {

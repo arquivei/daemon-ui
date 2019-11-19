@@ -15,6 +15,7 @@ type Application interface {
 	SetUploadFolder(path string) error
 	Authenticate(email, password string) (commands.AuthResponse, error)
 	IsAuthenticated() (bool, error)
+	Ping() error
 }
 
 func NewAppConnection(c client.Client) Application {
@@ -103,5 +104,12 @@ func (app App) Authenticate(email, password string) (r commands.AuthResponse, er
 		return r, err
 	}
 
+	return
+}
+
+func (app App) Ping() (err error) {
+	_, err = app.c.SendCommand(
+		commands.NewPingCommand(),
+	)
 	return
 }
