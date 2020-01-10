@@ -24,14 +24,14 @@ type QmlBridge struct {
 }
 
 func (bridge *QmlBridge) init() {
-	isAuthenticated, err := appConnection.IsAuthenticated()
+	isAuthenticated, err := r.appConnection.IsAuthenticated()
 	if err != nil {
-		logger.WithError(err).Error("Error to check is authenticated")
+		r.logger.WithError(err).Error("Error to check is authenticated")
 	}
 
-	uploadFolder, err := appConnection.GetUploadFolder()
+	uploadFolder, err := r.appConnection.GetUploadFolder()
 	if err != nil {
-		logger.WithError(err).Error("Error to get current uplad folder")
+		r.logger.WithError(err).Error("Error to get current uplad folder")
 	}
 
 	bridge.SetIsAuthenticated(isAuthenticated)
@@ -39,9 +39,9 @@ func (bridge *QmlBridge) init() {
 }
 
 func authenticate(email string, password string) string {
-	response, err := appConnection.Authenticate(email, password)
+	response, err := r.appConnection.Authenticate(email, password)
 	if err != nil {
-		logger.WithError(err).Error("An unknown error occured to authenticate")
+		r.logger.WithError(err).Error("An unknown error occured to authenticate")
 		response = commands.NewAuthResponseError()
 	}
 	return response.Encode()
@@ -50,8 +50,8 @@ func authenticate(email string, password string) string {
 func setUploadFolder(folder string) {
 	path := core.NewQUrl3(folder, 0).ToLocalFile()
 	go func() {
-		if err := appConnection.SetUploadFolder(path); err != nil {
-			logger.WithError(err).Error("An unknown error occured to set update folder")
+		if err := r.appConnection.SetUploadFolder(path); err != nil {
+			r.logger.WithError(err).Error("An unknown error occured to set update folder")
 		}
 	}()
 }
@@ -59,9 +59,9 @@ func setUploadFolder(folder string) {
 func (bridge *QmlBridge) checkingIsWorking() {
 	go func() {
 		for range time.NewTicker(time.Second * 2).C {
-			isWorking, err := appConnection.IsWorking()
+			isWorking, err := r.appConnection.IsWorking()
 			if err != nil {
-				logger.WithError(err).Error("An unknown error occured to check is working")
+				r.logger.WithError(err).Error("An unknown error occured to check is working")
 			}
 			bridge.IsWorking(isWorking)
 		}
