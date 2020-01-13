@@ -8,6 +8,13 @@ Se você não tiver o Go 1.12 ou posterior instalado na sua máquina, siga os pa
 
 Utilizamos um binding do framework Qt para Golang. Portanto, para rodar localmente é necessário instalar as dependências dessa bilioteca seguindo os passos [Aqui](https://github.com/therecipe/qt/wiki/Installation-on-Linux)
 
+### Configure o PATH e GOPATH localmente
+
+Verifique qual o arquivo correto de profile do seu terminal (~/.profile ou ~/.bash_profile) e adicione ao final do arquivo:
+
+    export PATH=$PATH:/usr/local/go/bin
+    export GOPATH=$HOME/go
+
 ### Clone o projeto no workspace do Go
 
 Clone direto do bitbucket:
@@ -20,9 +27,10 @@ Entre no diretório do projeto:
 
 	$ cd $(go env GOPATH)/src/bitbucket.org/arquivei/daemon-ui-poc
 
-Para rodar o programa localmente, apenas execute o seguinte comando:
+Para rodar o programa localmente, instale as dependências e execute a aplicação:
 
-	$ make run
+	$ make vendor
+    $ make run
 
 ### Gerando binários executáveis
 

@@ -11,3 +11,7 @@ build-windows-64:
 
 run:
 	qtdeploy -debug test desktop .
+
+vendor:
+	go get -v gopkg.in/natefinch/lumberjack.v2
+	go get -v github.com/sirupsen/logrus
