@@ -1,4 +1,4 @@
-.PHONY: build-linux build-windows-32 build-windows-64 run vendor
+.PHONY: build-linux build-windows-32 build-windows-64 run
 
 build-linux:
 	docker run --rm -e IDUG=1000:1000 -v ${GOPATH}:/media/sf_GOPATH0 -e GOPATH=/home/user/work:/media/sf_GOPATH0 -i therecipe/qt:linux_static qtdeploy -debug -ldflags= -tags= build linux /media/sf_GOPATH0/src/bitbucket.org/arquivei/daemon-ui-poc
