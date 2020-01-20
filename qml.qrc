@@ -11,6 +11,10 @@
         <file>fonts/RobotoMono-Regular.ttf</file>
         <file>fonts/RobotoMono-Thin.ttf</file>
         <file>fonts/RobotoMono-ThinItalic.ttf</file>
+        <file>fonts/pns-regular-webfont.otf</file>
+        <file>fonts/pns-bold-webfont.otf</file>
+        <file>fonts/pns-medium-webfont.otf</file>
+        <file>fonts/pns-semibold-webfont.otf</file>
         <file>images/back.svg</file>
         <file>images/folder.svg</file>
         <file>images/log-out.svg</file>
@@ -23,12 +27,14 @@
         <file>images/syncing.svg</file>
         <file>images/add.svg</file>
         <file>images/ellipse.svg</file>
-        <file>images/external-link-symbol.svg</file>
         <file>images/error.svg</file>
+        <file>images/external-link-symbol.svg</file>
+        <file>images/arquivei-main.svg</file>
         <file>qml/main.qml</file>
-        <file>qml/AuthView.qml</file>
-        <file>qml/MainView.qml</file>
         <file>qml/ConfigView.qml</file>
+        <file>qml/MainView.qml</file>
+        <file>qml/Presenter.qml</file>
+        <file>qml/Model.qml</file>
         <file>qml/components/Title.qml</file>
         <file>qml/components/CustomTextInput.qml</file>
         <file>qml/components/CustomButton.qml</file>
@@ -37,11 +43,22 @@
         <file>qml/components/SyncStatus.qml</file>
         <file>qml/components/SpinLoader.qml</file>
         <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/DsButton.qml</file>
+        <file>qml/components/DsLink.qml</file>
+        <file>qml/components/DsText.qml</file>
+        <file>qml/components/DsInput.qml</file>
+        <file>qml/screens/Auth/AuthPresenter.qml</file>
+        <file>qml/screens/Auth/AuthView.qml</file>
+        <file>qml/screens/Auth/AuthModel.qml</file>
+        <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
+        <file>qml/screens/Auth/partials/LoginForm.qml</file>
         <file>qml/delegates/AuthDelegate.qml</file>
         <file>qml/delegates/ConfigDelegate.qml</file>
         <file>qml/delegates/MainDelegate.qml</file>
         <file>qml/models/AuthModel.qml</file>
         <file>qml/models/ConfigModel.qml</file>
         <file>qml/models/MainModel.qml</file>
+        <file>qml/services/Server.qml</file>
+        <file>qml/helpers/validator.js</file>
     </qresource>
 </RCC>
