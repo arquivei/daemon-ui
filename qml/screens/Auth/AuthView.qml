@@ -9,27 +9,28 @@ Page {
 
     property string email;
     property string password;
+    property string errorMsg;
+
+    property Component alertComponent: Component {
+        DsAlert {
+            id: alert
+            message: errorMsg
+        }
+    }
+
+    property Component emptyComponent: Component {
+        Item {}
+    }
 
     signal login(string email, string password)
 
     function clearForm() {
+        errorMsg = ''
         loginForm.clear();
     }
 
-    function validateFormEmail(email) {
-        if (email && !Validator.isEmailValid(email)) {
-            loginForm.invalidEmailMsg = 'O formato do e-mail é inválido.'
-        } else {
-            loginForm.invalidEmailMsg = ''
-        }
-    }
-
-    function validateFormPassword(password) {
-        if (password && !Validator.isPasswordValid(password)) {
-            loginForm.invalidPasswordMsg = 'A senha deve conter no mínimo 6 caracteres'
-        } else {
-            loginForm.invalidPasswordMsg = ''
-        }
+    function setLoginErrorMsg(msg) {
+        errorMsg = msg;
     }
 
     Item {
@@ -49,18 +50,32 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
+        Loader {
+            id: alertLoader
+            sourceComponent: errorMsg ? alertComponent: emptyComponent
+
+            width: parent.width
+            anchors.top: imageLogo.bottom
+            anchors.topMargin: 64
+        }
+
         LoginForm {
             id: loginForm
 
             forgotPasswordUrl: 'https://app.arquivei.com.br'
 
             width: parent.width
-            anchors.top: imageLogo.bottom
-            anchors.margins: 64
+            anchors.top: alertLoader.bottom
+            anchors.topMargin: errorMsg ? 16 : 0
 
-            onValidateEmail: validateFormEmail(email)
-            onValidatePassword: validateFormPassword(password)
-            onSubmit: login(email, password)
+            onResetErrors: {
+                setLoginErrorMsg('');
+            }
+
+            onSubmit: {
+                setLoginErrorMsg('');
+                login(email, password);
+            }
         }
 
         LicenseAgreementSection {
