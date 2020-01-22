@@ -15,3 +15,4 @@ run:
 vendor:
 	go get -v gopkg.in/natefinch/lumberjack.v2
 	go get -v github.com/sirupsen/logrus
+	go get -v github.com/konsorten/go-windows-terminal-sequences

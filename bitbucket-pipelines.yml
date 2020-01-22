@@ -1,0 +1,51 @@
+# Validate your file here: https://bitbucket-pipelines.atlassian.io/validator
+
+pipelines:
+  custom:
+    windows-32:
+      - step:
+          name: Building Windows x32
+          image: therecipe/qt:windows_32_static
+          script:
+            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
+            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - make vendor && qtdeploy -debug build windows .
+            - mv deploy/windows/build.exe gui.exe
+          artifacts:
+            - gui.exe
+      - step:
+          name: Sign executable
+          image: arquivei/app-signer:latest
+          script:
+            - sh /docker-entrypoint.sh gui.exe
+          artifacts:
+              - signed-gui.exe
+    windows-64:
+      - step:
+          name: Building Windows x64
+          image: therecipe/qt:windows_64_static
+          script:
+            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
+            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - make vendor && qtdeploy -debug build windows .
+            - mv deploy/windows/build.exe gui.exe
+          artifacts:
+            - gui.exe
+      - step:
+          name: Sign executable
+          image: arquivei/app-signer:latest
+          script:
+            - sh /docker-entrypoint.sh gui.exe
+          artifacts:
+              - signed-gui.exe
+    linux:
+      - step:
+          name: Building Linux
+          image: therecipe/qt:linux_static
+          script:
+            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
+            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - make vendor && qtdeploy -debug build linux .
+            - mv deploy/linux/build gui
+          artifacts:
+            - gui
