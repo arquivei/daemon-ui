@@ -32,7 +32,7 @@ func main() {
 	s := service.NewBackendService(r.appConnection)
 
 	if err := s.Run(); err != nil {
-		r.logger.WithError(err).Error("An unknown error occured to execute backend service")
+		r.logger.WithError(err).Error("An unknown error occurred while running backend service")
 	}
 
 	r.logger.Info("Starting interface...")

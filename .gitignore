@@ -6,6 +6,7 @@ data/
 logs/
 coverage.html
 config.json
+client.bin
 *.cpp
 *.qrc
 *.h

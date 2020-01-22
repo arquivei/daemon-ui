@@ -8,6 +8,8 @@ import (
 	"bitbucket.org/arquivei/daemon-ui-poc/application"
 )
 
+const maxTries = 30
+
 //Service ...
 type Service struct {
 	app     application.Application
@@ -35,9 +37,17 @@ func (s *Service) Run() error {
 		return err
 	}
 
+	var totalTries int
+
 	for range time.NewTicker(time.Millisecond * 100).C {
-		if s.app.Ping() == nil {
+		totalTries++
+
+		err := s.app.Ping()
+		if err == nil {
 			break
+		}
+		if totalTries > maxTries {
+			return err
 		}
 	}
 
