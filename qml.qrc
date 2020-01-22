@@ -30,6 +30,7 @@
         <file>images/error.svg</file>
         <file>images/external-link-symbol.svg</file>
         <file>images/arquivei-main.svg</file>
+        <file>images/alert-danger.svg</file>
         <file>qml/main.qml</file>
         <file>qml/ConfigView.qml</file>
         <file>qml/MainView.qml</file>
@@ -47,6 +48,7 @@
         <file>qml/components/DsLink.qml</file>
         <file>qml/components/DsText.qml</file>
         <file>qml/components/DsInput.qml</file>
+        <file>qml/components/DsAlert.qml</file>
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Auth/AuthModel.qml</file>

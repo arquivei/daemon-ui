@@ -1,22 +1,28 @@
 import QtQuick 2.0
 import '../../../components'
+import '../../../helpers/validator.js' as Validator
 
 Item {
-    property string emailValue
-    property string passwordValue
+    property string emailValue: ''
+    property string passwordValue: ''
     property string invalidEmailMsg
-    property string invalidPasswordMsg
     property string forgotPasswordUrl
 
-    signal validateEmail(string email)
-    signal validatePassword(string password)
+    signal resetErrors()
     signal submit(string email, string password)
+
+    function validateEmail(email) {
+        if (Validator.isEmailValid(email)) {
+            invalidEmailMsg = '';
+        } else {
+            invalidEmailMsg = 'O formato do e-mail é inválido.'
+        }
+    }
 
     function clear() {
         emailValue = '';
         passwordValue = '';
         invalidEmailMsg = '';
-        invalidPasswordMsg = '';
     }
 
     id: root
@@ -35,11 +41,9 @@ Item {
         Keys.onReleased: {
             emailValue = inputEmail.text;
             if (invalidEmailMsg) {
-                validateEmail(emailValue);
+                invalidEmailMsg = ''
             }
         }
-
-        onBlur: validateEmail(value)
     }
 
     DsInput {
@@ -48,7 +52,6 @@ Item {
         label: 'Senha:'
         placeholder: 'No mínimo 06 caracteres'
         isPassword: true
-        errorMsg: invalidPasswordMsg
 
         width: parent.width
         anchors.top: inputEmail.bottom
@@ -56,12 +59,7 @@ Item {
 
         Keys.onReleased: {
             passwordValue = inputPassword.text;
-            if (invalidPasswordMsg) {
-                validatePassword(passwordValue);
-            }
         }
-
-        onBlur: validatePassword(value)
     }
 
     Item {
@@ -84,10 +82,18 @@ Item {
             id: btnLogin
             text: 'Entrar'
             type: DsButton.Types.Special
-
             anchors.right: parent.right
+            enabled: {
+                return emailValue.length >= 1 && Validator.isPasswordValid(passwordValue);
+            }
+            onClicked: {
+                resetErrors();
+                validateEmail(emailValue);
 
-            onClicked: submit(emailValue, passwordValue)
+                if (!invalidEmailMsg) {
+                    submit(emailValue, passwordValue)
+                }
+            }
         }
     }
 }

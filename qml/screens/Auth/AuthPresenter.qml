@@ -23,7 +23,7 @@ Presenter {
             app.push(nextScreen);
         }
         onLoginError: {
-            view.clearForm();
+            view.setLoginErrorMsg(msg);
         }
     }
 

@@ -11,41 +11,42 @@ Button {
         Special
     }
 
-    function getButtonColor() {
-        if (isHovered) {
-            switch(type) {
-            case DsButton.Types.Special:
-                return '#44774F';
-            default:
-                return '#124066';
-            }
-        }
-
-        switch(type) {
-        case DsButton.Types.Special:
-            return '#47C661';
-        default:
-            return '#2074BA';
-        }
-    }
-
     id: root
     horizontalPadding: 16
     verticalPadding: 5
     background: Rectangle {
         id: buttonBackground
-        color: getButtonColor()
         radius: 4
+        color: {
+            if (!root.enabled) {
+                return '#D0D0D0';
+            }
+
+            if (isHovered && type === DsButton.Types.Special) {
+                return '#44774f';
+            }
+
+            if (isHovered) {
+                return '#124066';
+            }
+
+            if (type === DsButton.Types.Special) {
+                return '#47C661';
+            }
+
+            return '#2074BA';
+        }
 
         MouseArea {
-            cursorShape: Qt.PointingHandCursor
+            cursorShape: root.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
             width: parent.width
             height: parent.height
-            onClicked: { root.clicked() }
+            enabled: root.enabled
             hoverEnabled: true
+
+            onClicked: root.clicked()
             onHoveredChanged: {
                 isHovered = !isHovered;
-                buttonBackground.color = getButtonColor();
             }
         }
     }
