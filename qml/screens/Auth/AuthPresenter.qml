@@ -18,7 +18,7 @@ Presenter {
     Connections {
         target: model
         onLoginSuccess: {
-            const nextScreen = app.isConfigured() ? 'config' : 'main';
+            const nextScreen = app.isConfigured() ? 'main' : 'config';
             view.clearForm();
             app.push(nextScreen);
         }

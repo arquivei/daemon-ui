@@ -8,8 +8,11 @@ Text {
 
     property alias fontSize: root.font.pixelSize
 
+    signal click()
+
     function getText() {
-        return '<a href="' + href + '">' + label + '</a>';
+        const link = href || '#';
+        return '<a href="' + link + '">' + label + '</a>';
     }
 
     id: root
@@ -28,7 +31,7 @@ Text {
         cursorShape: Qt.PointingHandCursor
         width: parent.width
         height: parent.height
-        onClicked: root.linkActivated(href)
+        onClicked: href ? root.linkActivated(href) : root.click()
         hoverEnabled: true
         onHoveredChanged: {
             isHovered = !isHovered;
