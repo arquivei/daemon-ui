@@ -2,7 +2,12 @@ import QtQuick 2.0
 
 Item {
     property alias icon: imageIcon.source
-    property alias text: textLabel.text
+    property string text
+    property int textMaxLength
+
+    function getTrimmedText() {
+        return text.length > textMaxLength ? `${text.substring(0, textMaxLength)}...` : text;
+    }
 
     id: root
     height: childrenRect.height
@@ -19,11 +24,11 @@ Item {
 
     DsText {
         id: textLabel
+        text: getTrimmedText()
         color: '#737373'
         fontSize: 14
         font.weight: 'Bold'
         lineHeight: 22
-
         anchors {
             left: imageIcon.right
             leftMargin: 10

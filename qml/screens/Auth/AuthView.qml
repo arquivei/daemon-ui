@@ -45,9 +45,11 @@ Page {
             source: "qrc:/images/arquivei-main.svg"
             fillMode: Image.PreserveAspectFit
 
-            anchors.top: parent.top
-            anchors.margins: 48
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                top: parent.top
+                topMargin: 64
+                horizontalCenter: parent.horizontalCenter
+            }
         }
 
         Loader {
@@ -55,8 +57,11 @@ Page {
             sourceComponent: errorMsg ? alertComponent: emptyComponent
 
             width: parent.width
-            anchors.top: imageLogo.bottom
-            anchors.topMargin: 64
+
+            anchors {
+                top: imageLogo.bottom
+                topMargin: 64
+            }
         }
 
         LoginForm {
@@ -65,8 +70,10 @@ Page {
             forgotPasswordUrl: 'https://app.arquivei.com.br'
 
             width: parent.width
-            anchors.top: alertLoader.bottom
-            anchors.topMargin: errorMsg ? 16 : 0
+            anchors {
+                top: alertLoader.bottom
+                topMargin: errorMsg ? 16 : 0
+            }
 
             onResetErrors: {
                 setLoginErrorMsg('');
@@ -82,7 +89,10 @@ Page {
             id: licenseAgreement
 
             width: parent.width
-            anchors.bottom: parent.bottom
+            anchors {
+                bottom: parent.bottom
+                bottomMargin: 16
+            }
 
             useTermsUrl: 'https://app.arquivei.com.br'
             privacyPolicyUrl: 'https://app.arquivei.com.br'

@@ -32,7 +32,6 @@ Item {
         fontSize: 12
         lineHeight: 16
         wrapMode: Text.WordWrap
-        width: parent.width
 
         anchors {
             left: imageIcon.right
