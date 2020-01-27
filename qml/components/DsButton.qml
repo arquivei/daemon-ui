@@ -8,7 +8,16 @@ Button {
 
     enum Types {
         Default,
-        Special
+        Special,
+        Inline
+    }
+
+    function getTextColor() {
+        if (type === DsButton.Types.Inline && enabled) {
+            return isHovered ? '#737373' : '#B3B3B3';
+        }
+
+        return '#FFF';
     }
 
     id: root
@@ -22,19 +31,20 @@ Button {
                 return '#D0D0D0';
             }
 
-            if (isHovered && type === DsButton.Types.Special) {
-                return '#44774f';
-            }
-
-            if (isHovered) {
-                return '#124066';
+            if (type === DsButton.Types.Inline) {
+                return 'transparent';
             }
 
             if (type === DsButton.Types.Special) {
-                return '#47C661';
+                return isHovered ? '#44774f' : '#47C661'
             }
 
-            return '#2074BA';
+            return isHovered ? '#124066' : '#2074BA';
+        }
+
+        border {
+            width: type === DsButton.Types.Inline ? 1 : 0
+            color: isHovered ? '#737373' : '#B3B3B3'
         }
 
         MouseArea {
@@ -53,7 +63,7 @@ Button {
 
     contentItem: Text {
         id: buttonContent
-        color: '#fff'
+        color: getTextColor()
         text: root.text
         font.pixelSize: 14
         font.family: "Proxima Nova Soft"

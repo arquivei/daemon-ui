@@ -15,6 +15,8 @@
         <file>fonts/pns-bold-webfont.otf</file>
         <file>fonts/pns-medium-webfont.otf</file>
         <file>fonts/pns-semibold-webfont.otf</file>
+        <file>images/arquivei-icon.svg</file>
+        <file>images/material-folder.svg</file>
         <file>images/back.svg</file>
         <file>images/folder.svg</file>
         <file>images/log-out.svg</file>
@@ -49,6 +51,8 @@
         <file>qml/components/DsText.qml</file>
         <file>qml/components/DsInput.qml</file>
         <file>qml/components/DsAlert.qml</file>
+        <file>qml/components/DsIconText.qml</file>
+        <file>qml/components/DsCard.qml</file>
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Auth/AuthModel.qml</file>
