@@ -15,6 +15,4 @@ Rectangle {
         width: type === DsCard.Types.Bordered ? 1 : 0
         color: '#D0D0D0'
     }
-
-    height: childrenRect.height
 }

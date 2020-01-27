@@ -46,6 +46,7 @@
         <file>qml/components/SyncStatus.qml</file>
         <file>qml/components/SpinLoader.qml</file>
         <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/Header.qml</file>
         <file>qml/components/DsButton.qml</file>
         <file>qml/components/DsLink.qml</file>
         <file>qml/components/DsText.qml</file>
@@ -58,6 +59,11 @@
         <file>qml/screens/Auth/AuthModel.qml</file>
         <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
         <file>qml/screens/Auth/partials/LoginForm.qml</file>
+        <file>qml/screens/Config/partials/DownloadSection.qml</file>
+        <file>qml/screens/Config/partials/UploadSection.qml</file>
+        <file>qml/screens/Config/ConfigModel.qml</file>
+        <file>qml/screens/Config/ConfigPresenter.qml</file>
+        <file>qml/screens/Config/ConfigView.qml</file>
         <file>qml/delegates/AuthDelegate.qml</file>
         <file>qml/delegates/ConfigDelegate.qml</file>
         <file>qml/delegates/MainDelegate.qml</file>

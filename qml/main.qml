@@ -3,6 +3,8 @@ import QtQuick.Controls 2.5
 import './delegates'
 import './models'
 import './screens/Auth'
+import './screens/Config'
+import './services'
 
 ApplicationWindow {
     id: app
@@ -15,21 +17,15 @@ ApplicationWindow {
     maximumHeight: 524
     title: 'Arquivei Daemon'
 
+    property Server server: Server {}
     property MainView mainView: MainView {
         delegate: MainDelegate {}
         model: MainModel {}
     }
-    property ConfigView configView: ConfigView {
-        delegate: ConfigDelegate {}
-        model: ConfigModel {}
-    }
+    property ConfigPresenter configPresenter: ConfigPresenter {}
 
     property string uploadFolder
     property bool isAuthenticated: false
-
-    function isConfigured() {
-        return uploadFolder ? true : false;
-    }
 
     function push(screen) {
         switch(screen) {
@@ -37,16 +33,16 @@ ApplicationWindow {
             stack.push(mainView);
             break;
         case 'config':
-            stack.push(configView);
+            stack.push(configPresenter);
             break;
         default:
         }
     }
 
     Component.onCompleted: {
-       isAuthenticated = QmlBridge.isAuthenticated;
-        if (isAuthenticated) {
-            stack.push(mainView);
+        if (server.isAuthenticated()) {
+            const nextScreen = server.isConfigured() ? 'main' : 'config';
+            push(nextScreen);
         }
     }
 
@@ -71,6 +67,5 @@ ApplicationWindow {
         initialItem: AuthPresenter {}
         anchors.fill: parent
         font.family: 'Roboto Mono'
-        anchors.margins: 16
     }
 }

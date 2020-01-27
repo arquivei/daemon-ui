@@ -26,4 +26,8 @@ Model {
             loginError('Insira um email e um password válido');
         }
     }
+
+    function isConfigured() {
+        return server.isConfigured();
+    }
 }
