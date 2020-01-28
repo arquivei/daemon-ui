@@ -54,6 +54,7 @@
         <file>qml/components/DsAlert.qml</file>
         <file>qml/components/DsIconText.qml</file>
         <file>qml/components/DsCard.qml</file>
+        <file>qml/components/DsModal.qml</file>
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Auth/AuthModel.qml</file>

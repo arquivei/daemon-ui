@@ -29,8 +29,20 @@ Page {
         }
     }
 
+    DsModal {
+        id: saveModal
+        title: 'Download de Documentos'
+        showSecondaryButton: true
+        text: 'Você ainda não possui o módulo de serviço de Download de Documentos. Deseja continuar sem contratar o serviço?'
+        secondaryActionLabel: 'Contratar'
+        primaryActionLabel: 'Continuar'
+        onPrimaryAction: saveModal.close()
+        onSecondaryAction: saveModal.close()
+    }
+
     Item {
         id: content
+
         anchors {
             fill: parent
             topMargin: 25
@@ -99,7 +111,7 @@ Page {
                 top: downloadSection.bottom
                 topMargin: 16
             }
-            onClicked: console.log(uploadFolderDialog.folder)
+            onClicked: saveModal.open()
         }
     }
 }
