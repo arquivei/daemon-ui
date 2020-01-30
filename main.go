@@ -20,7 +20,7 @@ func main() {
 	}()
 
 	if err := r.setupClient(); err != nil {
-		log.WithError(err).Fatal("An error occurred while setting the client")
+		log.WithError(err).Error("An error occurred while setting the client")
 	}
 
 	r.initLogger()
