@@ -1,16 +1,9 @@
 package commands
 
+//CommandName represents the command sent to server
 type CommandName string
 
-const (
-	authenticateCmd    = "AUTHENTICATE_CMD"
-	isAuthenticatedCmd = "IS_AUTHENTICADED_CMD"
-	getUploadFolderCmd = "GET_UPLOAD_FOLDER_CMD"
-	setUploadFolderCmd = "SET_UPLOAD_FOLDER_CMD"
-	isWorkingCmd       = "IS_WORKING_CMD"
-	pingCmd            = "PING_CMD"
-)
-
+//CommandInterface contains method to interact with the command
 type CommandInterface interface {
 	Encode() (string, error)
 }

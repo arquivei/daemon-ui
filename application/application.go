@@ -2,37 +2,32 @@ package application
 
 import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/getuploadfolder"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isauthenticated"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isworking"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
 )
 
+//App contains all application dependencies
 type App struct {
 	c client.Client
 }
 
-type Application interface {
-	IsWorking() (bool, error)
-	GetUploadFolder() (string, error)
-	SetUploadFolder(path string) error
-	Authenticate(email, password string) (commands.AuthResponse, error)
-	IsAuthenticated() (bool, error)
-	Ping() error
+//NewAppConnection creates a new server application connection
+func NewAppConnection(c client.Client) App {
+	return App{c: c}
 }
 
-func NewAppConnection(c client.Client) Application {
-	return &App{
-		c: c,
-	}
-}
-
+//IsWorking method check if the server application is working
 func (app App) IsWorking() (isWorking bool, err error) {
-	data, err := app.c.SendCommand(
-		commands.NewIsWorkingCommand(),
-	)
+	data, err := app.c.SendCommand(isworking.NewCommand())
 	if err != nil {
 		return isWorking, err
 	}
 
-	r, err := commands.NewIsWorkingResponse(data)
+	r, err := isworking.NewResponse(data)
 	if err != nil {
 		return isWorking, err
 	}
@@ -41,31 +36,29 @@ func (app App) IsWorking() (isWorking bool, err error) {
 	return
 }
 
-func (app App) SetUploadFolder(path string) (err error) {
-	data, err := app.c.SendCommand(
-		commands.NewSetUploadFolderCommand(path),
-	)
+//SetUploadFolder method set the upload folder
+func (app App) SetUploadFolder(path string) (r setuploadfolder.Response, err error) {
+	data, err := app.c.SendCommand(setuploadfolder.NewCommand(path))
 	if err != nil {
-		return err
+		return r, err
 	}
 
-	_, err = commands.NewSetUploadFolderResponse(data)
+	r, err = setuploadfolder.NewResponse(data)
 	if err != nil {
-		return err
+		return r, err
 	}
 
 	return
 }
 
+//GetUploadFolder method get the current upload folder
 func (app App) GetUploadFolder() (folder string, err error) {
-	data, err := app.c.SendCommand(
-		commands.NewGetUploadFolderCommand(),
-	)
+	data, err := app.c.SendCommand(getuploadfolder.NewCommand())
 	if err != nil {
 		return folder, err
 	}
 
-	r, err := commands.NewGetUploadFolderResponse(data)
+	r, err := getuploadfolder.NewResponse(data)
 	if err != nil {
 		return folder, err
 	}
@@ -74,15 +67,14 @@ func (app App) GetUploadFolder() (folder string, err error) {
 	return
 }
 
+//IsAuthenticated method verifies if the user is authenticated
 func (app App) IsAuthenticated() (isAuth bool, err error) {
-	data, err := app.c.SendCommand(
-		commands.NewIsAuthenticatedCommand(),
-	)
+	data, err := app.c.SendCommand(isauthenticated.NewCommand())
 	if err != nil {
 		return isAuth, err
 	}
 
-	r, err := commands.NewIsAuthenticatedResponse(data)
+	r, err := isauthenticated.NewResponse(data)
 	if err != nil {
 		return isAuth, err
 	}
@@ -91,15 +83,14 @@ func (app App) IsAuthenticated() (isAuth bool, err error) {
 	return
 }
 
-func (app App) Authenticate(email, password string) (r commands.AuthResponse, err error) {
-	data, err := app.c.SendCommand(
-		commands.NewAuthenticateCommand(email, password),
-	)
+//Authenticate method authenticate an user
+func (app App) Authenticate(email, password string) (r authenticate.Response, err error) {
+	data, err := app.c.SendCommand(authenticate.NewCommand(email, password))
 	if err != nil {
 		return r, err
 	}
 
-	r, err = commands.NewAuthResponse(data)
+	r, err = authenticate.NewResponse(data)
 	if err != nil {
 		return r, err
 	}
@@ -107,9 +98,8 @@ func (app App) Authenticate(email, password string) (r commands.AuthResponse, er
 	return
 }
 
+//Ping method verifies if the server is alive
 func (app App) Ping() (err error) {
-	_, err = app.c.SendCommand(
-		commands.NewPingCommand(),
-	)
+	_, err = app.c.SendCommand(ping.NewCommand())
 	return
 }

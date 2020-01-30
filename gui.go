@@ -4,7 +4,8 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	authenticateCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
+	setuploadfolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -18,7 +19,7 @@ type QmlBridge struct {
 	_ bool                                       `property:"isAuthenticated"`
 	_ string                                     `property:"uploadFolderPath"`
 	_ func(email string, password string) string `slot:"authenticate"`
-	_ func(folder string)                        `slot:"setUploadFolder"`
+	_ func(folder string) string                 `slot:"setUploadFolder"`
 	_ func(isWorking bool)                       `signal:"isWorking"`
 	_ func()                                     `constructor:"init"`
 }
@@ -26,12 +27,12 @@ type QmlBridge struct {
 func (bridge *QmlBridge) init() {
 	isAuthenticated, err := r.appConnection.IsAuthenticated()
 	if err != nil {
-		r.logger.WithError(err).Error("Error to check is authenticated")
+		r.logger.WithError(err).Error("An unknown error occurred while checking is authenticated")
 	}
 
 	uploadFolder, err := r.appConnection.GetUploadFolder()
 	if err != nil {
-		r.logger.WithError(err).Error("Error to get current uplad folder")
+		r.logger.WithError(err).Error("An unknown error occurred while getting the current upload folder")
 	}
 
 	bridge.SetIsAuthenticated(isAuthenticated)
@@ -41,19 +42,20 @@ func (bridge *QmlBridge) init() {
 func authenticate(email string, password string) string {
 	response, err := r.appConnection.Authenticate(email, password)
 	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occured to authenticate")
-		response = commands.NewAuthResponseError()
+		r.logger.WithError(err).Error("An unknown error occurred to authenticate")
+		response = authenticateCmd.NewGenericError()
 	}
 	return response.Encode()
 }
 
-func setUploadFolder(folder string) {
-	path := core.NewQUrl3(folder, 0).ToLocalFile()
-	go func() {
-		if err := r.appConnection.SetUploadFolder(path); err != nil {
-			r.logger.WithError(err).Error("An unknown error occured to set update folder")
-		}
-	}()
+func setUploadFolder(folder string) string {
+	selectedPath := core.NewQUrl3(folder, 0).ToLocalFile()
+	response, err := r.appConnection.SetUploadFolder(selectedPath)
+	if err != nil {
+		r.logger.WithError(err).Error("An unknown error occurred while setting the update folder")
+		response = setuploadfolderCmd.NewGenericError()
+	}
+	return response.Encode()
 }
 
 func (bridge *QmlBridge) checkingIsWorking() {
@@ -61,7 +63,7 @@ func (bridge *QmlBridge) checkingIsWorking() {
 		for range time.NewTicker(time.Second * 2).C {
 			isWorking, err := r.appConnection.IsWorking()
 			if err != nil {
-				r.logger.WithError(err).Error("An unknown error occured to check is working")
+				r.logger.WithError(err).Error("An unknown error occurred while checking is working")
 			}
 			bridge.IsWorking(isWorking)
 		}
@@ -86,8 +88,8 @@ func newGuiInterface() {
 		return authenticate(email, password)
 	})
 
-	qmlBridge.ConnectSetUploadFolder(func(folder string) {
-		setUploadFolder(folder)
+	qmlBridge.ConnectSetUploadFolder(func(folder string) string {
+		return setUploadFolder(folder)
 	})
 
 	qmlBridge.checkingIsWorking()

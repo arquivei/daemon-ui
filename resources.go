@@ -11,7 +11,7 @@ import (
 )
 
 type resources struct {
-	appConnection application.Application
+	appConnection application.App
 	logger        *log.Entry
 	macAddress    string
 	version       string

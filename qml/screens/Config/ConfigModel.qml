@@ -6,19 +6,19 @@ Model {
     id: root
 
     signal setUploadFolderSuccess(string folderPath);
-    signal setUploadFolderError(string msg);
+    signal setUploadFolderError(string code);
 
     property Server server: Server {}
 
     function setUploadFolder(folderPath) {
         const response = server.setUploadFolder(folderPath);
         const success = response.Success;
-        const message = response.Message;
+        const code = response.Code;
 
         if (success) {
             setUploadFolderSuccess(folderPath);
         } else {
-            setUploadFolderError(message);
+            setUploadFolderError(code);
         }
     }
 

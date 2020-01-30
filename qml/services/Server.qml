@@ -11,10 +11,7 @@ Item {
     }
 
     function setUploadFolder(folderPath) {
-        // Esse método deve retornar uma resposta, porém isso ainda não está implementado
-        // const response = QmlBridge.setUploadFolder(folderPath);
-
-        const response = '{ "Success": true, "Message": "Pasta selecionada" }';
+        const response = QmlBridge.setUploadFolder(folderPath);
         return JSON.parse(response);
     }
 

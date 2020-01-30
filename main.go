@@ -42,6 +42,6 @@ func main() {
 	r.logger.Info("Stopping backend service...")
 
 	if err := s.Kill(); err != nil {
-		r.logger.WithError(err).Error("An error occured to stop the backend service")
+		r.logger.WithError(err).Error("An error occurred to stop the backend service")
 	}
 }

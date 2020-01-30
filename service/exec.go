@@ -12,12 +12,12 @@ const maxTries = 30
 
 //Service ...
 type Service struct {
-	app     application.Application
+	app     application.App
 	process *os.Process
 }
 
 //NewBackendService creates a new service to communicate with the app backend
-func NewBackendService(appConnection application.Application) *Service {
+func NewBackendService(appConnection application.App) *Service {
 	return &Service{
 		app: appConnection,
 	}
