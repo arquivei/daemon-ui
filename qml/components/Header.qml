@@ -1,4 +1,5 @@
-import QtQuick 2.0
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 
 Item {
     id: root
@@ -12,14 +13,35 @@ Item {
 
         anchors {
             top: menu.top
-            topMargin: 7
+            topMargin: 8
             left: parent.left
         }
     }
 
-    DsText {
+    DsDropDownMenu {
         id: menu
-        text: 'user@email.com.br'
+        menuText: 'user@email.com.br'
+        firstAction: firstAction
+
+        actions: [
+            Action {
+                id: firstAction
+                text: 'Configurações'
+                onTriggered: console.log('Abrir Configurações')
+            },
+            Action {
+                text: 'Acessar a Plataforma'
+                onTriggered: console.log('Acessar a Plataforma')
+            },
+            Action {
+                text: 'Sobre o Daemon'
+                onTriggered: console.log('Visualizar informações sobre o Daemon')
+            },
+            Action {
+                text: 'Sair'
+                onTriggered: console.log('Fazer o logout')
+            }
+        ]
 
         anchors {
             right: parent.right
