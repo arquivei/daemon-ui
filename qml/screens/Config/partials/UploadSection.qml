@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import '../../../components'
 
 DsCard {
@@ -31,7 +31,6 @@ DsCard {
                     left: iconTextFolder.right
                     leftMargin: 16
                     verticalCenter: iconTextFolder.verticalCenter
-                    verticalCenterOffset: -3
                 }
 
                 onClick: openDialog()
@@ -81,7 +80,7 @@ DsCard {
 
         anchors {
             top: description.bottom
-            topMargin: folderPath ? 32 : 28
+            topMargin: 28
             left: parent.left
             leftMargin: 16
         }

@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.5
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 import '../../components'
 import './partials'
@@ -45,7 +45,7 @@ Page {
 
         anchors {
             fill: parent
-            topMargin: 25
+            topMargin: 24
             rightMargin: 32
             bottomMargin: 42
             leftMargin: 32
