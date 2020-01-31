@@ -7,6 +7,8 @@ Model {
 
     signal setUploadFolderSuccess(string folderPath);
     signal setUploadFolderError(string code);
+    signal logoutSuccess();
+    signal logoutError();
 
     property Server server: Server {}
 
@@ -19,6 +21,17 @@ Model {
             setUploadFolderSuccess(folderPath);
         } else {
             setUploadFolderError(code);
+        }
+    }
+
+    function logout() {
+        const response = server.logout();
+        const success = response.Success;
+
+        if (success) {
+            logoutSuccess();
+        } else {
+            logoutError();
         }
     }
 

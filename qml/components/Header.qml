@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 Item {
+    signal logout()
+
     id: root
     width: parent.width
     height: childrenRect.height
@@ -39,7 +41,7 @@ Item {
             },
             Action {
                 text: 'Sair'
-                onTriggered: console.log('Fazer o logout')
+                onTriggered: root.logout()
             }
         ]
 
