@@ -28,6 +28,10 @@ func (r *resources) initLogger() {
 }
 
 func (r *resources) setupClient() error {
+	r.appConnection = application.NewAppConnection(
+		client.NewClient(),
+	)
+	
 	clientStorage := clientStorageImpl.NewJSONFileDatabase()
 	clientInfo, err := clientStorage.Read()
 	if err != nil {
@@ -42,10 +46,6 @@ func (r *resources) setupClient() error {
 	}
 
 	r.version = clientInfo.CurrentVersion
-
-	r.appConnection = application.NewAppConnection(
-		client.NewClient(),
-	)
 
 	return nil
 }
