@@ -4,7 +4,7 @@ function isEmailValid(email) {
 }
 
 function isPasswordValid(password) {
-    return password.length >= 6;
+    return password.length > 0;
 }
 
 

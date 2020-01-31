@@ -7,6 +7,7 @@ Item {
     property string passwordValue: ''
     property string invalidEmailMsg
     property string forgotPasswordUrl
+    property bool isLoading: false
 
     signal resetErrors()
     signal submit(string email, string password)
@@ -35,6 +36,7 @@ Item {
         label: 'Usuário:'
         placeholder: 'Insira seu e-mail aqui'
         errorMsg: invalidEmailMsg
+        enabled: !isLoading
 
         width: parent.width
 
@@ -52,6 +54,7 @@ Item {
         label: 'Senha:'
         placeholder: 'No mínimo 06 caracteres'
         isPassword: true
+        enabled: !isLoading
 
         width: parent.width
         anchors.top: inputEmail.bottom
@@ -82,6 +85,8 @@ Item {
             id: btnLogin
             text: 'Entrar'
             type: DsButton.Types.Special
+            loadingText: 'Entrando...'
+            isLoading: root.isLoading
             anchors.right: parent.right
             enabled: {
                 return emailValue.length >= 1 && Validator.isPasswordValid(passwordValue);
