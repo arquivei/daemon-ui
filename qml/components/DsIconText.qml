@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 
 Item {
     property alias icon: imageIcon.source
@@ -31,7 +31,7 @@ Item {
         lineHeight: 22
         anchors {
             left: imageIcon.right
-            leftMargin: 10
+            leftMargin: 8
             verticalCenter: imageIcon.verticalCenter
         }
     }
