@@ -34,6 +34,7 @@
         <file>images/external-link-symbol.svg</file>
         <file>images/arquivei-main.svg</file>
         <file>images/alert-danger.svg</file>
+        <file>images/loader.svg</file>
         <file>qml/main.qml</file>
         <file>qml/ConfigView.qml</file>
         <file>qml/MainView.qml</file>
@@ -57,6 +58,7 @@
         <file>qml/components/DsCard.qml</file>
         <file>qml/components/DsModal.qml</file>
         <file>qml/components/DsDropDownMenu.qml</file>
+        <file>qml/components/LoadingOverlay.qml</file>
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Auth/AuthModel.qml</file>
@@ -75,5 +77,7 @@
         <file>qml/models/MainModel.qml</file>
         <file>qml/services/Server.qml</file>
         <file>qml/helpers/validator.js</file>
+        <file>qml/constants/colors.js</file>
+        <file>qml/constants/fonts.js</file>
     </qresource>
 </RCC>
