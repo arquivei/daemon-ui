@@ -79,15 +79,15 @@ ItemDelegate {
         }
     }
 
-    Connections
-    {
-        target: QmlBridge
-        onIsWorking: {
-            if (isWorking) {
-                root.state = 'syncing'
-            } else {
-                root.state = 'success'
-            }
-        }
-    }
+    // Connections
+    // {
+    //     target: QmlBridge
+    //     onIsWorking: {
+    //         if (isWorking) {
+    //             root.state = 'syncing'
+    //         } else {
+    //             root.state = 'success'
+    //         }
+    //     }
+    // }
 }

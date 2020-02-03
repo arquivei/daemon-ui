@@ -7,7 +7,7 @@ Item {
     id: root
 
     signal authenticateSuccess();
-    signal authenticateError(string code);
+    signal authenticateError(string message);
     signal logoutSuccess();
     signal logoutError(string code);
 
@@ -25,11 +25,11 @@ Item {
 
     Connections {
         target: QmlBridge
-        onLoginSignal: {
+        onAuthenticateSignal: {
             if (success) {
                 root.authenticateSuccess();
             } else {
-                root.authenticateError(code);
+                root.authenticateError(message);
             }
         }
         onLogoutSignal: {

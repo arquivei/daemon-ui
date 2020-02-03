@@ -17,6 +17,7 @@ type Command struct {
 type Response struct {
 	Error   *string `json:",omitempty"`
 	Success bool
+	Code    string
 }
 
 //NewCommand method creates a new command
@@ -34,12 +35,6 @@ func (c Command) Encode() (encoded string, err error) {
 	return
 }
 
-//Encode method encodes the response
-func (r Response) Encode() string {
-	json, _ := json.Marshal(r)
-	return string(json)
-}
-
 //NewResponse method creates a new response
 func NewResponse(data []byte) (r Response, err error) {
 	if err := json.Unmarshal(data, &r); err != nil {
@@ -55,5 +50,5 @@ func NewResponse(data []byte) (r Response, err error) {
 
 //NewGenericError creates a generic error
 func NewGenericError() Response {
-	return Response{Success: false}
+	return Response{Success: false, Code: "UNKNOWN_SERVER_ERROR"}
 }

@@ -26,7 +26,7 @@ Model {
             root.loginSuccess()
         }
         onAuthenticateError: {
-            root.loginError('Login Error')
+            root.loginError(message)
         }
     }
 

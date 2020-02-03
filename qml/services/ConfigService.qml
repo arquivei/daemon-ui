@@ -10,7 +10,7 @@ Item {
     signal setUploadFolderError(string code);
 
     function isConfigured() {
-        return QmlBridge.getUploadFolder() ? true : false;
+        return QmlBridge.uploadFolderPath ? true : false;
     }
 
     function setUploadFolder(folderPath) {
