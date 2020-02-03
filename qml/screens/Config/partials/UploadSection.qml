@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../../components'
+import '../../../constants/colors.js' as Colors
 
 DsCard {
     property string folderPath
@@ -50,7 +51,7 @@ DsCard {
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
-        color: '#1D416E'
+        color: Colors.BRAND_TERTIARY_DEFAULT
 
         anchors {
             top: parent.top
@@ -65,7 +66,7 @@ DsCard {
         text: 'Selecione a pasta onde estão os arquivos que deseja enviar para a Arquivei'
         fontSize: 12
         lineHeight: 16
-        color: '#737373'
+        color: Colors.GRAYSCALE_500
 
         anchors {
             top: title.bottom

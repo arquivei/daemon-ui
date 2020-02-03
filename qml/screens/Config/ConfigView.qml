@@ -3,6 +3,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 import '../../components'
 import './partials'
+import '../../constants/colors.js' as Colors
 
 Page {
     id: root
@@ -65,7 +66,7 @@ Page {
             fontSize: 24
             font.weight: 'Bold'
             lineHeight: 32
-            color: '#1D416E'
+            color: Colors.BRAND_TERTIARY_DEFAULT
 
             anchors {
                 top: header.bottom

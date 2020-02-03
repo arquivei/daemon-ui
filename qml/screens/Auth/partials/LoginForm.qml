@@ -26,9 +26,28 @@ Item {
         invalidEmailMsg = '';
     }
 
+    function triggerLoginAction() {
+        resetErrors();
+        validateEmail(emailValue);
+
+        if (!invalidEmailMsg) {
+            submit(emailValue, passwordValue)
+        }
+    }
+
     id: root
 
     height: childrenRect.height
+
+    Keys.onReleased: {
+        if (!btnLogin.enabled) {
+            return;
+        }
+
+        if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+            triggerLoginAction();
+        }
+    }
 
     DsInput {
         id: inputEmail
@@ -91,14 +110,8 @@ Item {
             enabled: {
                 return emailValue.length >= 1 && Validator.isPasswordValid(passwordValue);
             }
-            onClicked: {
-                resetErrors();
-                validateEmail(emailValue);
 
-                if (!invalidEmailMsg) {
-                    submit(emailValue, passwordValue)
-                }
-            }
+            onClicked: triggerLoginAction()
         }
     }
 }

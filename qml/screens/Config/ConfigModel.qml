@@ -6,36 +6,39 @@ Model {
     id: root
 
     signal setUploadFolderSuccess(string folderPath);
-    signal setUploadFolderError(string code);
+    signal setUploadFolderError(string msg);
     signal logoutSuccess();
-    signal logoutError();
-
-    property Server server: Server {}
-
-    function setUploadFolder(folderPath) {
-        const response = server.setUploadFolder(folderPath);
-        const success = response.Success;
-        const code = response.Code;
-
-        if (success) {
-            setUploadFolderSuccess(folderPath);
-        } else {
-            setUploadFolderError(code);
-        }
-    }
+    signal logoutError(string msg);
 
     function logout() {
-        const response = server.logout();
-        const success = response.Success;
+        authService.logout();
+    }
 
-        if (success) {
-            logoutSuccess();
-        } else {
-            logoutError();
-        }
+    function setUploadFolder(folderPath) {
+        configService.setUploadFolder(folderPath);
     }
 
     function isConfigured() {
-        return server.isConfigured();
+        return configService.isConfigured();
+    }
+
+    AuthService {
+        id: authService
+        onLogoutSuccess: {
+            root.logoutSuccess();
+        }
+        onLogoutError: {
+            root.logoutError('Logout Error')
+        }
+    }
+
+    ConfigService {
+        id: configService
+        onSetUploadFolderSuccess: {
+            root.setUploadFolderSuccess(folderPath);
+        }
+        onSetUploadFolderError: {
+            root.setUploadFolderError('Set Upload Folder Error')
+        }
     }
 }

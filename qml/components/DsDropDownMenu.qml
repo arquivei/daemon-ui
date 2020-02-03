@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.13
+import '../constants/colors.js' as Colors
 
 Item {
     property list<Action> actions
@@ -17,7 +18,7 @@ Item {
 
     DsText {
         id: headerText
-        color: '#1D416E'
+        color: Colors.BRAND_TERTIARY_DEFAULT
         font.weight: 'Bold'
         fontSize: 14
         lineHeight: 22
@@ -64,8 +65,8 @@ Item {
             Rectangle {
                 id: menuBackground
                 border.width: 1
-                border.color: '#d0d0d0'
-                color: 'white'
+                border.color: Colors.GRAYSCALE_300
+                color: Colors.PURE_WHITE
                 radius: 4
                 anchors {
                     fill: menuBackgroundContainer
@@ -78,7 +79,7 @@ Item {
                 verticalOffset: 8
                 radius: 16
                 samples: 25
-                color: "#26424242"
+                color: Colors.DROP_SHADOW
                 source: menuBackground
             }
         }
@@ -90,7 +91,7 @@ Item {
 
             contentItem: DsText {
                 text: menuItem.text
-                color: menuItem.highlighted ? "#e84545" : "#737373"
+                color: menuItem.highlighted ? Colors.FEEDBACK_ERROR_DEFAULT : Colors.GRAYSCALE_500
                 font.weight: menuItem.highlighted ? Font.Bold : Font.Normal
                 fontSize: 14
                 lineHeight: 22
@@ -126,7 +127,7 @@ Item {
                contentItem: Rectangle {
                    implicitWidth: 200
                    implicitHeight: 1
-                   color: menuItem.action === firstAction ? "transparent" : '#d0d0d0'
+                   color: menuItem.action === firstAction ? "transparent" : Colors.GRAYSCALE_300
                }
            }
         }

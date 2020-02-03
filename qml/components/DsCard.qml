@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import '../constants/colors.js' as Colors
 
 Rectangle {
     property int type
@@ -9,10 +10,10 @@ Rectangle {
     }
 
     id: root
-    color: type === DsCard.Types.Bordered ? 'transparent' : '#F5F5F5'
+    color: type === DsCard.Types.Bordered ? 'transparent' : Colors.GRAYSCALE_100
     radius: 8
     border {
         width: type === DsCard.Types.Bordered ? 1 : 0
-        color: '#D0D0D0'
+        color: Colors.GRAYSCALE_300
     }
 }

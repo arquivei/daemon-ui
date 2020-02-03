@@ -75,7 +75,8 @@
         <file>qml/models/AuthModel.qml</file>
         <file>qml/models/ConfigModel.qml</file>
         <file>qml/models/MainModel.qml</file>
-        <file>qml/services/Server.qml</file>
+        <file>qml/services/AuthService.qml</file>
+        <file>qml/services/ConfigService.qml</file>
         <file>qml/helpers/validator.js</file>
         <file>qml/constants/colors.js</file>
         <file>qml/constants/fonts.js</file>

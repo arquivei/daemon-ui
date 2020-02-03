@@ -1,5 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import '../constants/colors.js' as Colors
+import '../constants/fonts.js' as Fonts
 
 Text {
     property string href
@@ -17,10 +19,10 @@ Text {
 
     id: root
     textFormat: Text.StyledText
-    linkColor: '#3CA9E1'
+    linkColor: Colors.BRAND_SECONDARY_DEFAULT
     text: getText()
     font.pixelSize: 14
-    font.family: "Proxima Nova Soft"
+    font.family: Fonts.PROXIMA_NOVA_SOFT
     font.weight: "Bold"
     lineHeightMode: Text.FixedHeight
     lineHeight: 22
@@ -37,9 +39,9 @@ Text {
             isHovered = !isHovered;
 
             if (isHovered) {
-                linkColor = '#396B8D';
+                linkColor = Colors.BRAND_SECONDARY_DARK;
             } else {
-                linkColor = '#3CA9E1';
+                linkColor = Colors.BRAND_SECONDARY_DEFAULT;
             }
         }
     }

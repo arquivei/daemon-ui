@@ -1,13 +1,9 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import '../constants/colors.js' as Colors
+import '../constants/fonts.js' as Fonts
 
 Item {
-    readonly property string errorColor: '#E84545'
-    readonly property string focusColor: '#3CA9E1'
-    readonly property string defaultColor: '#D0D0D0'
-    readonly property string placeholderColor: '#B3B3B3'
-    readonly property string textColor: '#737373'
-
     property string placeholder
     property string label
     property string errorMsg
@@ -19,7 +15,7 @@ Item {
         DsText {
             id: textError
             text: errorMsg
-            color: errorColor
+            color: Colors.FEEDBACK_ERROR_DEFAULT
             fontSize: 12
             lineHeight: 20
         }
@@ -33,14 +29,14 @@ Item {
 
     function getInputBorderColor() {
         if (errorMsg) {
-            return errorColor;
+            return Colors.FEEDBACK_ERROR_DEFAULT;
         }
 
         if (input.activeFocus) {
-            return focusColor;
+            return Colors.BRAND_SECONDARY_DEFAULT;
         }
 
-        return defaultColor;
+        return Colors.GRAYSCALE_300;
     }
 
     id: root
@@ -57,12 +53,12 @@ Item {
     TextField {
         id: input
         placeholderText: placeholder
-        placeholderTextColor: placeholderColor
+        placeholderTextColor: Colors.GRAYSCALE_400
         selectByMouse: true
-        selectionColor: focusColor
-        color: textColor
+        selectionColor: Colors.BRAND_SECONDARY_DEFAULT
+        color: Colors.GRAYSCALE_500
         font.pixelSize: 14
-        font.family: 'Proxima Nova Soft'
+        font.family: Fonts.PROXIMA_NOVA_SOFT
         echoMode: isPassword ? TextInput.Password : TextInput.Normal
         background: Rectangle {
             implicitHeight: 32

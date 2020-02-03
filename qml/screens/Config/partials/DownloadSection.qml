@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../../components'
+import '../../../constants/colors.js' as Colors
 
 DsCard {
     id: root
@@ -14,7 +15,7 @@ DsCard {
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
-        color: '#737373'
+        color: Colors.GRAYSCALE_500
 
         anchors {
             top: parent.top
@@ -29,7 +30,7 @@ DsCard {
         text: 'Você ainda não possui o módulo de serviço de Download de Documentos.'
         fontSize: 12
         lineHeight: 16
-        color: '#737373'
+        color: Colors.GRAYSCALE_500
 
         anchors {
             top: title.bottom
