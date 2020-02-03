@@ -13,12 +13,21 @@ Presenter {
         onSelectUploadFolder: {
             model.setUploadFolder(folderPath);
         }
+
+        onLogout: {
+            model.logout();
+        }
     }
 
     Connections {
         target: model
+
         onSetUploadFolderSuccess: {
             view.setFolderPath(folderPath);
+        }
+
+        onLogoutSuccess: {
+            app.toLogin();
         }
     }
 

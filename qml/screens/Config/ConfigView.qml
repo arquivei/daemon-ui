@@ -10,6 +10,7 @@ Page {
     property string uploadFolderPath
 
     signal selectUploadFolder(string folderPath)
+    signal logout()
 
     function openUploadFolderDialog() {
         uploadFolderDialog.open();
@@ -53,6 +54,9 @@ Page {
 
         Header {
             id: header
+            onLogout: {
+                root.logout();
+            }
         }
 
         DsText {

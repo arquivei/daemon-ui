@@ -27,6 +27,10 @@ ApplicationWindow {
     property string uploadFolder
     property bool isAuthenticated: false
 
+    function toLogin() {
+        stack.pop(null);
+    }
+
     function push(screen) {
         switch(screen) {
         case 'main':

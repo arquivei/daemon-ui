@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.5
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQml.Models 2.12
 
 Item {
@@ -7,6 +7,11 @@ Item {
 
     function authenticate(email, password) {
         const response = QmlBridge.authenticate(email, password);
+        return JSON.parse(response);
+    }
+
+    function logout() {
+        const response = QmlBridge.logout();
         return JSON.parse(response);
     }
 
@@ -23,4 +28,3 @@ Item {
         return QmlBridge.isConfigured;
     }
 }
-

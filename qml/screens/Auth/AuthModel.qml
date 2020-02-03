@@ -17,7 +17,6 @@ Model {
             const message = response.Message;
 
             if (success) {
-                app.isAuthenticated = true;
                 loginSuccess();
             } else {
                 loginError(message);
