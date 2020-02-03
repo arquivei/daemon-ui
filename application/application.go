@@ -6,6 +6,7 @@ import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/getuploadfolder"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isauthenticated"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isworking"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
 )
@@ -18,6 +19,21 @@ type App struct {
 //NewAppConnection creates a new server application connection
 func NewAppConnection(c client.Client) App {
 	return App{c: c}
+}
+
+//Logout method logout the current user
+func (app App) Logout() (r logout.Response, err error) {
+	data, err := app.c.SendCommand(logout.NewCommand())
+	if err != nil {
+		return r, err
+	}
+
+	r, err = logout.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
+	return
 }
 
 //IsWorking method check if the server application is working

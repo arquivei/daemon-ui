@@ -5,6 +5,7 @@ import (
 	"time"
 
 	authenticateCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
+	logoutCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	setuploadfolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -19,6 +20,7 @@ type QmlBridge struct {
 	_ bool                                       `property:"isAuthenticated"`
 	_ string                                     `property:"uploadFolderPath"`
 	_ func(email string, password string) string `slot:"authenticate"`
+	_ func() string                              `slot:"logout"`
 	_ func(folder string) string                 `slot:"setUploadFolder"`
 	_ func(isWorking bool)                       `signal:"isWorking"`
 	_ func()                                     `constructor:"init"`
@@ -44,6 +46,15 @@ func authenticate(email string, password string) string {
 	if err != nil {
 		r.logger.WithError(err).Error("An unknown error occurred to authenticate")
 		response = authenticateCmd.NewGenericError()
+	}
+	return response.Encode()
+}
+
+func logout() string {
+	response, err := r.appConnection.Logout()
+	if err != nil {
+		r.logger.WithError(err).Error("An unknown error occurred to logout")
+		response = logoutCmd.NewGenericError()
 	}
 	return response.Encode()
 }
@@ -86,6 +97,10 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectAuthenticate(func(email string, password string) string {
 		return authenticate(email, password)
+	})
+
+	qmlBridge.ConnectLogout(func() string {
+		return logout()
 	})
 
 	qmlBridge.ConnectSetUploadFolder(func(folder string) string {
