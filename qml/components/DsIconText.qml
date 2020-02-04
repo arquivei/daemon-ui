@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import '../constants/colors.js' as Colors
 
 Item {
     property alias icon: imageIcon.source
@@ -25,7 +26,7 @@ Item {
     DsText {
         id: textLabel
         text: getTrimmedText()
-        color: '#737373'
+        color: Colors.GRAYSCALE_500
         fontSize: 14
         font.weight: 'Bold'
         lineHeight: 22

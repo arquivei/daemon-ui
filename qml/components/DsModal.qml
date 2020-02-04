@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import '../constants/colors.js' as Colors
 
 Popup {
     property bool showSecondaryButton
@@ -42,7 +43,7 @@ Popup {
     }
 
     Overlay.modal: Rectangle {
-        color: "#aa000000"
+        color: Colors.MODAL_OVERLAY
     }
 
     contentItem: Item {
@@ -52,7 +53,7 @@ Popup {
 
         DsText {
             id: titleText
-            color: '#1D416E'
+            color: Colors.BRAND_TERTIARY_DEFAULT
             font.weight: 'Bold'
             fontSize: 18
             lineHeight: 26
@@ -65,7 +66,7 @@ Popup {
             id: descriptionText
             fontSize: 14
             lineHeight: 22
-            color: '#1D416E'
+            color: Colors.BRAND_TERTIARY_DEFAULT
             wrapMode: Text.WordWrap
 
             width: parent.width

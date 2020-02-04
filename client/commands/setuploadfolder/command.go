@@ -37,12 +37,6 @@ func (c Command) Encode() (encoded string, err error) {
 	return
 }
 
-//Encode method encodes the response
-func (r Response) Encode() string {
-	json, _ := json.Marshal(r)
-	return string(json)
-}
-
 //NewResponse method creates a new response
 func NewResponse(data []byte) (r Response, err error) {
 	if err := json.Unmarshal(data, &r); err != nil {

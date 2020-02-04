@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../images'
+import '../constants/colors.js' as Colors
 
 Item {
     property string message
@@ -9,7 +10,7 @@ Item {
 
     Rectangle {
         id: background
-        color: '#F5F5F5'
+        color: Colors.GRAYSCALE_100
         radius: 4
 
         anchors.fill: parent
@@ -28,7 +29,7 @@ Item {
 
     DsText {
         text: message
-        color: '#E84545'
+        color: Colors.FEEDBACK_ERROR_DEFAULT
         fontSize: 12
         lineHeight: 16
         wrapMode: Text.WordWrap

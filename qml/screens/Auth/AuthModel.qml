@@ -8,25 +8,29 @@ Model {
     signal loginSuccess;
     signal loginError(string msg);
 
-    property Server server: Server {}
-
     function login(email, password) {
         if (email.length && password.length) {
-            const response = server.authenticate(email, password);
-            const success = response.Success;
-            const message = response.Message;
-
-            if (success) {
-                loginSuccess();
-            } else {
-                loginError(message);
-            }
+            authService.authenticate(email, password);
         } else {
             loginError('Insira um email e um password válido');
         }
     }
 
     function isConfigured() {
-        return server.isConfigured();
+        return configService.isConfigured();
+    }
+
+    AuthService {
+        id: authService
+        onAuthenticateSuccess: {
+            root.loginSuccess()
+        }
+        onAuthenticateError: {
+            root.loginError(message)
+        }
+    }
+
+    ConfigService {
+        id: configService
     }
 }

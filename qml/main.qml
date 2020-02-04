@@ -17,7 +17,6 @@ ApplicationWindow {
     maximumHeight: 524
     title: 'Arquivei Daemon'
 
-    property Server server: Server {}
     property MainView mainView: MainView {
         delegate: MainDelegate {}
         model: MainModel {}
@@ -44,8 +43,8 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        if (server.isAuthenticated()) {
-            const nextScreen = server.isConfigured() ? 'main' : 'config';
+        if (authService.isAuthenticated()) {
+            const nextScreen = configService.isConfigured() ? 'main' : 'config';
             push(nextScreen);
         }
     }
@@ -70,6 +69,13 @@ ApplicationWindow {
         id: stack
         initialItem: AuthPresenter {}
         anchors.fill: parent
-        font.family: 'Roboto Mono'
+    }
+
+    AuthService {
+        id: authService
+    }
+
+    ConfigService {
+        id: configService
     }
 }
