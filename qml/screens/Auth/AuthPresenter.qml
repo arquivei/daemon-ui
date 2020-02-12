@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import '../../services'
 import '../..'
 import '.'
 
@@ -20,9 +19,8 @@ Presenter {
         target: model
         onLoginSuccess: {
             view.toggleLoading();
-            const nextScreen = model.isConfigured() ? 'main' : 'config';
             view.clearForm();
-            app.push(nextScreen);
+            model.isConfigured() ? app.navigateTo('Main') : app.navigateTo('Config');
         }
         onLoginError: {
             view.toggleLoading();

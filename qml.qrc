@@ -16,6 +16,7 @@
         <file>fonts/pns-medium-webfont.otf</file>
         <file>fonts/pns-semibold-webfont.otf</file>
         <file>images/arquivei-icon.svg</file>
+        <file>images/app-logo-placeholder.svg</file>
         <file>images/material-folder.svg</file>
         <file>images/material-arrow-down.svg</file>
         <file>images/back.svg</file>
@@ -69,6 +70,10 @@
         <file>qml/screens/Config/ConfigModel.qml</file>
         <file>qml/screens/Config/ConfigPresenter.qml</file>
         <file>qml/screens/Config/ConfigView.qml</file>
+        <file>qml/screens/Main/MainPresenter.qml</file>
+        <file>qml/screens/Splash/SplashModel.qml</file>
+        <file>qml/screens/Splash/SplashPresenter.qml</file>
+        <file>qml/screens/Splash/SplashView.qml</file>
         <file>qml/delegates/AuthDelegate.qml</file>
         <file>qml/delegates/ConfigDelegate.qml</file>
         <file>qml/delegates/MainDelegate.qml</file>
@@ -77,7 +82,9 @@
         <file>qml/models/MainModel.qml</file>
         <file>qml/services/AuthService.qml</file>
         <file>qml/services/ConfigService.qml</file>
+        <file>qml/helpers/factory.js</file>
         <file>qml/helpers/validator.js</file>
+        <file>qml/helpers/timer.js</file>
         <file>qml/constants/colors.js</file>
         <file>qml/constants/fonts.js</file>
     </qresource>

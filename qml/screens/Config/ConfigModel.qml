@@ -18,6 +18,10 @@ Model {
         configService.setUploadFolder(folderPath);
     }
 
+    function getUploadFolder() {
+        configService.getUploadFolder();
+    }
+
     function isConfigured() {
         return configService.isConfigured();
     }
