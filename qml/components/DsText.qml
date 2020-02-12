@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.12
 import '../constants/colors.js' as Colors
 import '../constants/fonts.js' as Fonts
 

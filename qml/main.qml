@@ -1,10 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import './delegates'
-import './models'
-import './screens/Auth'
-import './screens/Config'
-import './services'
+import './helpers/factory.js' as Factory
 
 ApplicationWindow {
     id: app
@@ -17,36 +13,10 @@ ApplicationWindow {
     maximumHeight: 524
     title: 'Arquivei Daemon'
 
-    property MainView mainView: MainView {
-        delegate: MainDelegate {}
-        model: MainModel {}
-    }
-    property ConfigPresenter configPresenter: ConfigPresenter {}
-
-    property string uploadFolder
-    property bool isAuthenticated: false
-
-    function toLogin() {
-        stack.pop(null);
-    }
-
-    function push(screen) {
-        switch(screen) {
-        case 'main':
-            stack.push(mainView);
-            break;
-        case 'config':
-            stack.push(configPresenter);
-            break;
-        default:
-        }
-    }
-
-    Component.onCompleted: {
-        if (authService.isAuthenticated()) {
-            const nextScreen = configService.isConfigured() ? 'main' : 'config';
-            push(nextScreen);
-        }
+    function navigateTo(screen) {
+        const currentItem = stack.currentItem;
+        stack.replace(currentItem, Factory.createPresenter(screen));
+        currentItem.destroy();
     }
 
     FontLoader {
@@ -67,15 +37,7 @@ ApplicationWindow {
 
     StackView {
         id: stack
-        initialItem: AuthPresenter {}
+        initialItem: Factory.createPresenter('Splash')
         anchors.fill: parent
-    }
-
-    AuthService {
-        id: authService
-    }
-
-    ConfigService {
-        id: configService
     }
 }

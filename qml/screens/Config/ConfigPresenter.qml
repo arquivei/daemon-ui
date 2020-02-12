@@ -27,12 +27,13 @@ Presenter {
         }
 
         onLogoutSuccess: {
-            app.toLogin();
+            app.navigateTo('Auth');
         }
     }
 
     ConfigView {
         id: view;
+        uploadFolderPath: model.getUploadFolder() || null
         anchors.fill: parent;
     }
 }

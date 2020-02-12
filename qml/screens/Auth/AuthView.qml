@@ -2,7 +2,6 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import '../../components'
 import './partials'
-import '../../helpers/validator.js' as Validator
 
 Page {
     id: root
