@@ -4,11 +4,71 @@ import QtQuick.Dialogs 1.2
 import '../../components'
 import './partials'
 import '../../constants/colors.js' as Colors
+import '../../helpers/factory.js' as Factory
 
 Page {
-    id: root
-
     property string uploadFolderPath
+    property var tourSteps: [
+    {
+        id: 'step1',
+        ref: uploadSection,
+        parent: content,
+        title: 'Configurar Upload',
+        description: 'Clique em selecionar pasta para configurar o envio de documentos para a plataforma Arquivei.',
+        chipInfo: '01/04',
+        position: {
+            top: uploadSection.bottom,
+            topMargin: 8,
+            left: uploadSection.left
+        },
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step2',
+        ref: downloadSection,
+        parent: content,
+        title: 'Configurar Download',
+        description: 'Ainda não possui o módulo de download que baixa os documentos da Arquivei para seu computador? Para contratá-lo basta clicar no link abaixo.',
+        chipInfo: '02/04',
+        position: {
+            bottom: downloadSection.top,
+            bottomMargin: 8,
+            left: downloadSection.left
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step3',
+        ref: btnSave,
+        parent: content,
+        title: 'Finalizar Configuração',
+        description: 'Ao selecionar a pasta de Upload e/ou contratar Download e configurá-lo, você seguirá em frente e salvará as configurações escolhidas clicando em Prosseguir.',
+        chipInfo: '03/04',
+        position: {
+            bottom: btnSave.top,
+            bottomMargin: 8,
+            right: btnSave.right
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Próximo'
+    },
+    {
+        id: 'step4',
+        ref: btnTour,
+        parent: content,
+        title: 'Ajuda',
+        description: 'O tour do app ficará disponível para você, até a finalização da configuração, neste botão.',
+        chipInfo: 'FIM',
+        showCloseAction: false,
+        position: {
+            bottom: btnTour.top,
+            bottomMargin: 8,
+            left: btnTour.left
+        },
+        nextLabel: 'Sair do Tour'
+    },
+    ]
 
     signal selectUploadFolder(string folderPath)
     signal logout()
@@ -19,6 +79,17 @@ Page {
 
     function setFolderPath(folderPath) {
         uploadFolderPath = folderPath;
+    }
+
+    function showTourNotification() {
+        tourNotificationModal.open();
+    }
+
+    id: root
+
+    Tour {
+        id: guidedTour
+        steps: root.tourSteps
     }
 
     FileDialog {
@@ -40,6 +111,20 @@ Page {
         primaryActionLabel: 'Continuar'
         onPrimaryAction: saveModal.close()
         onSecondaryAction: saveModal.close()
+    }
+
+    DsModal {
+        id: tourNotificationModal
+        title: 'Configurando o Synca'
+        showSecondaryButton: true
+        text: 'Seja bem-vindo ao Synca! Para começar, mostraremos à você nossas funcionalidades e como melhor usá-las para configurar e acompanhar o funcionamento do aplicativo.'
+        secondaryActionLabel: 'Sair'
+        primaryActionLabel: 'Começar o Tour'
+        onPrimaryAction: {
+            tourNotificationModal.close();
+            guidedTour.startTour();
+        }
+        onSecondaryAction: tourNotificationModal.close()
     }
 
     Item {
@@ -104,6 +189,7 @@ Page {
                 top: downloadSection.bottom
                 topMargin: 16
             }
+            onClicked: guidedTour.startTour()
         }
 
         DsButton {

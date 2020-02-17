@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import '../constants/colors.js' as Colors
+import '../helpers/factory.js' as Factory
 
 Popup {
     property bool showSecondaryButton
@@ -8,20 +9,6 @@ Popup {
     property alias title: titleText.text
     property alias text: descriptionText.text
     property alias primaryActionLabel: primaryButton.text
-
-    property Component secondaryButton: Component {
-        DsButton {
-            id: secondaryButton
-            type: DsButton.Types.Inline
-            text: secondaryActionLabel
-
-            onClicked: secondaryAction()
-        }
-    }
-
-    property Component noSecondaryButton: Component {
-        Item {}
-    }
 
     signal primaryAction()
     signal secondaryAction()
@@ -79,7 +66,7 @@ Popup {
 
         Loader {
             id: secondaryButtonLoader
-            sourceComponent: showSecondaryButton ? secondaryButton: noSecondaryButton
+            sourceComponent: showSecondaryButton ? Factory.createComponentFragment('DsModalSecondaryButton') : null
 
             anchors {
                 left: parent.left

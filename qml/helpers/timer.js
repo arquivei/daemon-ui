@@ -1,5 +1,5 @@
 function Timer() {
-    return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
+    return Qt.createQmlObject("import QtQuick 2.12; Timer {}", root);
 }
 
 function setTimeout(cb, delayTime) {

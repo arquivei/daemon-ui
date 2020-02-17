@@ -1,71 +1,54 @@
 <RCC>
     <qresource prefix="/">
-        <file>fonts/LICENSE.txt</file>
-        <file>fonts/RobotoMono-Bold.ttf</file>
-        <file>fonts/RobotoMono-BoldItalic.ttf</file>
-        <file>fonts/RobotoMono-Italic.ttf</file>
-        <file>fonts/RobotoMono-Light.ttf</file>
-        <file>fonts/RobotoMono-LightItalic.ttf</file>
-        <file>fonts/RobotoMono-Medium.ttf</file>
-        <file>fonts/RobotoMono-MediumItalic.ttf</file>
-        <file>fonts/RobotoMono-Regular.ttf</file>
-        <file>fonts/RobotoMono-Thin.ttf</file>
-        <file>fonts/RobotoMono-ThinItalic.ttf</file>
-        <file>fonts/pns-regular-webfont.otf</file>
+        <file>qml/components/fragments/DsButtonSpinner.qml</file>
+        <file>qml/components/fragments/DsInputErrorText.qml</file>
+        <file>qml/components/fragments/DsModalSecondaryButton.qml</file>
+        <file>qml/components/fragments/Empty.qml</file>
+        <file>qml/components/fragments/TourCardPrevAction.qml</file>
+        <file>qml/components/fragments/TourCardCloseAction.qml</file>
+        <file>qml/components/DsAlert.qml</file>
+        <file>qml/components/DsButton.qml</file>
+        <file>qml/components/DsCard.qml</file>
+        <file>qml/components/DsChip.qml</file>
+        <file>qml/components/DsDropDownMenu.qml</file>
+        <file>qml/components/DsIconText.qml</file>
+        <file>qml/components/DsInput.qml</file>
+        <file>qml/components/DsLink.qml</file>
+        <file>qml/components/DsModal.qml</file>
+        <file>qml/components/DsOverlay.qml</file>
+        <file>qml/components/DsText.qml</file>
+        <file>qml/components/Header.qml</file>
+        <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/Tour.qml</file>
+        <file>qml/components/TourCard.qml</file>
+        <file>qml/components/TourStep.qml</file>
+        <file>qml/constants/colors.js</file>
+        <file>qml/constants/fonts.js</file>
+        <file>qml/constants/z-axis.js</file>
         <file>fonts/pns-bold-webfont.otf</file>
         <file>fonts/pns-medium-webfont.otf</file>
+        <file>fonts/pns-regular-webfont.otf</file>
         <file>fonts/pns-semibold-webfont.otf</file>
-        <file>images/arquivei-icon.svg</file>
-        <file>images/app-logo-placeholder.svg</file>
-        <file>images/material-folder.svg</file>
-        <file>images/material-arrow-down.svg</file>
-        <file>images/back.svg</file>
-        <file>images/folder.svg</file>
-        <file>images/log-out.svg</file>
-        <file>images/pc.svg</file>
-        <file>images/settings.svg</file>
-        <file>images/success.png</file>
-        <file>images/sync.gif</file>
-        <file>images/sync.png</file>
-        <file>images/syncing.png</file>
-        <file>images/syncing.svg</file>
-        <file>images/add.svg</file>
-        <file>images/ellipse.svg</file>
-        <file>images/error.svg</file>
-        <file>images/external-link-symbol.svg</file>
-        <file>images/arquivei-main.svg</file>
+        <file>qml/helpers/factory.js</file>
+        <file>qml/helpers/timer.js</file>
+        <file>qml/helpers/validator.js</file>
         <file>images/alert-danger.svg</file>
+        <file>images/app-logo-placeholder.svg</file>
+        <file>images/arquivei-icon.svg</file>
+        <file>images/arquivei-main.svg</file>
         <file>images/loader.svg</file>
-        <file>qml/main.qml</file>
-        <file>qml/ConfigView.qml</file>
-        <file>qml/MainView.qml</file>
-        <file>qml/Presenter.qml</file>
-        <file>qml/Model.qml</file>
-        <file>qml/components/Title.qml</file>
-        <file>qml/components/CustomTextInput.qml</file>
-        <file>qml/components/CustomButton.qml</file>
-        <file>qml/components/Divider.qml</file>
-        <file>qml/components/FolderPath.qml</file>
-        <file>qml/components/SyncStatus.qml</file>
-        <file>qml/components/SpinLoader.qml</file>
-        <file>qml/components/ImageButton.qml</file>
-        <file>qml/components/Header.qml</file>
-        <file>qml/components/DsButton.qml</file>
-        <file>qml/components/DsLink.qml</file>
-        <file>qml/components/DsText.qml</file>
-        <file>qml/components/DsInput.qml</file>
-        <file>qml/components/DsAlert.qml</file>
-        <file>qml/components/DsIconText.qml</file>
-        <file>qml/components/DsCard.qml</file>
-        <file>qml/components/DsModal.qml</file>
-        <file>qml/components/DsDropDownMenu.qml</file>
-        <file>qml/components/LoadingOverlay.qml</file>
-        <file>qml/screens/Auth/AuthPresenter.qml</file>
-        <file>qml/screens/Auth/AuthView.qml</file>
-        <file>qml/screens/Auth/AuthModel.qml</file>
+        <file>images/material-arrow-down.svg</file>
+        <file>images/material-close.svg</file>
+        <file>images/material-folder.svg</file>
+        <file>qml/screens/Auth/partials/FormAlert.qml</file>
         <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
         <file>qml/screens/Auth/partials/LoginForm.qml</file>
+        <file>qml/screens/Auth/AuthModel.qml</file>
+        <file>qml/screens/Auth/AuthPresenter.qml</file>
+        <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Config/partials/DownloadSection.qml</file>
+        <file>qml/screens/Config/partials/SelectUploadFolder.qml</file>
+        <file>qml/screens/Config/partials/UpdateUploadFolder.qml</file>
         <file>qml/screens/Config/partials/UploadSection.qml</file>
         <file>qml/screens/Config/ConfigModel.qml</file>
         <file>qml/screens/Config/ConfigPresenter.qml</file>
@@ -74,18 +57,10 @@
         <file>qml/screens/Splash/SplashModel.qml</file>
         <file>qml/screens/Splash/SplashPresenter.qml</file>
         <file>qml/screens/Splash/SplashView.qml</file>
-        <file>qml/delegates/AuthDelegate.qml</file>
-        <file>qml/delegates/ConfigDelegate.qml</file>
-        <file>qml/delegates/MainDelegate.qml</file>
-        <file>qml/models/AuthModel.qml</file>
-        <file>qml/models/ConfigModel.qml</file>
-        <file>qml/models/MainModel.qml</file>
         <file>qml/services/AuthService.qml</file>
         <file>qml/services/ConfigService.qml</file>
-        <file>qml/helpers/factory.js</file>
-        <file>qml/helpers/validator.js</file>
-        <file>qml/helpers/timer.js</file>
-        <file>qml/constants/colors.js</file>
-        <file>qml/constants/fonts.js</file>
+        <file>qml/main.qml</file>
+        <file>qml/Model.qml</file>
+        <file>qml/Presenter.qml</file>
     </qresource>
 </RCC>
