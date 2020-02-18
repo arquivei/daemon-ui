@@ -1,0 +1,4 @@
+const DEFAULT = 0;
+const FLOATING_OBJECT = 50;
+const OVERLAY = 100;
+const ABOVE_OVERLAY = 150;

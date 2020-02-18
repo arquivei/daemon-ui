@@ -10,7 +10,7 @@ Rectangle {
     }
 
     id: root
-    color: type === DsCard.Types.Bordered ? 'transparent' : Colors.GRAYSCALE_100
+    color: type === DsCard.Types.Bordered ? Colors.PURE_WHITE : Colors.GRAYSCALE_100
     radius: 8
     border {
         width: type === DsCard.Types.Bordered ? 1 : 0

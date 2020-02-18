@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import '../../components'
 import './partials'
+import '../../helpers/factory.js' as Factory
 
 Page {
     id: root
@@ -10,17 +11,6 @@ Page {
     property string password;
     property string errorMsg;
     property bool isLoading: false;
-
-    property Component alertComponent: Component {
-        DsAlert {
-            id: alert
-            message: errorMsg
-        }
-    }
-
-    property Component emptyComponent: Component {
-        Item {}
-    }
 
     signal login(string email, string password)
 
@@ -58,7 +48,7 @@ Page {
 
         Loader {
             id: alertLoader
-            sourceComponent: errorMsg ? alertComponent: emptyComponent
+            sourceComponent: errorMsg ? Factory.createPartialFragment('Auth', 'FormAlert') : Factory.createEmptyFragment()
 
             width: parent.width
 

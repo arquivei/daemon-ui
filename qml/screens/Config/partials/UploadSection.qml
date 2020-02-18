@@ -1,43 +1,11 @@
 import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
+import '../../../helpers/factory.js' as Factory
 
 DsCard {
     property string folderPath
-
-    property Component selectFolderComponent: Component {
-        DsButton {
-            id: selectFolderBtn
-            text: 'Selecionar pasta'
-
-            onClicked: openDialog()
-        }
-    }
-
-    property Component updateFolderComponent: Component {
-        Item {
-            width: root.width
-
-            DsIconText {
-                id: iconTextFolder
-                icon: "qrc:/images/material-folder.svg"
-                text: folderPath
-                textMaxLength: 60
-            }
-
-            DsLink {
-                label: 'Alterar Pasta'
-
-                anchors {
-                    left: iconTextFolder.right
-                    leftMargin: 16
-                    verticalCenter: iconTextFolder.verticalCenter
-                }
-
-                onClick: openDialog()
-            }
-        }
-    }
+    property bool isBlocked: false
 
     signal openDialog
 
@@ -77,7 +45,7 @@ DsCard {
 
     Loader {
         id: selectFolderLoader
-        sourceComponent: folderPath ? updateFolderComponent : selectFolderComponent
+        sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateUploadFolder') : Factory.createPartialFragment('Config', 'SelectUploadFolder')
 
         anchors {
             top: description.bottom

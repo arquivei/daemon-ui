@@ -1,13 +1,32 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import '../helpers/factory.js' as Factory
 import '../constants/colors.js' as Colors
 import '../constants/fonts.js' as Fonts
+import '../constants/z-axis.js' as Z
 
 Item {
     property int type: DsButton.Types.Default
+    property int size: DsButton.Sizes.Default
     property bool isHovered: false
     property bool isLoading: false
+    property bool isBlocked: false
     property string loadingText
+
+    property var fontSizes: {
+        "0": 14,
+        "1": 12,
+    }
+
+    property var verticalPaddings: {
+        "0": 5,
+        "1": 2,
+    }
+
+    property var horizontalPaddings: {
+        "0": 16,
+        "1": 8
+    }
 
     property alias fontSize: buttonText.font.pixelSize
     property alias text: button.text
@@ -19,26 +38,12 @@ Item {
         Inline
     }
 
+    enum Sizes {
+        Default,
+        Small
+    }
+
     signal clicked()
-
-    property Component spinnerComponent: Component {
-        Image {
-            id: spinner
-            source: "qrc:/images/loader.svg"
-            fillMode: Image.PreserveAspectFit
-
-            RotationAnimation on rotation {
-                from: 0
-                to: 360
-                duration: 1500
-                loops: Animation.Infinite
-            }
-        }
-    }
-
-    property Component emptyComponent: Component {
-        Item {}
-    }
 
     function getTextColor() {
         if (type === DsButton.Types.Inline && enabled) {
@@ -54,7 +59,7 @@ Item {
         }
 
         if (type === DsButton.Types.Inline) {
-            return 'transparent';
+            return Colors.PURE_WHITE;
         }
 
         if (type === DsButton.Types.Special) {
@@ -68,17 +73,18 @@ Item {
     width: button.width
     height: button.height
 
-    LoadingOverlay {
+    DsOverlay {
         id: overlay
         visible: isLoading
+        z: Z.OVERLAY
     }
 
     Button {
         id: button
-        leftPadding: isLoading ? 13 : 16
-        rightPadding: 16
-        verticalPadding: 5
-        z: isLoading ? overlay.z + 1 : 0
+        leftPadding: isLoading ? 13 : horizontalPaddings[size]
+        rightPadding: horizontalPaddings[size]
+        verticalPadding: verticalPaddings[size]
+        z: isLoading ? Z.ABOVE_OVERLAY : Z.DEFAULT
 
         background: Rectangle {
             id: buttonBackground
@@ -95,10 +101,10 @@ Item {
                 width: parent.width
                 height: parent.height
                 enabled: button.enabled
-                hoverEnabled: !isLoading
+                hoverEnabled: !isLoading && !isBlocked
 
                 onClicked: {
-                    if (!isLoading) {
+                    if (!isLoading && !isBlocked) {
                         root.clicked()
                     }
                 }
@@ -116,27 +122,23 @@ Item {
 
             Loader {
                 id: spinnerLoader
-                sourceComponent: isLoading ? spinnerComponent: emptyComponent
+                sourceComponent: isLoading ? Factory.createComponentFragment('DsButtonSpinner') : null
 
                 anchors {
                     verticalCenter: buttonText.verticalCenter
                 }
             }
 
-            Text {
+            DsText {
                 id: buttonText
                 color: getTextColor()
                 text: isLoading ? loadingText : button.text
-                font.pixelSize: 14
-                font.family: Fonts.PROXIMA_NOVA_SOFT
+                fontSize: fontSizes[size]
                 font.weight: "Bold"
-                lineHeightMode: Text.FixedHeight
                 lineHeight: 22
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
 
                 anchors {
-                    left: spinnerLoader.right
+                    left: isLoading ? spinnerLoader.right : parent.left
                     leftMargin: isLoading ? 8 : 0
                 }
             }

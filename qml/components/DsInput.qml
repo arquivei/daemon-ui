@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import '../helpers/factory.js' as Factory
 import '../constants/colors.js' as Colors
 import '../constants/fonts.js' as Fonts
 
@@ -10,20 +11,6 @@ Item {
     property bool isPassword
 
     property alias text: input.text
-
-    property Component errorTextComponent: Component {
-        DsText {
-            id: textError
-            text: errorMsg
-            color: Colors.FEEDBACK_ERROR_DEFAULT
-            fontSize: 12
-            lineHeight: 20
-        }
-    }
-
-    property Component emptyComponent: Component {
-        Item {}
-    }
 
     signal blur(string value)
 
@@ -81,8 +68,7 @@ Item {
 
     Loader {
         id: loader
-        sourceComponent: errorMsg ? errorTextComponent : emptyComponent
-
+        sourceComponent: errorMsg ? Factory.createComponentFragment('DsInputErrorText') : Factory.createEmptyFragment()
         anchors.top: input.bottom
         anchors.topMargin: errorMsg ? 4 : 0
     }

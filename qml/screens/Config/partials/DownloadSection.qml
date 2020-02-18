@@ -3,6 +3,8 @@ import '../../../components'
 import '../../../constants/colors.js' as Colors
 
 DsCard {
+    property bool isBlocked: false
+
     id: root
     width: parent.width
     type: DsCard.Types.Bordered
@@ -42,6 +44,7 @@ DsCard {
     DsLink {
         id: buyLink
         label: 'Contratar agora'
+        isBlocked: root.isBlocked
 
         anchors {
             top: description.bottom
