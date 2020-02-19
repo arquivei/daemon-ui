@@ -61,8 +61,7 @@ func logout() (resp logoutCmd.Response) {
 }
 
 func setUploadFolder(folder string) (resp setuploadfolderCmd.Response) {
-	selectedPath := core.NewQUrl3(folder, 0).ToLocalFile()
-	resp, err := r.appConnection.SetUploadFolder(selectedPath)
+	resp, err := r.appConnection.SetUploadFolder(folder)
 	if err != nil {
 		r.logger.WithError(err).Error("An unknown error occurred while setting the update folder")
 		resp = setuploadfolderCmd.NewGenericError()
@@ -100,6 +99,7 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectSetUploadFolder(func(folder string) {
 		go func() {
+			folder = core.NewQUrl3(folder, 0).ToLocalFile()
 			resp := setUploadFolder(folder)
 			qmlBridge.SetUploadFolderSignal(resp.Success, resp.Code, folder)
 		}()
