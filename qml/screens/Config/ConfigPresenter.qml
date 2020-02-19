@@ -23,8 +23,20 @@ Presenter {
             model.setUploadFolder(folderPath);
         }
 
+        onSaveConfig: {
+            console.log('start loading mode');
+            console.log('save config logic');
+            console.log('navigate to main only when save is successful');
+
+            app.navigateTo('Main');
+        }
+
         onLogout: {
             model.logout();
+        }
+
+        onReturnToMain: {
+            app.navigateTo('Main');
         }
     }
 
@@ -43,6 +55,8 @@ Presenter {
     ConfigView {
         id: view;
         uploadFolderPath: model.getUploadFolder() || null
+        showReturnAction: model.getUploadFolder() && true
+        hasBeenEdited: model.hasUploadFolderChanged
         anchors.fill: parent;
     }
 }

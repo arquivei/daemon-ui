@@ -8,16 +8,18 @@ Item {
     property var currentStepComponent
     property int stepIndex: 0
 
-    function startTour() {
+    signal stepsCompleted()
+
+    function start() {
         const initialStep = steps[0];
         currentStepComponent = Factory.createSharedComponent('TourStep', initialStep.parent, initialStep);
-        currentStepComponent.next.connect(nextStep);
-        currentStepComponent.prev.connect(prevStep);
-        currentStepComponent.close.connect(finishTour);
+        currentStepComponent.next.connect(next);
+        currentStepComponent.prev.connect(prev);
+        currentStepComponent.close.connect(finish);
         currentStepComponent.start();
     }
 
-    function finishTour() {
+    function finish() {
         if (currentStepComponent) {
             currentStepComponent.stop();
             currentStepComponent.destroy();
@@ -25,30 +27,31 @@ Item {
         }
     }
 
-    function nextStep() {
+    function next() {
         stepIndex++;
         currentStepComponent.destroy();
-        const next = steps[stepIndex];
-        if (next) {
-            currentStepComponent = Factory.createSharedComponent('TourStep', next.parent, next);
-            currentStepComponent.next.connect(nextStep);
-            currentStepComponent.prev.connect(prevStep);
-            currentStepComponent.close.connect(finishTour);
+        const nextStep = steps[stepIndex];
+        if (nextStep) {
+            currentStepComponent = Factory.createSharedComponent('TourStep', nextStep.parent, nextStep);
+            currentStepComponent.next.connect(next);
+            currentStepComponent.prev.connect(prev);
+            currentStepComponent.close.connect(finish);
             currentStepComponent.start();
         } else {
             stepIndex = 0;
+            stepsCompleted();
         }
     }
 
-    function prevStep() {
+    function prev() {
         stepIndex--;
         currentStepComponent.destroy();
-        const prev = steps[stepIndex];
-        if (prev) {
-            currentStepComponent = Factory.createSharedComponent('TourStep', prev.parent, prev);
-            currentStepComponent.next.connect(nextStep);
-            currentStepComponent.prev.connect(prevStep);
-            currentStepComponent.close.connect(finishTour);
+        const prevStep = steps[stepIndex];
+        if (prevStep) {
+            currentStepComponent = Factory.createSharedComponent('TourStep', prevStep.parent, prevStep);
+            currentStepComponent.next.connect(next);
+            currentStepComponent.prev.connect(prev);
+            currentStepComponent.close.connect(finish);
             currentStepComponent.start();
         } else {
             stepIndex = 0;

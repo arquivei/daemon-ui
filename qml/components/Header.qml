@@ -3,6 +3,7 @@ import QtQuick.Controls 2.12
 
 Item {
     signal logout()
+    signal tourStart()
 
     id: root
     width: parent.width
@@ -36,8 +37,8 @@ Item {
                 onTriggered: console.log('Acessar a Plataforma')
             },
             Action {
-                text: 'Sobre o Daemon'
-                onTriggered: console.log('Visualizar informações sobre o Daemon')
+                text: 'Iniciar Tour'
+                onTriggered: tourStart()
             },
             Action {
                 text: 'Sair'
