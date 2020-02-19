@@ -9,7 +9,6 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
-	"github.com/therecipe/qt/quick"
 )
 
 //QmlBridge ...
@@ -70,9 +69,10 @@ func setUploadFolder(folder string) (resp setuploadfolderCmd.Response) {
 }
 
 func newGuiInterface() {
-	// Force the software backend always.
-	quick.QQuickWindow_SetSceneGraphBackend(quick.QSGRendererInterface__Software)
+	//needed to get the application working on VMs when using the windows docker images
+	//quick.QQuickWindow_SetSceneGraphBackend(quick.QSGRendererInterface__Software)
 
+	//needed to fix an QML Settings issue on windows
 	core.QCoreApplication_SetOrganizationName("Arquivei")
 
 	gui.NewQGuiApplication(len(os.Args), os.Args)
