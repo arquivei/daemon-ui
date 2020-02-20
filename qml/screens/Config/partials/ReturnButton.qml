@@ -4,5 +4,11 @@ DsButton {
     id: btnTour
     text: 'Voltar'
     type: DsButton.Types.Inline
-    onClicked: returnToMain()
+    onClicked: {
+        if (hasBeenEdited) {
+            notSavedChangesAlertModal.open();
+        } else {
+            returnToMain();
+        }
+    }
 }
