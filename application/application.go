@@ -9,6 +9,7 @@ import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
 )
 
 //App contains all application dependencies
@@ -117,5 +118,20 @@ func (app App) Authenticate(email, password string) (r authenticate.Response, er
 //Ping method verifies if the server is alive
 func (app App) Ping() (err error) {
 	_, err = app.c.SendCommand(ping.NewCommand())
+	return
+}
+
+//ValidateFolder method should validate a folder
+func (app App) ValidateFolder(path string) (r validatefolder.Response, err error) {
+	data, err := app.c.SendCommand(validatefolder.NewCommand(path))
+	if err != nil {
+		return r, err
+	}
+
+	r, err = validatefolder.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
 	return
 }

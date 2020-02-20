@@ -6,6 +6,7 @@ import (
 	authenticateCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
 	logoutCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	setuploadfolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
+	validatefolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -20,7 +21,9 @@ type QmlBridge struct {
 	_ func(email string, password string)         `slot:"authenticate"`
 	_ func()                                      `slot:"logout"`
 	_ func(folder string)                         `slot:"setUploadFolder"`
+	_ func(folder string)                         `slot:"validateFolder"`
 	_ func(success bool, code, folderPath string) `signal:"setUploadFolderSignal"`
+	_ func(success bool, code, folder string)     `signal:"validateFolderSignal"`
 	_ func(success bool, message string)          `signal:"authenticateSignal"`
 	_ func(success bool, code string)             `signal:"logoutSignal"`
 	_ func()                                      `constructor:"init"`
@@ -68,6 +71,15 @@ func setUploadFolder(folder string) (resp setuploadfolderCmd.Response) {
 	return
 }
 
+func validateFolder(folder string) (resp validatefolderCmd.Response) {
+	resp, err := r.appConnection.ValidateFolder(folder)
+	if err != nil {
+		r.logger.WithError(err).Error("An unknown error occurred while validating the folder")
+		resp = validatefolderCmd.NewGenericError()
+	}
+	return
+}
+
 func newGuiInterface() {
 	//needed to get the application working on VMs when using the windows docker images
 	//quick.QQuickWindow_SetSceneGraphBackend(quick.QSGRendererInterface__Software)
@@ -102,6 +114,14 @@ func newGuiInterface() {
 			folder = core.NewQUrl3(folder, 0).ToLocalFile()
 			resp := setUploadFolder(folder)
 			qmlBridge.SetUploadFolderSignal(resp.Success, resp.Code, folder)
+		}()
+	})
+
+	qmlBridge.ConnectValidateFolder(func(folder string) {
+		go func() {
+			folder = core.NewQUrl3(folder, 0).ToLocalFile()
+			resp := validateFolder(folder)
+			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})
 
