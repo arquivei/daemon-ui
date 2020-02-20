@@ -7,8 +7,10 @@ Model {
 
     property bool hasUploadFolderChanged: false;
 
-    signal setUploadFolderSuccess(string folderPath);
-    signal setUploadFolderError(string msg);
+    signal validateFolderSuccess(string folder);
+    signal validateFolderError(string folder, string errorTitle, string errorMessage);
+    signal saveConfigsSuccess();
+    signal saveConfigsError(string errorTitle, string errorMessage);
     signal logoutSuccess();
     signal logoutError(string msg);
 
@@ -16,8 +18,12 @@ Model {
         authService.logout();
     }
 
-    function setUploadFolder(folderPath) {
-        configService.setUploadFolder(folderPath);
+    function validateFolder(folder) {
+        configService.validateFolder(folder);
+    }
+
+    function saveConfigs(uploadFolder) {
+        configService.saveConfigs(uploadFolder);
     }
 
     function getUploadFolder() {
@@ -40,12 +46,21 @@ Model {
 
     ConfigService {
         id: configService
-        onSetUploadFolderSuccess: {
+        onValidateFolderSuccess: {
             root.hasUploadFolderChanged = true;
-            root.setUploadFolderSuccess(folderPath);
+            root.validateFolderSuccess(folder);
         }
-        onSetUploadFolderError: {
-            root.setUploadFolderError('Set Upload Folder Error')
+
+        onValidateFolderError: {
+            root.validateFolderError(folder, errorTitle, errorMessage);
+        }
+
+        onSaveConfigsSuccess: {
+            root.saveConfigsSuccess();
+        }
+
+        onSaveConfigsError: {
+            root.saveConfigsError(errorTitle, errorMessage);
         }
     }
 }

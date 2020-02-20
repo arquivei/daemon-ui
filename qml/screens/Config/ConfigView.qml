@@ -9,6 +9,7 @@ import '../../helpers/factory.js' as Factory
 Page {
     property bool showReturnAction
     property bool hasBeenEdited
+    property bool isLoading: false
     property string uploadFolderPath
     property var tourSteps: [
     {
@@ -17,7 +18,7 @@ Page {
         parent: content,
         title: 'Configurar Upload',
         description: 'Clique em selecionar pasta para configurar o envio de documentos para a plataforma Arquivei.',
-        chipInfo: '01/03',
+        chipInfo: '01/02',
         position: {
             top: uploadSection.bottom,
             topMargin: 8,
@@ -27,26 +28,11 @@ Page {
     },
     {
         id: 'step2',
-        ref: downloadSection,
-        parent: content,
-        title: 'Download - Em breve',
-        description: 'Ainda não possui o módulo de download que baixa os documentos da Arquivei para seu computador? Para contratá-lo basta clicar no link abaixo.',
-        chipInfo: '02/03',
-        position: {
-            bottom: downloadSection.top,
-            bottomMargin: 8,
-            left: downloadSection.left
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step3',
         ref: btnSave,
         parent: content,
         title: 'Finalizar Configuração',
-        description: 'Ao selecionar a pasta de Upload e/ou contratar Download e configurá-lo, você seguirá em frente e salvará as configurações escolhidas clicando em Salvar.',
-        chipInfo: 'FIM',
+        description: 'Ao selecionar a pasta de Upload, você deverá clicar em "Salvar" para prosseguir.',
+        chipInfo: '02/02',
         position: {
             bottom: btnSave.top,
             bottomMargin: 8,
@@ -57,8 +43,8 @@ Page {
     }
     ]
 
-    signal selectUploadFolder(string folderPath)
-    signal saveConfig(string folderPath)
+    signal saveConfigs(string uploadFolder)
+    signal validateFolder(string folder)
     signal returnToMain()
     signal logout()
 
@@ -66,8 +52,18 @@ Page {
         uploadFolderDialog.open();
     }
 
-    function setFolderPath(folderPath) {
-        uploadFolderPath = folderPath;
+    function setUploadFolder(folder) {
+        uploadFolderPath = folder;
+    }
+
+    function toggleLoading() {
+        isLoading = !isLoading;
+    }
+
+    function openErrorDialog(errorTitle, errorMessage) {
+        errorModal.title = errorTitle;
+        errorModal.text = errorMessage;
+        errorModal.open();
     }
 
     function showTourNotification() {
@@ -88,7 +84,7 @@ Page {
         folder: shortcuts.home
         selectFolder: true
         onAccepted: {
-            selectUploadFolder(uploadFolderDialog.fileUrl);
+            validateFolder(uploadFolderDialog.fileUrl);
         }
     }
 
@@ -107,12 +103,35 @@ Page {
     }
 
     DsModal {
+        id: notSavedChangesAlertModal
+        title: 'Alteração não salva'
+        showSecondaryButton: true
+        text: 'Você realizou a alteração da pasta de upload mas não salvou a alteração. Deseja voltar sem salvar?'
+        secondaryActionLabel: 'Fechar'
+        primaryActionLabel: 'Sim'
+        onPrimaryAction: {
+            notSavedChangesAlertModal.close();
+            returnToMain();
+        }
+        onSecondaryAction: notSavedChangesAlertModal.close()
+    }
+
+    DsModal {
         id: tourCompletedModal
         title: 'Tour finalizado'
         text: 'Agora você já sabe como configurar a sua integração, selecionando as pastas de Upload e Download (se disponível). Parabéns!'
         primaryActionLabel: 'Sair do Tour'
         onPrimaryAction: {
             tourCompletedModal.close();
+        }
+    }
+
+    DsModal {
+        id: errorModal
+        title: 'Ocorreu um Erro'
+        primaryActionLabel: 'Entendi'
+        onPrimaryAction: {
+            errorModal.close();
         }
     }
 
@@ -163,36 +182,36 @@ Page {
             onOpenDialog: openUploadFolderDialog()
         }
 
-        DownloadSection {
-            id: downloadSection
+//        DownloadSection {
+//            id: downloadSection
 
-            anchors {
-                top: uploadSection.bottom
-                topMargin: 8
-            }
-        }
+//            anchors {
+//                top: uploadSection.bottom
+//                topMargin: 8
+//            }
+//        }
 
         Loader {
             id: returnButtonLoader
             sourceComponent: showReturnAction ? Factory.createPartialFragment('Config', 'ReturnButton') : null
             anchors {
-                left: parent.left
-                top: downloadSection.bottom
-                topMargin: 16
+                left: content.left
+                bottom: content.bottom
             }
         }
 
         DsButton {
             id: btnSave
             text: 'Salvar'
+            loadingText: 'Salvando...'
             type: DsButton.Types.Special
             enabled: hasBeenEdited ? true : false
+            isLoading: root.isLoading
             anchors {
-                right: parent.right
-                top: downloadSection.bottom
-                topMargin: 16
+                right: content.right
+                bottom: content.bottom
             }
-            onClicked: saveConfig(uploadFolderPath)
+            onClicked: saveConfigs(uploadFolderPath)
         }
     }
 }

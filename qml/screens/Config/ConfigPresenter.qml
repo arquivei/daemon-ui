@@ -19,32 +19,43 @@ Presenter {
     Connections {
         target: view
 
-        onSelectUploadFolder: {
-            model.setUploadFolder(folderPath);
+        onValidateFolder: {
+            model.validateFolder(folder);
         }
 
-        onSaveConfig: {
-            console.log('start loading mode');
-            console.log('save config logic');
-            console.log('navigate to main only when save is successful');
+        onSaveConfigs: {
+            view.toggleLoading();
+            model.saveConfigs(uploadFolder);
+        }
 
+        onReturnToMain: {
             app.navigateTo('Main');
         }
 
         onLogout: {
             model.logout();
         }
-
-        onReturnToMain: {
-            app.navigateTo('Main');
-        }
     }
 
     Connections {
         target: model
 
-        onSetUploadFolderSuccess: {
-            view.setFolderPath(folderPath);
+        onValidateFolderSuccess: {
+            view.setUploadFolder(folder);
+        }
+
+        onValidateFolderError: {
+            view.openErrorDialog(errorTitle, errorMessage);
+        }
+
+        onSaveConfigsSuccess: {
+            view.toggleLoading();
+            app.navigateTo('Main');
+        }
+
+        onSaveConfigsError: {
+            view.toggleLoading();
+            view.openErrorDialog(errorTitle, errorMessage);
         }
 
         onLogoutSuccess: {

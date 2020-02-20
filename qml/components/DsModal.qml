@@ -53,7 +53,7 @@ Popup {
             id: descriptionText
             fontSize: 14
             lineHeight: 22
-            color: Colors.BRAND_TERTIARY_DEFAULT
+            color: Colors.GRAYSCALE_500
             wrapMode: Text.WordWrap
 
             width: parent.width
