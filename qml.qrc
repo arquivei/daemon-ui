@@ -47,6 +47,7 @@
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
         <file>qml/screens/Config/partials/DownloadSection.qml</file>
+        <file>qml/screens/Config/partials/ReturnButton.qml</file>
         <file>qml/screens/Config/partials/SelectUploadFolder.qml</file>
         <file>qml/screens/Config/partials/UpdateUploadFolder.qml</file>
         <file>qml/screens/Config/partials/UploadSection.qml</file>

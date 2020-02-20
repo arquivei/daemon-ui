@@ -7,6 +7,8 @@ import '../../constants/colors.js' as Colors
 import '../../helpers/factory.js' as Factory
 
 Page {
+    property bool showReturnAction
+    property bool hasBeenEdited
     property string uploadFolderPath
     property var tourSteps: [
     {
@@ -15,7 +17,7 @@ Page {
         parent: content,
         title: 'Configurar Upload',
         description: 'Clique em selecionar pasta para configurar o envio de documentos para a plataforma Arquivei.',
-        chipInfo: '01/04',
+        chipInfo: '01/03',
         position: {
             top: uploadSection.bottom,
             topMargin: 8,
@@ -27,9 +29,9 @@ Page {
         id: 'step2',
         ref: downloadSection,
         parent: content,
-        title: 'Configurar Download',
+        title: 'Download - Em breve',
         description: 'Ainda não possui o módulo de download que baixa os documentos da Arquivei para seu computador? Para contratá-lo basta clicar no link abaixo.',
-        chipInfo: '02/04',
+        chipInfo: '02/03',
         position: {
             bottom: downloadSection.top,
             bottomMargin: 8,
@@ -43,8 +45,8 @@ Page {
         ref: btnSave,
         parent: content,
         title: 'Finalizar Configuração',
-        description: 'Ao selecionar a pasta de Upload e/ou contratar Download e configurá-lo, você seguirá em frente e salvará as configurações escolhidas clicando em Prosseguir.',
-        chipInfo: '03/04',
+        description: 'Ao selecionar a pasta de Upload e/ou contratar Download e configurá-lo, você seguirá em frente e salvará as configurações escolhidas clicando em Salvar.',
+        chipInfo: 'FIM',
         position: {
             bottom: btnSave.top,
             bottomMargin: 8,
@@ -52,25 +54,12 @@ Page {
         },
         prevLabel: 'Voltar',
         nextLabel: 'Próximo'
-    },
-    {
-        id: 'step4',
-        ref: btnTour,
-        parent: content,
-        title: 'Ajuda',
-        description: 'O tour do app ficará disponível para você, até a finalização da configuração, neste botão.',
-        chipInfo: 'FIM',
-        showCloseAction: false,
-        position: {
-            bottom: btnTour.top,
-            bottomMargin: 8,
-            left: btnTour.left
-        },
-        nextLabel: 'Sair do Tour'
-    },
+    }
     ]
 
     signal selectUploadFolder(string folderPath)
+    signal saveConfig(string folderPath)
+    signal returnToMain()
     signal logout()
 
     function openUploadFolderDialog() {
@@ -90,6 +79,7 @@ Page {
     Tour {
         id: guidedTour
         steps: root.tourSteps
+        onStepsCompleted: tourCompletedModal.open()
     }
 
     FileDialog {
@@ -103,17 +93,6 @@ Page {
     }
 
     DsModal {
-        id: saveModal
-        title: 'Download de Documentos'
-        showSecondaryButton: true
-        text: 'Você ainda não possui o módulo de serviço de Download de Documentos. Deseja continuar sem contratar o serviço?'
-        secondaryActionLabel: 'Contratar'
-        primaryActionLabel: 'Continuar'
-        onPrimaryAction: saveModal.close()
-        onSecondaryAction: saveModal.close()
-    }
-
-    DsModal {
         id: tourNotificationModal
         title: 'Configurando o Synca'
         showSecondaryButton: true
@@ -122,9 +101,19 @@ Page {
         primaryActionLabel: 'Começar o Tour'
         onPrimaryAction: {
             tourNotificationModal.close();
-            guidedTour.startTour();
+            guidedTour.start();
         }
         onSecondaryAction: tourNotificationModal.close()
+    }
+
+    DsModal {
+        id: tourCompletedModal
+        title: 'Tour finalizado'
+        text: 'Agora você já sabe como configurar a sua integração, selecionando as pastas de Upload e Download (se disponível). Parabéns!'
+        primaryActionLabel: 'Sair do Tour'
+        onPrimaryAction: {
+            tourCompletedModal.close();
+        }
     }
 
     Item {
@@ -142,6 +131,9 @@ Page {
             id: header
             onLogout: {
                 root.logout();
+            }
+            onTourStart: {
+                guidedTour.start();
             }
         }
 
@@ -180,29 +172,27 @@ Page {
             }
         }
 
-        DsButton {
-            id: btnTour
-            text: 'Tour do App'
-            type: DsButton.Types.Inline
+        Loader {
+            id: returnButtonLoader
+            sourceComponent: showReturnAction ? Factory.createPartialFragment('Config', 'ReturnButton') : null
             anchors {
                 left: parent.left
                 top: downloadSection.bottom
                 topMargin: 16
             }
-            onClicked: guidedTour.startTour()
         }
 
         DsButton {
             id: btnSave
             text: 'Salvar'
             type: DsButton.Types.Special
-            enabled: uploadFolderPath ? true : false
+            enabled: hasBeenEdited ? true : false
             anchors {
                 right: parent.right
                 top: downloadSection.bottom
                 topMargin: 16
             }
-            onClicked: saveModal.open()
+            onClicked: saveConfig(uploadFolderPath)
         }
     }
 }

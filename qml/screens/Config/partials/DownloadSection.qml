@@ -13,11 +13,11 @@ DsCard {
 
     DsText {
         id: title
-        text: 'Download de Documentos'
+        text: 'Download de Documentos: em breve!'
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
-        color: Colors.GRAYSCALE_500
+        color: Colors.BRAND_TERTIARY_DEFAULT
 
         anchors {
             top: parent.top
@@ -28,8 +28,8 @@ DsCard {
     }
 
     DsText {
-        id: description
-        text: 'Você ainda não possui o módulo de serviço de Download de Documentos.'
+        id: descriptionText
+        text: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!'
         fontSize: 12
         lineHeight: 16
         color: Colors.GRAYSCALE_500
@@ -41,16 +41,33 @@ DsCard {
         }
     }
 
-    DsLink {
-        id: buyLink
-        label: 'Contratar agora'
-        isBlocked: root.isBlocked
+    DsText {
+        id: contactText
+        text: 'Fale com a gente em '
+        fontSize: 12
+        lineHeight: 16
+        color: Colors.GRAYSCALE_500
 
         anchors {
-            top: description.bottom
-            topMargin: 28
+            top: descriptionText.bottom
+            topMargin: 6
             left: parent.left
             leftMargin: 16
+        }
+    }
+
+    DsLink {
+        id: emailLink
+        label: 'suporte@arquivei.com.br'
+        href: 'mailto:?to=suporte@arquivei.com.br'
+        isBlocked: root.isBlocked
+        fontSize: 12
+        lineHeight: 16
+
+        anchors {
+            left: contactText.right
+            verticalCenter: contactText.verticalCenter
+            verticalCenterOffset: -0.5
         }
     }
 }
