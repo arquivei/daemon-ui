@@ -3,115 +3,84 @@ package application
 import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/getuploadfolder"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isauthenticated"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/isworking"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/saveconfigs"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
+	"github.com/sirupsen/logrus"
 )
 
 //App contains all application dependencies
 type App struct {
-	c client.Client
+	c      client.Client
+	logger *logrus.Entry
 }
 
 //NewAppConnection creates a new server application connection
-func NewAppConnection(c client.Client) App {
-	return App{c: c}
+func NewAppConnection(c client.Client, logger *logrus.Entry) App {
+	return App{
+		c:      c,
+		logger: logger,
+	}
 }
 
 //Logout method logout the current user
-func (app App) Logout() (r logout.Response, err error) {
-	data, err := app.c.SendCommand(logout.NewCommand())
+func (app App) Logout() (r logout.Response) {
+	r, err := app.doLogout()
 	if err != nil {
-		return r, err
+		app.logger.
+			WithError(err).
+			Error("An error occurred while logouting")
+		r = logout.NewGenericError()
 	}
-
-	r, err = logout.NewResponse(data)
-	if err != nil {
-		return r, err
-	}
-
 	return
 }
 
-//IsWorking method check if the server application is working
-func (app App) IsWorking() (isWorking bool, err error) {
-	data, err := app.c.SendCommand(isworking.NewCommand())
+//SaveConfigs method saves the user configs
+func (app App) SaveConfigs(uploadFolder string) (r saveconfigs.Response) {
+	r, err := app.doSaveConfigs(uploadFolder)
 	if err != nil {
-		return isWorking, err
+		app.logger.
+			WithError(err).
+			WithField("uploadFolder", uploadFolder).
+			Error("An error occurred while saving user configs")
+		r = saveconfigs.NewGenericError()
 	}
-
-	r, err := isworking.NewResponse(data)
-	if err != nil {
-		return isWorking, err
-	}
-
-	isWorking = r.IsWorking
-	return
-}
-
-//SetUploadFolder method set the upload folder
-func (app App) SetUploadFolder(path string) (r setuploadfolder.Response, err error) {
-	data, err := app.c.SendCommand(setuploadfolder.NewCommand(path))
-	if err != nil {
-		return r, err
-	}
-
-	r, err = setuploadfolder.NewResponse(data)
-	if err != nil {
-		return r, err
-	}
-
 	return
 }
 
 //GetUploadFolder method get the current upload folder
-func (app App) GetUploadFolder() (folder string, err error) {
-	data, err := app.c.SendCommand(getuploadfolder.NewCommand())
+func (app App) GetUploadFolder() (folder string) {
+	folder, err := app.doGetUploadFolder()
 	if err != nil {
-		return folder, err
+		app.logger.
+			WithError(err).
+			Error("An error occurred while getting the upload folder")
 	}
-
-	r, err := getuploadfolder.NewResponse(data)
-	if err != nil {
-		return folder, err
-	}
-
-	folder = r.UploadFolder
 	return
 }
 
 //IsAuthenticated method verifies if the user is authenticated
-func (app App) IsAuthenticated() (isAuth bool, err error) {
-	data, err := app.c.SendCommand(isauthenticated.NewCommand())
+func (app App) IsAuthenticated() (isAuth bool) {
+	isAuth, err := app.doIsAuthenticated()
 	if err != nil {
-		return isAuth, err
+		app.logger.
+			WithError(err).
+			Error("An error occurred while checking is authenticated")
 	}
-
-	r, err := isauthenticated.NewResponse(data)
-	if err != nil {
-		return isAuth, err
-	}
-
-	isAuth = r.IsAuthenticated
 	return
 }
 
 //Authenticate method authenticate an user
-func (app App) Authenticate(email, password string) (r authenticate.Response, err error) {
-	data, err := app.c.SendCommand(authenticate.NewCommand(email, password))
+func (app App) Authenticate(email, password string) (r authenticate.Response) {
+	r, err := app.doAuthenticate(email, password)
 	if err != nil {
-		return r, err
+		app.logger.
+			WithError(err).
+			WithField("email", email).
+			Error("An error occurred while authenticating")
+		r = authenticate.NewGenericError()
 	}
-
-	r, err = authenticate.NewResponse(data)
-	if err != nil {
-		return r, err
-	}
-
 	return
 }
 
@@ -122,16 +91,14 @@ func (app App) Ping() (err error) {
 }
 
 //ValidateFolder method should validate a folder
-func (app App) ValidateFolder(path string) (r validatefolder.Response, err error) {
-	data, err := app.c.SendCommand(validatefolder.NewCommand(path))
+func (app App) ValidateFolder(path string) (r validatefolder.Response) {
+	r, err := app.doValidateFolder(path)
 	if err != nil {
-		return r, err
+		app.logger.
+			WithError(err).
+			WithField("path", path).
+			Error("An unknown error occurred while validating the folder")
+		r = validatefolder.NewGenericError()
 	}
-
-	r, err = validatefolder.NewResponse(data)
-	if err != nil {
-		return r, err
-	}
-
 	return
 }

@@ -3,10 +3,6 @@ package main
 import (
 	"os"
 
-	authenticateCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
-	logoutCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
-	setuploadfolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/setuploadfolder"
-	validatefolderCmd "bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -16,68 +12,22 @@ import (
 type QmlBridge struct {
 	core.QObject
 
-	_ bool                                        `property:"isAuthenticated"`
-	_ string                                      `property:"uploadFolderPath"`
-	_ func(email string, password string)         `slot:"authenticate"`
-	_ func()                                      `slot:"logout"`
-	_ func(folder string)                         `slot:"setUploadFolder"`
-	_ func(folder string)                         `slot:"validateFolder"`
-	_ func(success bool, code, folderPath string) `signal:"setUploadFolderSignal"`
-	_ func(success bool, code, folder string)     `signal:"validateFolderSignal"`
-	_ func(success bool, message string)          `signal:"authenticateSignal"`
-	_ func(success bool, code string)             `signal:"logoutSignal"`
-	_ func()                                      `constructor:"init"`
+	_ bool                                    `property:"isAuthenticated"`
+	_ string                                  `property:"uploadFolderPath"`
+	_ func(email string, password string)     `slot:"authenticate"`
+	_ func()                                  `slot:"logout"`
+	_ func(uploadFolder string)               `slot:"saveConfigs"`
+	_ func(folder string)                     `slot:"validateFolder"`
+	_ func(success bool, code string)         `signal:"saveConfigsSignal"`
+	_ func(success bool, code, folder string) `signal:"validateFolderSignal"`
+	_ func(success bool, message string)      `signal:"authenticateSignal"`
+	_ func(success bool, code string)         `signal:"logoutSignal"`
+	_ func()                                  `constructor:"init"`
 }
 
 func (bridge *QmlBridge) init() {
-	isAuthenticated, err := r.appConnection.IsAuthenticated()
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred while checking is authenticated")
-	}
-
-	uploadFolder, err := r.appConnection.GetUploadFolder()
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred while getting the current upload folder")
-	}
-
-	bridge.SetIsAuthenticated(isAuthenticated)
-	bridge.SetUploadFolderPath(uploadFolder)
-}
-
-func authenticate(email string, password string) (resp authenticateCmd.Response) {
-	resp, err := r.appConnection.Authenticate(email, password)
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred to authenticate")
-		resp = authenticateCmd.NewGenericError()
-	}
-	return
-}
-
-func logout() (resp logoutCmd.Response) {
-	resp, err := r.appConnection.Logout()
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred to logout")
-		resp = logoutCmd.NewGenericError()
-	}
-	return
-}
-
-func setUploadFolder(folder string) (resp setuploadfolderCmd.Response) {
-	resp, err := r.appConnection.SetUploadFolder(folder)
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred while setting the update folder")
-		resp = setuploadfolderCmd.NewGenericError()
-	}
-	return
-}
-
-func validateFolder(folder string) (resp validatefolderCmd.Response) {
-	resp, err := r.appConnection.ValidateFolder(folder)
-	if err != nil {
-		r.logger.WithError(err).Error("An unknown error occurred while validating the folder")
-		resp = validatefolderCmd.NewGenericError()
-	}
-	return
+	bridge.SetIsAuthenticated(r.appConnection.IsAuthenticated())
+	bridge.SetUploadFolderPath(r.appConnection.GetUploadFolder())
 }
 
 func newGuiInterface() {
@@ -97,30 +47,29 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectAuthenticate(func(email string, password string) {
 		go func() {
-			resp := authenticate(email, password)
+			resp := r.appConnection.Authenticate(email, password)
 			qmlBridge.AuthenticateSignal(resp.Success, resp.Message)
 		}()
 	})
 
 	qmlBridge.ConnectLogout(func() {
 		go func() {
-			resp := logout()
+			resp := r.appConnection.Logout()
 			qmlBridge.LogoutSignal(resp.Success, resp.Code)
 		}()
 	})
 
-	qmlBridge.ConnectSetUploadFolder(func(folder string) {
+	qmlBridge.ConnectSaveConfigs(func(uploadFolder string) {
 		go func() {
-			folder = core.NewQUrl3(folder, 0).ToLocalFile()
-			resp := setUploadFolder(folder)
-			qmlBridge.SetUploadFolderSignal(resp.Success, resp.Code, folder)
+			resp := r.appConnection.SaveConfigs(uploadFolder)
+			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
 		}()
 	})
 
 	qmlBridge.ConnectValidateFolder(func(folder string) {
 		go func() {
 			folder = core.NewQUrl3(folder, 0).ToLocalFile()
-			resp := validateFolder(folder)
+			resp := r.appConnection.ValidateFolder(folder)
 			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})

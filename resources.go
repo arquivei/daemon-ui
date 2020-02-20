@@ -30,8 +30,9 @@ func (r *resources) initLogger() {
 func (r *resources) setupClient() error {
 	r.appConnection = application.NewAppConnection(
 		client.NewClient(),
+		r.logger,
 	)
-	
+
 	clientStorage := clientStorageImpl.NewJSONFileDatabase()
 	clientInfo, err := clientStorage.Read()
 	if err != nil {

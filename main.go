@@ -19,11 +19,11 @@ func main() {
 		}
 	}()
 
+	r.initLogger()
+
 	if err := r.setupClient(); err != nil {
 		log.WithError(err).Error("An error occurred while setting the client")
 	}
-
-	r.initLogger()
 
 	logging.SetupHooks()
 
