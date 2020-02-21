@@ -3,6 +3,7 @@ package application
 import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientinfo"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/saveconfigs"
@@ -49,28 +50,6 @@ func (app App) SaveConfigs(uploadFolder string) (r saveconfigs.Response) {
 	return
 }
 
-//GetUploadFolder method get the current upload folder
-func (app App) GetUploadFolder() (folder string) {
-	folder, err := app.doGetUploadFolder()
-	if err != nil {
-		app.logger.
-			WithError(err).
-			Error("An error occurred while getting the upload folder")
-	}
-	return
-}
-
-//IsAuthenticated method verifies if the user is authenticated
-func (app App) IsAuthenticated() (isAuth bool) {
-	isAuth, err := app.doIsAuthenticated()
-	if err != nil {
-		app.logger.
-			WithError(err).
-			Error("An error occurred while checking is authenticated")
-	}
-	return
-}
-
 //Authenticate method authenticate an user
 func (app App) Authenticate(email, password string) (r authenticate.Response) {
 	r, err := app.doAuthenticate(email, password)
@@ -99,6 +78,17 @@ func (app App) ValidateFolder(path string) (r validatefolder.Response) {
 			WithField("path", path).
 			Error("An unknown error occurred while validating the folder")
 		r = validatefolder.NewGenericError()
+	}
+	return
+}
+
+//GetClientInformation method get informations about the client
+func (app App) GetClientInformation() (r clientinfo.Response) {
+	r, err := app.doGetClientInformation()
+	if err != nil {
+		app.logger.
+			WithError(err).
+			Error("An unknown error occurred while getting client information")
 	}
 	return
 }

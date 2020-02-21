@@ -14,6 +14,9 @@ type QmlBridge struct {
 
 	_ bool                                    `property:"isAuthenticated"`
 	_ string                                  `property:"uploadFolderPath"`
+	_ string                                  `property:"hostName"`
+	_ string                                  `property:"userEmail"`
+	_ string                                  `property:"webDetailLink"`
 	_ func(email string, password string)     `slot:"authenticate"`
 	_ func()                                  `slot:"logout"`
 	_ func(uploadFolder string)               `slot:"saveConfigs"`
@@ -26,8 +29,13 @@ type QmlBridge struct {
 }
 
 func (bridge *QmlBridge) init() {
-	bridge.SetIsAuthenticated(r.appConnection.IsAuthenticated())
-	bridge.SetUploadFolderPath(r.appConnection.GetUploadFolder())
+	clientInformation := r.appConnection.GetClientInformation()
+
+	bridge.SetUserEmail(clientInformation.UserEmail)
+	bridge.SetHostName(clientInformation.ClientHostname)
+	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
+	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
 }
 
 func newGuiInterface() {
@@ -47,8 +55,12 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectAuthenticate(func(email string, password string) {
 		go func() {
-			resp := r.appConnection.Authenticate(email, password)
-			qmlBridge.AuthenticateSignal(resp.Success, resp.Message)
+			authRespesponse := r.appConnection.Authenticate(email, password)
+			clientInformation := r.appConnection.GetClientInformation()
+			qmlBridge.AuthenticateSignal(authRespesponse.Success, authRespesponse.Message)
+			qmlBridge.SetUserEmail(clientInformation.UserEmail)
+			qmlBridge.SetHostName(clientInformation.ClientHostname)
+			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 		}()
 	})
 

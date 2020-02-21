@@ -1,4 +1,4 @@
-package isauthenticated
+package clientinfo
 
 import (
 	"encoding/json"
@@ -14,17 +14,22 @@ type Command struct {
 
 //Response ...
 type Response struct {
-	Error           string `json:",omitempty"`
-	IsAuthenticated bool
+	Error               string `json:",omitempty"`
+	ClientWebDetailLink string
+	ClientHostname      string
+	UploadFolder        string
+	UserEmail           string
+	IsAuthenticated     bool
 }
 
 //NewCommand method creates a new command
 func NewCommand() commands.CommandInterface {
 	return &Command{
-		Name: "IS_AUTHENTICADED_CMD",
+		Name: "GET_CLIENT_INFO_CMD",
 	}
 }
 
+//Encode method encodes the command
 func (c Command) Encode() (encoded string, err error) {
 	d, err := json.Marshal(c)
 	if err != nil {
@@ -34,6 +39,7 @@ func (c Command) Encode() (encoded string, err error) {
 	return
 }
 
+//NewResponse method creates a new response
 func NewResponse(data []byte) (r Response, err error) {
 	if err := json.Unmarshal(data, &r); err != nil {
 		return r, err
