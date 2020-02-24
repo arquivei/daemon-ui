@@ -2,8 +2,12 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 Item {
+    property string userEmail;
+
     signal logout()
     signal tourStart()
+    signal goToConfig()
+    signal accessWebDetailsPage()
 
     id: root
     width: parent.width
@@ -23,18 +27,18 @@ Item {
 
     DsDropDownMenu {
         id: menu
-        menuText: 'user@email.com.br'
+        menuText: root.userEmail
         firstAction: firstAction
 
         actions: [
             Action {
                 id: firstAction
                 text: 'Configurações'
-                onTriggered: console.log('Abrir Configurações')
+                onTriggered: goToConfig()
             },
             Action {
                 text: 'Acessar a Plataforma'
-                onTriggered: console.log('Acessar a Plataforma')
+                onTriggered: accessWebDetailsPage()
             },
             Action {
                 text: 'Iniciar Tour'

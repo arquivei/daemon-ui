@@ -24,7 +24,6 @@ DsText {
     fontSize: 14
     font.weight: "Bold"
     lineHeight: 22
-    onLinkActivated: Qt.openUrlExternally(link)
 
     MouseArea {
         cursorShape: Qt.PointingHandCursor

@@ -67,14 +67,14 @@ Page {
                 bottomMargin: 16
             }
 
-            useTermsUrl: 'https://app.arquivei.com.br'
-            privacyPolicyUrl: 'https://app.arquivei.com.br'
+            useTermsUrl: 'https://app.arquivei.com.br/termos/#condicoes-uso'
+            privacyPolicyUrl: 'https://app.arquivei.com.br/termos/#politica-privacidade'
         }
 
         LoginForm {
             id: loginForm
 
-            forgotPasswordUrl: 'https://app.arquivei.com.br'
+            forgotPasswordUrl: 'https://app.arquivei.com.br/login'
             isLoading: root.isLoading
 
             width: parent.width

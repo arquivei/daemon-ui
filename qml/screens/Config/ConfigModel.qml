@@ -34,6 +34,14 @@ Model {
         return configService.isConfigured();
     }
 
+    function getUserEmail() {
+        return clientService.getUserEmail();
+    }
+
+    function getWebDetailLink() {
+        return clientService.getWebDetailLink();
+    }
+
     AuthService {
         id: authService
         onLogoutSuccess: {
@@ -62,5 +70,9 @@ Model {
         onSaveConfigsError: {
             root.saveConfigsError(errorTitle, errorMessage);
         }
+    }
+
+    ClientService {
+        id: clientService
     }
 }

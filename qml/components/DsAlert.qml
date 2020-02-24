@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import '../../images'
 import '../constants/colors.js' as Colors
 
 Item {

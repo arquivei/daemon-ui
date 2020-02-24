@@ -13,7 +13,7 @@ Presenter {
             if(!model.isConfigured()) {
                 view.showTourNotification();
             }
-        }, 500);
+        }, 200);
     }
 
     Connections {
@@ -66,6 +66,8 @@ Presenter {
     ConfigView {
         id: view;
         uploadFolderPath: model.getUploadFolder() || null
+        userEmail: model.getUserEmail() || null
+        webDetailLink: model.getWebDetailLink() || null
         showReturnAction: model.getUploadFolder() && true
         hasBeenEdited: model.hasUploadFolderChanged
         anchors.fill: parent;
