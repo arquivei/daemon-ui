@@ -3,6 +3,7 @@ package application
 import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientinfo"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientstatus"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/saveconfigs"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
@@ -71,6 +72,20 @@ func (app App) doGetClientInformation() (r clientinfo.Response, err error) {
 	}
 
 	r, err = clientinfo.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
+	return
+}
+
+func (app App) doGetClientStatus() (r clientstatus.Response, err error) {
+	data, err := app.c.SendCommand(clientstatus.NewCommand())
+	if err != nil {
+		return r, err
+	}
+
+	r, err = clientstatus.NewResponse(data)
 	if err != nil {
 		return r, err
 	}

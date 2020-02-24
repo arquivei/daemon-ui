@@ -4,6 +4,7 @@ import (
 	"bitbucket.org/arquivei/daemon-ui-poc/client"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientinfo"
+	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientstatus"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/saveconfigs"
@@ -89,6 +90,18 @@ func (app App) GetClientInformation() (r clientinfo.Response) {
 		app.logger.
 			WithError(err).
 			Error("An unknown error occurred while getting client information")
+	}
+	return
+}
+
+//GetClientStatus method get the status about the client
+func (app App) GetClientStatus() (r clientstatus.Response) {
+	r, err := app.doGetClientStatus()
+	if err != nil {
+		app.logger.
+			WithError(err).
+			Error("An unknown error occurred while getting client status")
+		r = clientstatus.NewGenericError()
 	}
 	return
 }

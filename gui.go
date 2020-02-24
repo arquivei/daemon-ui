@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"time"
 
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -12,20 +13,21 @@ import (
 type QmlBridge struct {
 	core.QObject
 
-	_ bool                                    `property:"isAuthenticated"`
-	_ string                                  `property:"uploadFolderPath"`
-	_ string                                  `property:"hostName"`
-	_ string                                  `property:"userEmail"`
-	_ string                                  `property:"webDetailLink"`
-	_ func(email string, password string)     `slot:"authenticate"`
-	_ func()                                  `slot:"logout"`
-	_ func(uploadFolder string)               `slot:"saveConfigs"`
-	_ func(folder string)                     `slot:"validateFolder"`
-	_ func(success bool, code string)         `signal:"saveConfigsSignal"`
-	_ func(success bool, code, folder string) `signal:"validateFolderSignal"`
-	_ func(success bool, message string)      `signal:"authenticateSignal"`
-	_ func(success bool, code string)         `signal:"logoutSignal"`
-	_ func()                                  `constructor:"init"`
+	_ bool                                                                           `property:"isAuthenticated"`
+	_ string                                                                         `property:"uploadFolderPath"`
+	_ string                                                                         `property:"hostName"`
+	_ string                                                                         `property:"userEmail"`
+	_ string                                                                         `property:"webDetailLink"`
+	_ func(email string, password string)                                            `slot:"authenticate"`
+	_ func()                                                                         `slot:"logout"`
+	_ func(uploadFolder string)                                                      `slot:"saveConfigs"`
+	_ func(folder string)                                                            `slot:"validateFolder"`
+	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
+	_ func(success bool, code, folder string)                                        `signal:"validateFolderSignal"`
+	_ func(success bool, message string)                                             `signal:"authenticateSignal"`
+	_ func(success bool, code string)                                                `signal:"logoutSignal"`
+	_ func(processingStatus string, totalSent int, total int, hasDocumentError bool) `signal:"clientStatusSignal"`
+	_ func()                                                                         `constructor:"init"`
 }
 
 func (bridge *QmlBridge) init() {
@@ -61,6 +63,7 @@ func newGuiInterface() {
 			qmlBridge.SetUserEmail(clientInformation.UserEmail)
 			qmlBridge.SetHostName(clientInformation.ClientHostname)
 			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
+			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 		}()
 	})
 
@@ -75,16 +78,31 @@ func newGuiInterface() {
 		go func() {
 			resp := r.appConnection.SaveConfigs(uploadFolder)
 			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
+			qmlBridge.SetUploadFolderPath(uploadFolder)
 		}()
 	})
 
 	qmlBridge.ConnectValidateFolder(func(folder string) {
 		go func() {
-			folder = core.NewQUrl3(folder, 0).ToLocalFile()
 			resp := r.appConnection.ValidateFolder(folder)
 			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})
+
+	go func() {
+		for range time.NewTicker(time.Second * 5).C {
+			clientStatus := r.appConnection.GetClientStatus()
+			qmlBridge.ClientStatusSignal(
+				clientStatus.ProcessingStatus,
+				clientStatus.TotalSent,
+				clientStatus.TotalDocuments,
+				clientStatus.HasDocumentError,
+			)
+
+			clientInformation := r.appConnection.GetClientInformation()
+			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+		}
+	}()
 
 	gui.QGuiApplication_Exec()
 }
