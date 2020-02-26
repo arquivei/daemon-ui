@@ -1,4 +1,6 @@
 import QtQuick 2.12
+import '../../helpers/timer.js' as Timer
+import '../../constants/times.js' as Times
 import '../..'
 import '.'
 
@@ -6,6 +8,10 @@ Presenter {
     id: root
 
     property MainModel model: MainModel {}
+
+    Component.onCompleted: {
+        Timer.setInterval(() => model.validateFolder(), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+    }
 
     Connections {
         target: view

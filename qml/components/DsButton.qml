@@ -2,7 +2,6 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import '../helpers/factory.js' as Factory
 import '../constants/colors.js' as Colors
-import '../constants/fonts.js' as Fonts
 import '../constants/z-axis.js' as Z
 
 Item {

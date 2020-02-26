@@ -1,4 +1,3 @@
-import QtQuick 2.12
 import '../..'
 import '../../services'
 
@@ -24,6 +23,10 @@ Model {
         return clientService.getWebDetailLink();
     }
 
+    function validateFolder() {
+        configService.validateFolder(configService.getUploadFolder());
+    }
+
     function logout() {
         authService.logout();
     }
@@ -33,7 +36,6 @@ Model {
 
         onUpdateProcessingStatus: {
             root.updateProcessingStatus(processingStatus, totalSent, total, hasDocumentError);
-            configService.validateFolder(configService.getUploadFolder());
             root.checkAuth(authService.isAuthenticated());
         }
 

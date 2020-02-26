@@ -1,6 +1,6 @@
-import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
+import '../../../constants/addresses.js' as Address
 
 DsCard {
     id: root
@@ -56,8 +56,8 @@ DsCard {
 
     DsLink {
         id: emailLink
-        label: 'suporte@arquivei.com.br'
-        href: 'mailto:?to=suporte@arquivei.com.br'
+        label: Address.SUPPORT_EMAIL
+        href: `mailto:?to=${Address.SUPPORT_EMAIL}`
         fontSize: 12
         lineHeight: 16
 
