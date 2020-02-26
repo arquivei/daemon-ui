@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../helpers/timer.js' as Timer
+import '../../constants/times.js' as Times
 import '../..'
 import '.'
 
@@ -19,7 +20,7 @@ Presenter {
             }
 
             app.navigateTo('Main');
-        }, 1500);
+        }, Times.SPLASH_SCREEN_DELAY);
     }
 
     SplashView {

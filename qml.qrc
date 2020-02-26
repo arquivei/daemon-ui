@@ -25,10 +25,12 @@
         <file>qml/components/Tour.qml</file>
         <file>qml/components/TourCard.qml</file>
         <file>qml/components/TourStep.qml</file>
+        <file>qml/constants/addresses.js</file>
         <file>qml/constants/colors.js</file>
         <file>qml/constants/error-messages.js</file>
         <file>qml/constants/fonts.js</file>
         <file>qml/constants/server-codes.js</file>
+        <file>qml/constants/times.js</file>
         <file>qml/constants/z-axis.js</file>
         <file>fonts/pns-bold-webfont.otf</file>
         <file>fonts/pns-medium-webfont.otf</file>

@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import '../constants/colors.js' as Colors
-import '../constants/fonts.js' as Fonts
 
 DsText {
     property string href

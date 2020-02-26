@@ -3,6 +3,7 @@ import QtQuick.Controls 2.12
 import '../../components'
 import './partials'
 import '../../helpers/factory.js' as Factory
+import '../../constants/addresses.js' as Address
 
 Page {
     id: root
@@ -67,14 +68,14 @@ Page {
                 bottomMargin: 16
             }
 
-            useTermsUrl: 'https://app.arquivei.com.br/termos/#condicoes-uso'
-            privacyPolicyUrl: 'https://app.arquivei.com.br/termos/#politica-privacidade'
+            useTermsUrl: Address.USE_TERMS_URL
+            privacyPolicyUrl: Address.PRIVACY_POLICY_URL
         }
 
         LoginForm {
             id: loginForm
 
-            forgotPasswordUrl: 'https://app.arquivei.com.br/login'
+            forgotPasswordUrl: Address.FORGOT_PASSWORD_URL
             isLoading: root.isLoading
 
             width: parent.width

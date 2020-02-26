@@ -4,7 +4,7 @@ import QtQuick.Dialogs 1.2
 import '../../components'
 import './partials'
 import '../../constants/colors.js' as Colors
-import '../../helpers/timer.js' as Timer
+import '../../constants/addresses.js' as Address
 
 Page {
     property string userEmail
@@ -59,7 +59,7 @@ Page {
     DsModal {
         id: authenticationErrorModal
         title: 'Atenção! Erro de autenticação'
-        text: 'Você não está mais autenticado. Tente logar novamente.'
+        text: `Sua sessão expirou ou o usuário logado não possui mais permissão no aplicativo. Entre novamente ou fale com a gente em ${Address.SUPPORT_EMAIL}`
         primaryActionLabel: 'Ir para Login'
         onPrimaryAction: {
             authenticationErrorModal.close();

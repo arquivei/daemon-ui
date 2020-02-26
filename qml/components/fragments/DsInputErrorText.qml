@@ -1,4 +1,3 @@
-import QtQuick 2.12
 import '..'
 import '../../constants/colors.js' as Colors
 

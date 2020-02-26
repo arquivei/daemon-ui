@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../helpers/timer.js' as Timer
+import '../../constants/times.js' as Times
 import '../..'
 import '.'
 
@@ -13,7 +14,7 @@ Presenter {
             if(!model.isConfigured()) {
                 view.showTourNotification();
             }
-        }, 200);
+        }, Times.TOUR_DELAY);
     }
 
     Connections {

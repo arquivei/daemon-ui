@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import '../constants/colors.js' as Colors
 import '../constants/z-axis.js' as Z
 
 Item {
