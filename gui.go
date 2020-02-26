@@ -101,6 +101,7 @@ func newGuiInterface() {
 
 			clientInformation := r.appConnection.GetClientInformation()
 			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 		}
 	}()
 

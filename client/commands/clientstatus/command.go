@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
-	"bitbucket.org/arquivei/poc-daemon/services/upload"
 )
 
 //Command ...
@@ -55,6 +54,6 @@ func NewResponse(data []byte) (r Response, err error) {
 //NewGenericError creates a generic error
 func NewGenericError() Response {
 	return Response{
-		ProcessingStatus: upload.StatusErrorUnknown,
+		ProcessingStatus: "STATUS_ERROR_UNKNOWN",
 	}
 }
