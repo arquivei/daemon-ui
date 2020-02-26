@@ -9,3 +9,11 @@ function setTimeout(cb, delayTime) {
     timer.triggered.connect(cb);
     timer.start();
 }
+
+function setInterval(cb, intervalTime) {
+    const timer = new Timer();
+    timer.interval = intervalTime;
+    timer.repeat = true;
+    timer.triggered.connect(cb);
+    timer.start();
+}

@@ -10,7 +10,9 @@ Page {
     property bool showReturnAction
     property bool hasBeenEdited
     property bool isLoading: false
+    property string userEmail
     property string uploadFolderPath
+    property string webDetailLink
     property var tourSteps: [
     {
         id: 'step1',
@@ -84,7 +86,8 @@ Page {
         folder: shortcuts.home
         selectFolder: true
         onAccepted: {
-            validateFolder(uploadFolderDialog.fileUrl);
+            const url = uploadFolderDialog.fileUrl.toString().replace('file://', '');
+            validateFolder(url);
         }
     }
 
@@ -148,11 +151,15 @@ Page {
 
         Header {
             id: header
+            userEmail: root.userEmail
             onLogout: {
                 root.logout();
             }
             onTourStart: {
                 guidedTour.start();
+            }
+            onAccessWebDetailsPage: {
+                Qt.openUrlExternally(root.webDetailLink);
             }
         }
 

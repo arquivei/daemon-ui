@@ -5,10 +5,12 @@ import '../helpers/factory.js' as Factory
 
 Popup {
     property bool showSecondaryButton
+    property bool showActions: true
+    property string title
+    property string text
+    property string primaryActionLabel
     property string secondaryActionLabel
-    property alias title: titleText.text
-    property alias text: descriptionText.text
-    property alias primaryActionLabel: primaryButton.text
+    property string titleColor: Colors.BRAND_TERTIARY_DEFAULT
 
     signal primaryAction()
     signal secondaryAction()
@@ -17,8 +19,7 @@ Popup {
     modal: true
     focus: true
     padding: 16
-    closePolicy: Popup.CloseOnEscape
-
+    closePolicy: Popup.NoAutoClose
     width: 418
     height: content.implicitHeight
     anchors.centerIn: parent
@@ -40,7 +41,8 @@ Popup {
 
         DsText {
             id: titleText
-            color: Colors.BRAND_TERTIARY_DEFAULT
+            text: root.title
+            color: root.titleColor
             font.weight: 'Bold'
             fontSize: 18
             lineHeight: 26
@@ -51,6 +53,7 @@ Popup {
 
         DsText {
             id: descriptionText
+            text: root.text
             fontSize: 14
             lineHeight: 22
             color: Colors.GRAYSCALE_500
@@ -65,26 +68,14 @@ Popup {
         }
 
         Loader {
-            id: secondaryButtonLoader
-            sourceComponent: showSecondaryButton ? Factory.createComponentFragment('DsModalSecondaryButton') : null
+            id: actionsLoader
+            width: parent.width
+            sourceComponent: showActions ? Factory.createComponentFragment('DsModalActions') : null
 
             anchors {
-                left: parent.left
                 top: descriptionText.bottom
-                topMargin: 32
+                topMargin: showActions ? 32 : 0
             }
-        }
-
-        DsButton {
-            id: primaryButton
-
-            anchors {
-                right: parent.right
-                top: descriptionText.bottom
-                topMargin: 32
-            }
-
-            onClicked: primaryAction()
         }
     }
 }

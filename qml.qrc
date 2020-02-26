@@ -2,10 +2,12 @@
     <qresource prefix="/">
         <file>qml/components/fragments/DsButtonSpinner.qml</file>
         <file>qml/components/fragments/DsInputErrorText.qml</file>
+        <file>qml/components/fragments/DsModalActions.qml</file>
         <file>qml/components/fragments/DsModalSecondaryButton.qml</file>
         <file>qml/components/fragments/Empty.qml</file>
         <file>qml/components/fragments/TourCardPrevAction.qml</file>
         <file>qml/components/fragments/TourCardCloseAction.qml</file>
+        <file>qml/components/ConnectionStatus.qml</file>
         <file>qml/components/DsAlert.qml</file>
         <file>qml/components/DsButton.qml</file>
         <file>qml/components/DsCard.qml</file>
@@ -19,12 +21,14 @@
         <file>qml/components/DsText.qml</file>
         <file>qml/components/Header.qml</file>
         <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/SyncProgress.qml</file>
         <file>qml/components/Tour.qml</file>
         <file>qml/components/TourCard.qml</file>
         <file>qml/components/TourStep.qml</file>
         <file>qml/constants/colors.js</file>
         <file>qml/constants/error-messages.js</file>
         <file>qml/constants/fonts.js</file>
+        <file>qml/constants/server-codes.js</file>
         <file>qml/constants/z-axis.js</file>
         <file>fonts/pns-bold-webfont.otf</file>
         <file>fonts/pns-medium-webfont.otf</file>
@@ -34,6 +38,7 @@
         <file>qml/helpers/timer.js</file>
         <file>qml/helpers/validator.js</file>
         <file>images/alert-danger.svg</file>
+        <file>images/alert-success.svg</file>
         <file>images/app-logo-placeholder.svg</file>
         <file>images/arquivei-icon.svg</file>
         <file>images/arquivei-main.svg</file>
@@ -41,6 +46,9 @@
         <file>images/material-arrow-down.svg</file>
         <file>images/material-close.svg</file>
         <file>images/material-folder.svg</file>
+        <file>images/white-alert-danger.svg</file>
+        <file>images/white-alert-success.svg</file>
+        <file>images/white-alert-sync.svg</file>
         <file>qml/screens/Auth/partials/FormAlert.qml</file>
         <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
         <file>qml/screens/Auth/partials/LoginForm.qml</file>
@@ -55,11 +63,18 @@
         <file>qml/screens/Config/ConfigModel.qml</file>
         <file>qml/screens/Config/ConfigPresenter.qml</file>
         <file>qml/screens/Config/ConfigView.qml</file>
+        <file>qml/screens/Main/partials/DownloadSection.qml</file>
+        <file>qml/screens/Main/partials/SendingStatusInfo.qml</file>
+        <file>qml/screens/Main/partials/SendSuccessWarning.qml</file>
+        <file>qml/screens/Main/partials/UploadSection.qml</file>
+        <file>qml/screens/Main/MainModel.qml</file>
         <file>qml/screens/Main/MainPresenter.qml</file>
+        <file>qml/screens/Main/MainView.qml</file>
         <file>qml/screens/Splash/SplashModel.qml</file>
         <file>qml/screens/Splash/SplashPresenter.qml</file>
         <file>qml/screens/Splash/SplashView.qml</file>
         <file>qml/services/AuthService.qml</file>
+        <file>qml/services/ClientService.qml</file>
         <file>qml/services/ConfigService.qml</file>
         <file>qml/main.qml</file>
         <file>qml/Model.qml</file>
