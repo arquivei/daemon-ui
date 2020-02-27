@@ -2,8 +2,10 @@ package main
 
 import (
 	"os"
+	"strings"
 	"time"
 
+	"bitbucket.org/arquivei/daemon-ui-poc/impl/file"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
@@ -18,6 +20,7 @@ type QmlBridge struct {
 	_ string                                                                         `property:"hostName"`
 	_ string                                                                         `property:"userEmail"`
 	_ string                                                                         `property:"webDetailLink"`
+	_ string                                                                         `property:"logsPath"`
 	_ func(email string, password string)                                            `slot:"authenticate"`
 	_ func()                                                                         `slot:"logout"`
 	_ func(uploadFolder string)                                                      `slot:"saveConfigs"`
@@ -38,6 +41,7 @@ func (bridge *QmlBridge) init() {
 	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
+	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
 }
 
 func newGuiInterface() {
@@ -76,6 +80,7 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectSaveConfigs(func(uploadFolder string) {
 		go func() {
+			uploadFolder = formatFolderPath(uploadFolder)
 			resp := r.appConnection.SaveConfigs(uploadFolder)
 			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
 			qmlBridge.SetUploadFolderPath(uploadFolder)
@@ -84,6 +89,7 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectValidateFolder(func(folder string) {
 		go func() {
+			folder = formatFolderPath(folder)
 			resp := r.appConnection.ValidateFolder(folder)
 			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
 		}()
@@ -106,4 +112,8 @@ func newGuiInterface() {
 	}()
 
 	gui.QGuiApplication_Exec()
+}
+
+func formatFolderPath(path string) string {
+	return strings.Replace(path, file.GetURIScheme(), "", -1)
 }

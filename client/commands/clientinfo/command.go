@@ -20,6 +20,7 @@ type Response struct {
 	UploadFolder        string
 	UserEmail           string
 	IsAuthenticated     bool
+	LogsPath            string
 }
 
 //NewCommand method creates a new command

@@ -89,7 +89,7 @@ Page {
         folder: shortcuts.home
         selectFolder: true
         onAccepted: {
-            const url = uploadFolderDialog.fileUrl.toString().replace('file://', '');
+            const url = uploadFolderDialog.fileUrl.toString();
             validateFolder(url);
         }
     }

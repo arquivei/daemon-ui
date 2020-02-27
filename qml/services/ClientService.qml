@@ -16,7 +16,7 @@ Item {
     }
 
     function getLogsPath() {
-        return `file://${QmlBridge.logsPath}`;
+        return QmlBridge.logsPath;
     }
 
     function getWebDetailLink() {
