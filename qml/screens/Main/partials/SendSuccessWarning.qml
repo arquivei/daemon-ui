@@ -3,6 +3,8 @@ import '../../../components'
 import '../../../constants/colors.js' as Colors
 
 Item {
+    property string title
+    property string description
     property bool show
 
     id: root
@@ -12,13 +14,13 @@ Item {
 
     DsText {
         id: firstRow
-        text: 'Um ou mais arquivos não foram enviados.'
+        text: root.title
         color: Colors.EXTRA_ORANGE_DEFAULT
         lineHeight: 16
     }
 
     DsText {
-        text: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.'
+        text: root.description
         lineHeight: 16
 
         anchors {

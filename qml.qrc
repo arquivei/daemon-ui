@@ -30,6 +30,7 @@
         <file>qml/constants/error-messages.js</file>
         <file>qml/constants/fonts.js</file>
         <file>qml/constants/server-codes.js</file>
+        <file>qml/constants/texts.js</file>
         <file>qml/constants/times.js</file>
         <file>qml/constants/z-axis.js</file>
         <file>fonts/pns-bold-webfont.otf</file>

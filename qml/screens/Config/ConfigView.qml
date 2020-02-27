@@ -4,6 +4,8 @@ import QtQuick.Dialogs 1.2
 import '../../components'
 import './partials'
 import '../../constants/colors.js' as Colors
+import '../../constants/addresses.js' as Address
+import '../../constants/texts.js' as Texts
 import '../../helpers/factory.js' as Factory
 
 Page {
@@ -13,6 +15,7 @@ Page {
     property string userEmail
     property string uploadFolderPath
     property string webDetailLink
+    property string logsPath
     property var tourSteps: [
     {
         id: 'step1',
@@ -93,9 +96,9 @@ Page {
 
     DsModal {
         id: tourNotificationModal
-        title: 'Configurando o Synca'
+        title: Texts.Config.Modals.BeginTour.TITLE
         showSecondaryButton: true
-        text: 'Seja bem-vindo ao Synca! Para começar, mostraremos à você nossas funcionalidades e como melhor usá-las para configurar e acompanhar o funcionamento do aplicativo.'
+        text: Texts.Config.Modals.BeginTour.DESCRIPTION
         secondaryActionLabel: 'Sair'
         primaryActionLabel: 'Começar o Tour'
         onPrimaryAction: {
@@ -107,11 +110,11 @@ Page {
 
     DsModal {
         id: notSavedChangesAlertModal
-        title: 'Alteração não salva'
+        title: Texts.Config.Modals.NotSavedModifications.TITLE
         showSecondaryButton: true
-        text: 'Você realizou a alteração da pasta de upload mas não salvou a alteração. Deseja voltar sem salvar?'
-        secondaryActionLabel: 'Fechar'
-        primaryActionLabel: 'Sim'
+        text: Texts.Config.Modals.NotSavedModifications.DESCRIPTION
+        secondaryActionLabel: Texts.Config.Modals.NotSavedModifications.SECONDARY
+        primaryActionLabel: Texts.Config.Modals.NotSavedModifications.PRIMARY
         onPrimaryAction: {
             notSavedChangesAlertModal.close();
             returnToMain();
@@ -120,10 +123,25 @@ Page {
     }
 
     DsModal {
+        id: logoutModal
+        title: Texts.General.Modals.LogoutAlert.TITLE
+        showSecondaryButton: true
+        text: Texts.General.Modals.LogoutAlert.DESCRIPTION
+        secondaryActionLabel: Texts.General.Modals.LogoutAlert.SECONDARY
+        primaryActionLabel: Texts.General.Modals.LogoutAlert.PRIMARY
+        onPrimaryAction: {
+            logoutModal.close();
+        }
+        onSecondaryAction: {
+            logout();
+        }
+    }
+
+    DsModal {
         id: tourCompletedModal
-        title: 'Tour finalizado'
-        text: 'Agora você já sabe como configurar a sua integração, selecionando as pastas de Upload e Download (se disponível). Parabéns!'
-        primaryActionLabel: 'Sair do Tour'
+        title: Texts.Config.Modals.FinishTour.TITLE
+        text: Texts.Config.Modals.FinishTour.DESCRIPTION
+        primaryActionLabel: Texts.Config.Modals.FinishTour.PRIMARY
         onPrimaryAction: {
             tourCompletedModal.close();
         }
@@ -131,7 +149,6 @@ Page {
 
     DsModal {
         id: errorModal
-        title: 'Ocorreu um Erro'
         primaryActionLabel: 'Entendi'
         onPrimaryAction: {
             errorModal.close();
@@ -152,20 +169,44 @@ Page {
         Header {
             id: header
             userEmail: root.userEmail
-            onLogout: {
-                root.logout();
-            }
-            onTourStart: {
-                guidedTour.start();
-            }
-            onAccessWebDetailsPage: {
-                Qt.openUrlExternally(root.webDetailLink);
-            }
+            current: configAction
+            alertAction: logoutAction
+            actions: [
+                Action {
+                    id: configAction
+                    text: Texts.General.Menu.CONFIG
+                },
+                Action {
+                    id: accessPlatformAction
+                    text: Texts.General.Menu.ACCESS_PLATFORM
+                    onTriggered: Qt.openUrlExternally(webDetailLink)
+                },
+                Action {
+                    id: tourAction
+                    text: Texts.General.Menu.TOUR
+                    onTriggered: guidedTour.start()
+                },
+                Action {
+                    id: aboutAction
+                    text: Texts.General.Menu.ABOUT
+                    onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
+                },
+                Action {
+                    id: logsAction
+                    text: Texts.General.Menu.LOGS
+                    onTriggered: Qt.openUrlExternally(logsPath)
+                },
+                Action {
+                    id: logoutAction
+                    text: Texts.General.Menu.LOGOUT
+                    onTriggered: logoutModal.open()
+                }
+            ]
         }
 
         DsText {
             id: title
-            text: 'Configurar integração'
+            text: Texts.Config.TITLE
             fontSize: 24
             font.weight: 'Bold'
             lineHeight: 32
@@ -180,6 +221,8 @@ Page {
         UploadSection {
             id: uploadSection
             folderPath: uploadFolderPath
+            title: Texts.Config.UPLOAD_SECTION_TITLE
+            description: Texts.Config.UPLOAD_SECTION_DESCRIPTION
 
             anchors {
                 top: title.bottom

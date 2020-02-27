@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import '../../../components'
 import '../../../helpers/validator.js' as Validator
+import '../../../constants/texts.js' as Texts
 
 Item {
     property string emailValue: ''
@@ -16,7 +17,7 @@ Item {
         if (Validator.isEmailValid(email)) {
             invalidEmailMsg = '';
         } else {
-            invalidEmailMsg = 'O formato do e-mail é inválido.'
+            invalidEmailMsg = Texts.Auth.INVALID_EMAIL_FORMAT
         }
     }
 
@@ -53,7 +54,7 @@ Item {
         id: inputEmail
         text: emailValue
         label: 'Usuário:'
-        placeholder: 'Insira seu e-mail aqui'
+        placeholder: Texts.Auth.USER_INPUT_PLACEHOLDER
         errorMsg: invalidEmailMsg
         enabled: !isLoading
 
@@ -71,7 +72,7 @@ Item {
         id: inputPassword
         text: passwordValue
         label: 'Senha:'
-        placeholder: 'No mínimo 06 caracteres'
+        placeholder: Texts.Auth.PASSWORD_INPUT_PLACEHOLDER
         isPassword: true
         enabled: !isLoading
 

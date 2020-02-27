@@ -3,6 +3,10 @@ import '../../../constants/colors.js' as Colors
 import '../../../constants/server-codes.js' as Codes
 
 DsCard {
+    property string title
+    property string description
+    property string successWarningTitle
+    property string successWarningDescription
     property string processingStatus
     property int totalSent: 0
     property int total: 0
@@ -38,8 +42,8 @@ DsCard {
     height: 138
 
     DsText {
-        id: title
-        text: 'Upload de Documentos'
+        id: titleText
+        text: root.title
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
@@ -54,14 +58,14 @@ DsCard {
     }
 
     DsText {
-        id: description
-        text: 'Status de envio de seus documentos para a Arquivei.'
+        id: descriptionText
+        text: root.description
         fontSize: 12
         lineHeight: 16
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: title.bottom
+            top: titleText.bottom
             left: parent.left
             leftMargin: 16
         }
@@ -76,7 +80,7 @@ DsCard {
         status: getSyncProgressStatus(processingStatus)
 
         anchors {
-            top: description.bottom
+            top: descriptionText.bottom
             topMargin: 24
             left: parent.left
             leftMargin: 12
@@ -99,6 +103,8 @@ DsCard {
     SendSuccessWarning {
         id: sendSuccessWarning
         show: processingStatus === Codes.DocumentProcessingStatus.STATUS_FINISHED && hasDocumentError
+        title: root.successWarningTitle
+        description: root.successWarningDescription
 
         anchors {
             left: progress.right

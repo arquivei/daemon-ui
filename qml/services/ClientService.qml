@@ -15,6 +15,10 @@ Item {
         return QmlBridge.hostName;
     }
 
+    function getLogsPath() {
+        return `file://${QmlBridge.logsPath}`;
+    }
+
     function getWebDetailLink() {
         return QmlBridge.webDetailLink;
     }

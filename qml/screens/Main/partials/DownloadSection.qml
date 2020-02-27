@@ -3,6 +3,9 @@ import '../../../constants/colors.js' as Colors
 import '../../../constants/addresses.js' as Address
 
 DsCard {
+    property string title
+    property string description
+
     id: root
     width: parent.width
     type: DsCard.Types.Bordered
@@ -10,8 +13,8 @@ DsCard {
     height: 132
 
     DsText {
-        id: title
-        text: 'Download de Documentos: em breve!'
+        id: titleText
+        text: root.title
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
@@ -27,13 +30,13 @@ DsCard {
 
     DsText {
         id: descriptionText
-        text: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!'
+        text: root.description
         fontSize: 12
         lineHeight: 16
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: title.bottom
+            top: titleText.bottom
             left: parent.left
             leftMargin: 16
         }
