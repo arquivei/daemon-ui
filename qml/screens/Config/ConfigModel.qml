@@ -11,7 +11,6 @@ Model {
     signal saveConfigsSuccess();
     signal saveConfigsError(string errorTitle, string errorMessage);
     signal logoutSuccess();
-    signal logoutError(string msg);
 
     function logout() {
         authService.logout();
@@ -37,6 +36,10 @@ Model {
         return clientService.getUserEmail();
     }
 
+    function getLogsPath() {
+        return clientService.getLogsPath();
+    }
+
     function getWebDetailLink() {
         return clientService.getWebDetailLink();
     }
@@ -45,9 +48,6 @@ Model {
         id: authService
         onLogoutSuccess: {
             root.logoutSuccess();
-        }
-        onLogoutError: {
-            root.logoutError('Logout Error')
         }
     }
 

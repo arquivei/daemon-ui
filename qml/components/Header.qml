@@ -3,11 +3,9 @@ import QtQuick.Controls 2.12
 
 Item {
     property string userEmail;
-
-    signal logout()
-    signal tourStart()
-    signal goToConfig()
-    signal accessWebDetailsPage()
+    property list<Action> actions;
+    property Action current;
+    property Action alertAction;
 
     id: root
     width: parent.width
@@ -28,27 +26,9 @@ Item {
     DsDropDownMenu {
         id: menu
         menuText: root.userEmail
-        firstAction: firstAction
-
-        actions: [
-            Action {
-                id: firstAction
-                text: 'Configurações'
-                onTriggered: goToConfig()
-            },
-            Action {
-                text: 'Acessar a Plataforma'
-                onTriggered: accessWebDetailsPage()
-            },
-            Action {
-                text: 'Iniciar Tour'
-                onTriggered: tourStart()
-            },
-            Action {
-                text: 'Sair'
-                onTriggered: root.logout()
-            }
-        ]
+        current: root.current
+        alertAction: root.alertAction
+        actions: root.actions
 
         anchors {
             right: parent.right

@@ -7,9 +7,8 @@ Model {
     signal updateProcessingStatus(string processingStatus, int totalSent, int total, bool hasDocumentError);
     signal updateConnectionStatus(bool isOnline);
     signal checkAuth(bool isAuthenticated);
-    signal folderErrorValidation();
+    signal validateFolderError(string errorTitle, string errorMessage);
     signal logoutSuccess();
-    signal logoutError(string error);
 
     function getHostName() {
         return clientService.getHostName();
@@ -21,6 +20,10 @@ Model {
 
     function getWebDetailLink() {
         return clientService.getWebDetailLink();
+    }
+
+    function getLogsPath() {
+        return clientService.getLogsPath();
     }
 
     function validateFolder() {
@@ -50,16 +53,13 @@ Model {
         onLogoutSuccess: {
             root.logoutSuccess();
         }
-        onLogoutError: {
-            root.logoutError('Logout Error')
-        }
     }
 
     ConfigService {
         id: configService
 
         onValidateFolderError: {
-            root.folderErrorValidation();
+            root.validateFolderError(errorTitle, errorMessage);
         }
     }
 }

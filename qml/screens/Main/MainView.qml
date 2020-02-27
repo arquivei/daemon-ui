@@ -5,11 +5,13 @@ import '../../components'
 import './partials'
 import '../../constants/colors.js' as Colors
 import '../../constants/addresses.js' as Address
+import '../../constants/texts.js' as Texts
 
 Page {
     property string userEmail
     property string computerName
     property string webDetailLink
+    property string logsPath
 
     signal goToConfig()
     signal logout()
@@ -34,33 +36,50 @@ Page {
         authenticationErrorModal.open();
     }
 
-    function showFolderPermissionModal() {
-        permissionErrorModal.open();
+    function showFolderValidationErrorModal(errorTitle, errorMessage) {
+        folderValidationErrorModal.title = errorTitle;
+        folderValidationErrorModal.text = errorMessage;
+        folderValidationErrorModal.open();
     }
 
     id: root
 
     DsModal {
-        id: permissionErrorModal
-        title: 'Atenção! Erro de permissão'
+        id: logoutModal
+        title: Texts.General.Modals.LogoutAlert.TITLE
         showSecondaryButton: true
-        text: 'Não é possível fazer o upload dos arquivos a partir da pasta selecionada por falta de permissão. Dê permissão de leitura e/ou escrita à pasta ou escolha uma nova pasta.'
+        text: Texts.General.Modals.LogoutAlert.DESCRIPTION
+        secondaryActionLabel: Texts.General.Modals.LogoutAlert.SECONDARY
+        primaryActionLabel: Texts.General.Modals.LogoutAlert.PRIMARY
+        onPrimaryAction: {
+            logoutModal.close();
+        }
+        onSecondaryAction: {
+            logout();
+        }
+    }
+
+    DsModal {
+        id: folderValidationErrorModal
+        title: Texts.General.Modals.FolderPermissionAlert.TITLE
+        text: Texts.General.Modals.FolderPermissionAlert.DESCRIPTION
+        showSecondaryButton: true
         secondaryActionLabel: 'Fechar'
         primaryActionLabel: 'Ir para Configurações'
         onPrimaryAction: {
-            permissionErrorModal.close();
+            folderValidationErrorModal.close();
             goToConfig();
         }
         onSecondaryAction: {
-            permissionErrorModal.close();
+            folderValidationErrorModal.close();
         }
     }
 
     DsModal {
         id: authenticationErrorModal
-        title: 'Atenção! Erro de autenticação'
-        text: `Sua sessão expirou ou o usuário logado não possui mais permissão no aplicativo. Entre novamente ou fale com a gente em ${Address.SUPPORT_EMAIL}`
-        primaryActionLabel: 'Ir para Login'
+        title: Texts.Main.Modals.AuthenticationLost.TITLE
+        text: Texts.Main.Modals.AuthenticationLost.DESCRIPTION
+        primaryActionLabel: Texts.Main.Modals.AuthenticationLost.PRIMARY
         onPrimaryAction: {
             authenticationErrorModal.close();
             logout();
@@ -70,9 +89,9 @@ Page {
     DsModal {
         id: connectionErrorModal
         showActions: false
-        title: 'Offline - Erro de conexão!'
+        title: Texts.Main.Modals.ConnectionError.TITLE
+        text: Texts.Main.Modals.ConnectionError.DESCRIPTION
         titleColor: Colors.FEEDBACK_ERROR_DEFAULT
-        text: '<strong>Falha ao tentar conectar aos nossos servidores.</strong><br>Verifique sua conexão com a internet, firewall, configuração de proxy ou antivírus.<br><br>Tentaremos reconectar automaticamente a cada 60s...'
     }
 
     Item {
@@ -89,15 +108,34 @@ Page {
         Header {
             id: header
             userEmail: root.userEmail
-            onLogout: {
-                root.logout();
-            }
-            onGoToConfig: {
-                root.goToConfig();
-            }
-            onAccessWebDetailsPage: {
-                Qt.openUrlExternally(webDetailLink);
-            }
+            alertAction: logoutAction
+            actions: [
+                Action {
+                    id: configAction
+                    text: Texts.General.Menu.CONFIG
+                    onTriggered: root.goToConfig();
+                },
+                Action {
+                    id: accessPlatformAction
+                    text: Texts.General.Menu.ACCESS_PLATFORM
+                    onTriggered: Qt.openUrlExternally(webDetailLink)
+                },
+                Action {
+                    id: aboutAction
+                    text: Texts.General.Menu.ABOUT
+                    onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
+                },
+                Action {
+                    id: logsAction
+                    text: Texts.General.Menu.LOGS
+                    onTriggered: Qt.openUrlExternally(logsPath)
+                },
+                Action {
+                    id: logoutAction
+                    text: Texts.General.Menu.LOGOUT
+                    onTriggered: logoutModal.open()
+                }
+            ]
         }
 
         DsText {
@@ -126,6 +164,10 @@ Page {
 
         UploadSection {
             id: uploadSection
+            title: Texts.Main.UPLOAD_SECTION_TITLE
+            description: Texts.Main.UPLOAD_SECTION_DESCRIPTION
+            successWarningTitle: Texts.Main.SUCCESS_SENDING_WARNING_TITLE
+            successWarningDescription: Texts.Main.SUCCESS_SENDING_WARNING_DESCRIPTION
 
             anchors {
                 top: title.bottom
@@ -135,6 +177,8 @@ Page {
 
         DownloadSection {
             id: downloadSection
+            title: Texts.Main.DOWNLOAD_SECTION_TITLE
+            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
 
             anchors {
                 top: uploadSection.bottom

@@ -4,6 +4,8 @@ import '../../../constants/colors.js' as Colors
 import '../../../helpers/factory.js' as Factory
 
 DsCard {
+    property string title
+    property string description
     property string folderPath
     property bool isBlocked: false
 
@@ -14,8 +16,8 @@ DsCard {
     height: 142
 
     DsText {
-        id: title
-        text: 'Upload de Documentos'
+        id: titleText
+        text: root.title
         fontSize: 18
         font.weight: 'Bold'
         lineHeight: 26
@@ -30,14 +32,14 @@ DsCard {
     }
 
     DsText {
-        id: description
-        text: 'Selecione a pasta onde estão os arquivos que deseja enviar para a Arquivei'
+        id: descriptionText
+        text: root.description
         fontSize: 12
         lineHeight: 16
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: title.bottom
+            top: titleText.bottom
             left: parent.left
             leftMargin: 16
         }
@@ -48,7 +50,7 @@ DsCard {
         sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateUploadFolder') : Factory.createPartialFragment('Config', 'SelectUploadFolder')
 
         anchors {
-            top: description.bottom
+            top: descriptionText.bottom
             topMargin: 28
             left: parent.left
             leftMargin: 16

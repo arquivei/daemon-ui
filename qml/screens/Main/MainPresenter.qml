@@ -42,8 +42,8 @@ Presenter {
             }
         }
 
-        onFolderErrorValidation: {
-            view.showFolderPermissionModal();
+        onValidateFolderError: {
+            view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
         onLogoutSuccess: {
@@ -56,6 +56,7 @@ Presenter {
         userEmail: model.getUserEmail() || null
         computerName: model.getHostName() || null
         webDetailLink: model.getWebDetailLink() || null
+        logsPath: model.getLogsPath() || null
         anchors.fill: parent;
     }
 }

@@ -6,7 +6,18 @@ import '../constants/colors.js' as Colors
 Item {
     property list<Action> actions
     property alias menuText: headerText.text
-    property Action firstAction
+    property Action current
+    property Action alertAction
+
+    function getMenuItemTextColor(menuItem) {
+        if (menuItem.highlighted && menuItem.action === alertAction) {
+            return Colors.FEEDBACK_ERROR_DEFAULT;
+        }
+        if (menuItem.action === current || menuItem.highlighted) {
+            return Colors.BRAND_TERTIARY_DEFAULT;
+        }
+        return Colors.GRAYSCALE_500;
+    }
 
     id: root
     implicitWidth: childrenRect.width
@@ -91,8 +102,8 @@ Item {
 
             contentItem: DsText {
                 text: menuItem.text
-                color: menuItem.highlighted ? Colors.FEEDBACK_ERROR_DEFAULT : Colors.GRAYSCALE_500
-                font.weight: menuItem.highlighted ? Font.Bold : Font.Normal
+                color: getMenuItemTextColor(menuItem)
+                font.weight: menuItem.action === current ? Font.Bold : Font.Normal
                 fontSize: 14
                 lineHeight: 22
                 horizontalAlignment: Text.AlignLeft
@@ -127,7 +138,7 @@ Item {
                contentItem: Rectangle {
                    implicitWidth: 200
                    implicitHeight: 1
-                   color: menuItem.action === firstAction ? "transparent" : Colors.GRAYSCALE_300
+                   color: menuItem.action === actions[0] ? "transparent" : Colors.GRAYSCALE_300
                }
            }
         }
