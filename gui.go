@@ -96,7 +96,7 @@ func newGuiInterface() {
 	})
 
 	go func() {
-		for range time.NewTicker(time.Second * 5).C {
+		for range time.NewTicker(time.Second * 30).C {
 			clientStatus := r.appConnection.GetClientStatus()
 			qmlBridge.ClientStatusSignal(
 				clientStatus.ProcessingStatus,
