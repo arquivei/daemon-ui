@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/impl/file"
+	"arquivei.com.br/daemon-ui/impl/file"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"

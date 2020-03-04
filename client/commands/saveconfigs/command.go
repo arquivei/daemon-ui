@@ -3,7 +3,7 @@ package saveconfigs
 import (
 	"encoding/json"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	"arquivei.com.br/daemon-ui/client/commands"
 )
 
 //Command ...

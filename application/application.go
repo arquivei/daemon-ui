@@ -1,14 +1,14 @@
 package application
 
 import (
-	"bitbucket.org/arquivei/daemon-ui-poc/client"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/authenticate"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientinfo"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/clientstatus"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/logout"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/ping"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/saveconfigs"
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands/validatefolder"
+	"arquivei.com.br/daemon-ui/client"
+	"arquivei.com.br/daemon-ui/client/commands/authenticate"
+	"arquivei.com.br/daemon-ui/client/commands/clientinfo"
+	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
+	"arquivei.com.br/daemon-ui/client/commands/logout"
+	"arquivei.com.br/daemon-ui/client/commands/ping"
+	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
+	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
 	"github.com/sirupsen/logrus"
 )
 

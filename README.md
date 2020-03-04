@@ -1,4 +1,4 @@
-# Poc-Daemon - Interface gráfica
+# Daemon UI - Interface gráfica
 
 Este projeto contém a GUI do daemon.
 
@@ -20,12 +20,12 @@ Verifique qual o arquivo correto de profile do seu terminal (~/.profile ou ~/.ba
 Clone direto do bitbucket:
 
 	$ mkdir -p $(go env GOPATH)/src/bitbucket.org/arquivei
-	$ git clone git@bitbucket.org:arquivei/daemon-ui-poc.git
-    $ (go env GOPATH)/src/bitbucket.org/arquivei/daemon-ui-poc
+	$ git clone git@bitbucket.org:arquivei/daemon-ui.git
+    $ (go env GOPATH)/src/arquivei.com.br/daemon-ui
 
 Entre no diretório do projeto:
 
-	$ cd $(go env GOPATH)/src/bitbucket.org/arquivei/daemon-ui-poc
+	$ cd $(go env GOPATH)/src/arquivei.com.br/daemon-ui
 
 Para rodar o programa localmente, instale as dependências e execute a aplicação:
 

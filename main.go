@@ -3,8 +3,8 @@ package main
 import (
 	"runtime/debug"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/impl/logging"
-	"bitbucket.org/arquivei/daemon-ui-poc/service"
+	"arquivei.com.br/daemon-ui/impl/logging"
+	"arquivei.com.br/daemon-ui/service"
 	log "github.com/sirupsen/logrus"
 )
 

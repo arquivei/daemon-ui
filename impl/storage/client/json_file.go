@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/client"
-	"bitbucket.org/arquivei/daemon-ui-poc/impl/file"
+	"arquivei.com.br/daemon-ui/client"
+	"arquivei.com.br/daemon-ui/impl/file"
 )
 
 type dbClient struct {

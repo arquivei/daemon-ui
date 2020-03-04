@@ -1,7 +1,7 @@
 package logging
 
 import (
-	fileLog "bitbucket.org/arquivei/daemon-ui-poc/impl/logging/file"
+	fileLog "arquivei.com.br/daemon-ui/impl/logging/file"
 	log "github.com/sirupsen/logrus"
 )
 

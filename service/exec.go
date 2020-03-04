@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"time"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/application"
+	"arquivei.com.br/daemon-ui/application"
 )
 
 const maxTries = 30

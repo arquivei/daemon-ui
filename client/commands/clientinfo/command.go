@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	"arquivei.com.br/daemon-ui/client/commands"
 )
 
 //Command ...

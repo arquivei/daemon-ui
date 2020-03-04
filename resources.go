@@ -4,9 +4,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/application"
-	"bitbucket.org/arquivei/daemon-ui-poc/client"
-	clientStorageImpl "bitbucket.org/arquivei/daemon-ui-poc/impl/storage/client"
+	"arquivei.com.br/daemon-ui/application"
+	"arquivei.com.br/daemon-ui/client"
+	clientStorageImpl "arquivei.com.br/daemon-ui/impl/storage/client"
 	log "github.com/sirupsen/logrus"
 )
 

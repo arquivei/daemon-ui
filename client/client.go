@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"net"
 
-	"bitbucket.org/arquivei/daemon-ui-poc/client/commands"
+	"arquivei.com.br/daemon-ui/client/commands"
 )
 
 type Client struct{}
