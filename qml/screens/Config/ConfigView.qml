@@ -22,7 +22,7 @@ Page {
         ref: uploadSection,
         parent: content,
         title: 'Configurar Upload',
-        description: 'Clique em selecionar pasta para configurar o envio de documentos para a plataforma Arquivei.',
+        description: 'Primeiro, você deve escolher a pasta onde estão os documentos que serão enviados para o Arquivei.',
         chipInfo: '01/02',
         position: {
             top: uploadSection.bottom,
@@ -36,7 +36,7 @@ Page {
         ref: btnSave,
         parent: content,
         title: 'Finalizar Configuração',
-        description: 'Ao selecionar a pasta de Upload, você deverá clicar em "Salvar" para prosseguir.',
+        description: 'Depois de escolher a pasta, é só clicar em Salvar. Vamos lá?',
         chipInfo: '02/02',
         position: {
             bottom: btnSave.top,
@@ -44,7 +44,7 @@ Page {
             right: btnSave.right
         },
         prevLabel: 'Voltar',
-        nextLabel: 'Próximo'
+        nextLabel: 'Finalizar'
     }
     ]
 
@@ -80,7 +80,6 @@ Page {
     Tour {
         id: guidedTour
         steps: root.tourSteps
-        onStepsCompleted: tourCompletedModal.open()
     }
 
     FileDialog {
@@ -134,16 +133,6 @@ Page {
         }
         onSecondaryAction: {
             logout();
-        }
-    }
-
-    DsModal {
-        id: tourCompletedModal
-        title: Texts.Config.Modals.FinishTour.TITLE
-        text: Texts.Config.Modals.FinishTour.DESCRIPTION
-        primaryActionLabel: Texts.Config.Modals.FinishTour.PRIMARY
-        onPrimaryAction: {
-            tourCompletedModal.close();
         }
     }
 

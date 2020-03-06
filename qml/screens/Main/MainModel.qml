@@ -1,5 +1,6 @@
 import '../..'
 import '../../services'
+import '../../constants/error-messages.js' as Errors
 
 Model {
     id: root
@@ -59,7 +60,7 @@ Model {
         id: configService
 
         onValidateFolderError: {
-            root.validateFolderError(errorTitle, errorMessage);
+            root.validateFolderError(Errors.Main.ValidateFolder[code].title, Errors.Main.ValidateFolder[code].description);
         }
     }
 }

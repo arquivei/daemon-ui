@@ -61,8 +61,6 @@ Page {
 
     DsModal {
         id: folderValidationErrorModal
-        title: Texts.General.Modals.FolderPermissionAlert.TITLE
-        text: Texts.General.Modals.FolderPermissionAlert.DESCRIPTION
         showSecondaryButton: true
         secondaryActionLabel: 'Fechar'
         primaryActionLabel: 'Ir para Configurações'
