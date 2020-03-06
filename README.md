@@ -19,7 +19,7 @@ Verifique qual o arquivo correto de profile do seu terminal (~/.profile ou ~/.ba
 
 Clone direto do bitbucket:
 
-	$ mkdir -p $(go env GOPATH)/src/bitbucket.org/arquivei
+	$ mkdir -p $(go env GOPATH)/src/arquivei.com.br
 	$ git clone git@bitbucket.org:arquivei/daemon-ui.git
     $ (go env GOPATH)/src/arquivei.com.br/daemon-ui
 
