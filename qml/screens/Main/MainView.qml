@@ -12,6 +12,7 @@ Page {
     property string computerName
     property string webDetailLink
     property string logsPath
+    property bool hasDownload
 
     signal goToConfig()
     signal logout()
@@ -99,7 +100,7 @@ Page {
             fill: parent
             topMargin: 24
             rightMargin: 32
-            bottomMargin: 46
+            bottomMargin: 40
             leftMargin: 32
         }
 
@@ -173,16 +174,39 @@ Page {
             }
         }
 
-        DownloadSection {
+        DownloadSectionSoon {
             id: downloadSection
-            title: Texts.Main.DOWNLOAD_SECTION_TITLE
-            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
+            title: Texts.Main.DOWNLOAD_SECTION_TITLE_SOON
+            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION_SOON
 
             anchors {
                 top: uploadSection.bottom
                 topMargin: 8
             }
         }
+
+//        DownloadSection {
+//            id: downloadSection
+//            title: Texts.Main.DOWNLOAD_SECTION_TITLE
+//            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
+//            visible: hasDownload
+//            anchors {
+//                top: uploadSection.bottom
+//                topMargin: 8
+//            }
+//        }
+
+//        DownloadSectionHire {
+//            id: downloadSectionHire
+//            title: Texts.Main.DOWNLOAD_SECTION_TITLE
+//            description: Texts.Main.DOWNLOAD_SECTION_HIRE_DESCRIPTION
+//            hireDownloadUrl: Address.HIRE_DOWNLOAD_URL
+//            visible: !hasDownload
+//            anchors {
+//                top: uploadSection.bottom
+//                topMargin: 8
+//            }
+//        }
 
         DsButton {
             id: btnDetails

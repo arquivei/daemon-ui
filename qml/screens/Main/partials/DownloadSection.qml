@@ -1,16 +1,42 @@
 import '../../../components'
 import '../../../constants/colors.js' as Colors
-import '../../../constants/addresses.js' as Address
+import '../../../constants/server-codes.js' as Codes
+import '../../../constants/texts.js' as Texts
 
 DsCard {
     property string title
     property string description
+    property string processingStatus
+    property int totalDownloaded: 0
+
+    function getSyncProgressStatus(processingStatus) {
+        switch (processingStatus) {
+        case Codes.DocumentProcessingStatus.STATUS_FINISHED:
+            return SyncProgress.Status.Success;
+        case Codes.DocumentProcessingStatus.STATUS_PROCESSING:
+            return SyncProgress.Status.Loading;
+        case Codes.DocumentProcessingStatus.STATUS_ERROR_UNKNOWN:
+        case Codes.DocumentProcessingStatus.STATUS_ERROR_CONNECTION:
+            return SyncProgress.Status.Error;
+        default:
+            return SyncProgress.Status.Default;
+        }
+    }
+
+    function showStatusInfo(processingStatus) {
+        switch (processingStatus) {
+        case Codes.DocumentProcessingStatus.STATUS_PROCESSING:
+        case Codes.DocumentProcessingStatus.STATUS_ERROR_UNKNOWN:
+        case Codes.DocumentProcessingStatus.STATUS_ERROR_CONNECTION:
+            return true;
+        default:
+            return false;
+        }
+    }
 
     id: root
     width: parent.width
-    type: DsCard.Types.Bordered
-
-    height: 132
+    height: 138
 
     DsText {
         id: titleText
@@ -42,32 +68,31 @@ DsCard {
         }
     }
 
-    DsText {
-        id: contactText
-        text: 'Fale com a gente em '
-        fontSize: 12
-        lineHeight: 16
-        color: Colors.GRAYSCALE_500
+    SyncProgress {
+        id: progress
+        defaultLabel: Texts.Main.Download.SyncStatus.DEFAULT
+        loadingLabel: Texts.Main.Download.SyncStatus.LOADING
+        successLabel: Texts.Main.Download.SyncStatus.SUCCESS
+        errorLabel: Texts.Main.Download.SyncStatus.ERROR
+        status: getSyncProgressStatus(processingStatus)
 
         anchors {
             top: descriptionText.bottom
-            topMargin: 6
+            topMargin: 24
             left: parent.left
-            leftMargin: 16
+            leftMargin: 12
         }
     }
 
-    DsLink {
-        id: emailLink
-        label: Address.SUPPORT_EMAIL
-        href: `mailto:?to=${Address.SUPPORT_EMAIL}`
-        fontSize: 12
-        lineHeight: 16
+    DownloadStatusInfo {
+        id: sendingStatusInfo
+        show: showStatusInfo(root.processingStatus)
+        totalDownloaded: root.totalDownloaded
 
         anchors {
-            left: contactText.right
-            verticalCenter: contactText.verticalCenter
-            verticalCenterOffset: -0.5
+            left: progress.right
+            leftMargin: 16
+            verticalCenter: progress.verticalCenter
         }
     }
 }

@@ -1,22 +1,21 @@
-import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
-import '../../../helpers/factory.js' as Factory
+import '../../../constants/texts.js' as Texts
 
 DsCard {
     property string title
     property string description
-    property string folderPath
+    property string hireDownloadUrl
     property bool isBlocked: false
-
-    signal openDialog
 
     id: root
     width: parent.width
-    height: 142
+    type: DsCard.Types.Bordered
+
+    height: 132
 
     DsText {
-        id: titleText
+        id: title
         text: root.title
         fontSize: 18
         font.weight: 'Bold'
@@ -39,15 +38,16 @@ DsCard {
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: titleText.bottom
+            top: title.bottom
             left: parent.left
             leftMargin: 16
         }
     }
 
-    Loader {
-        id: selectFolderLoader
-        sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateFolder') : Factory.createPartialFragment('Config', 'SelectFolder')
+    DsLink {
+        label: Texts.General.HIRE_DOWNLOAD_LABEL
+        isBlocked: root.isBlocked
+        href: root.hireDownloadUrl
 
         anchors {
             top: descriptionText.bottom

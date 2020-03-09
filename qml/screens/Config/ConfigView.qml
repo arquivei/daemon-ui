@@ -12,8 +12,10 @@ Page {
     property bool showReturnAction
     property bool hasBeenEdited
     property bool isLoading: false
+    property bool hasDownload
     property string userEmail
     property string uploadFolderPath
+    property string downloadFolderPath
     property string webDetailLink
     property string logsPath
     property var tourSteps: [
@@ -84,12 +86,27 @@ Page {
 
     FileDialog {
         id: uploadFolderDialog
-        title: 'Escolha o diretório de upload'
+        title: Texts.Config.FileDialogs.UploadFolder.TITLE
         folder: shortcuts.home
         selectFolder: true
         onAccepted: {
             const url = uploadFolderDialog.fileUrl.toString();
             validateFolder(url);
+        }
+    }
+
+    FileDialog {
+        id: downloadFolderDialog
+        title: Texts.Config.FileDialogs.DownloadFolder.TITLE
+        folder: shortcuts.home
+        selectFolder: true
+        onAccepted: {
+            const url = downloadFolderDialog.fileUrl.toString();
+            if (downloadFolderPath) {
+                changeDownloadConfigModal.open()
+            } else {
+                console.log('validate and select download folder...')
+            }
         }
     }
 
@@ -122,6 +139,23 @@ Page {
     }
 
     DsModal {
+        id: changeDownloadConfigModal
+        title: Texts.Config.Modals.ChangeDownloadConfig.TITLE
+        showSecondaryButton: true
+        text: Texts.Config.Modals.ChangeDownloadConfig.DESCRIPTION
+        secondaryActionLabel: Texts.Config.Modals.ChangeDownloadConfig.SECONDARY
+        primaryActionLabel: Texts.Config.Modals.ChangeDownloadConfig.PRIMARY
+        onPrimaryAction: {
+            console.log('validate and select download folder...')
+            changeDownloadConfigModal.close();
+        }
+        onSecondaryAction: {
+            console.log('validate, select download folder and go to web config')
+            changeDownloadConfigModal.close();
+        }
+    }
+
+    DsModal {
         id: logoutModal
         title: Texts.General.Modals.LogoutAlert.TITLE
         showSecondaryButton: true
@@ -151,7 +185,7 @@ Page {
             fill: parent
             topMargin: 24
             rightMargin: 32
-            bottomMargin: 42
+            bottomMargin: 32
             leftMargin: 32
         }
 
@@ -223,6 +257,34 @@ Page {
 
 //        DownloadSection {
 //            id: downloadSection
+//            folderPath: downloadFolderPath
+//            title: Texts.Config.DOWNLOAD_SECTION_TITLE
+//            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
+//            visible: hasDownload
+//            anchors {
+//                top: uploadSection.bottom
+//                topMargin: 8
+//            }
+
+//            onOpenDialog: downloadFolderDialog.open()
+//        }
+
+//        DownloadSectionHire {
+//            id: downloadSectionHire
+//            title: Texts.Config.DOWNLOAD_SECTION_TITLE
+//            description: Texts.Config.DOWNLOAD_SECTION_HIRE_DESCRIPTION
+//            hireDownloadUrl: Address.HIRE_DOWNLOAD_URL
+//            visible: !hasDownload
+//            anchors {
+//                top: uploadSection.bottom
+//                topMargin: 8
+//            }
+//        }
+
+//        DownloadSectionSoon {
+//            id: downloadSection
+//            title: Texts.Config.DOWNLOAD_SECTION_TITLE_SOON
+//            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION_SOON
 
 //            anchors {
 //                top: uploadSection.bottom

@@ -27,6 +27,10 @@ Model {
         return clientService.getLogsPath();
     }
 
+    function hasDownload() {
+        return configService.hasDownload();
+    }
+
     function validateFolder() {
         configService.validateFolder(configService.getUploadFolder());
     }

@@ -29,8 +29,16 @@ Model {
         return configService.getUploadFolder();
     }
 
+    function getDownloadFolder() {
+        return configService.getDownloadFolder();
+    }
+
     function isConfigured() {
         return configService.isConfigured();
+    }
+
+    function hasDownload() {
+        return configService.hasDownload();
     }
 
     function getUserEmail() {

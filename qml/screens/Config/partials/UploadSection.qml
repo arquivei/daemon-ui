@@ -47,7 +47,7 @@ DsCard {
 
     Loader {
         id: selectFolderLoader
-        sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateUploadFolder') : Factory.createPartialFragment('Config', 'SelectUploadFolder')
+        sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateFolder') : Factory.createPartialFragment('Config', 'SelectFolder')
 
         anchors {
             top: descriptionText.bottom

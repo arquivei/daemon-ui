@@ -67,10 +67,12 @@ Presenter {
     ConfigView {
         id: view;
         uploadFolderPath: model.getUploadFolder() || null
+        downloadFolderPath: model.getDownloadFolder() || null
         userEmail: model.getUserEmail() || null
         webDetailLink: model.getWebDetailLink() || null
         logsPath: model.getLogsPath() || null
         showReturnAction: model.getUploadFolder() && true
+        hasDownload: model.hasDownload()
         hasBeenEdited: model.hasUploadFolderChanged
         anchors.fill: parent;
     }

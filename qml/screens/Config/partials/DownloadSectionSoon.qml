@@ -1,19 +1,17 @@
-import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
-import '../../../helpers/factory.js' as Factory
+import '../../../constants/addresses.js' as Address
 
 DsCard {
+    property bool isBlocked: false
     property string title
     property string description
-    property string folderPath
-    property bool isBlocked: false
-
-    signal openDialog
 
     id: root
     width: parent.width
-    height: 142
+    type: DsCard.Types.Bordered
+
+    height: 132
 
     DsText {
         id: titleText
@@ -45,15 +43,33 @@ DsCard {
         }
     }
 
-    Loader {
-        id: selectFolderLoader
-        sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateFolder') : Factory.createPartialFragment('Config', 'SelectFolder')
+    DsText {
+        id: contactText
+        text: 'Fale com a gente em '
+        fontSize: 12
+        lineHeight: 16
+        color: Colors.GRAYSCALE_500
 
         anchors {
             top: descriptionText.bottom
-            topMargin: 24
+            topMargin: 6
             left: parent.left
             leftMargin: 16
+        }
+    }
+
+    DsLink {
+        id: emailLink
+        label: Address.SUPPORT_EMAIL
+        href: `mailto:?to=${Address.SUPPORT_EMAIL}`
+        isBlocked: root.isBlocked
+        fontSize: 12
+        lineHeight: 16
+
+        anchors {
+            left: contactText.right
+            verticalCenter: contactText.verticalCenter
+            verticalCenterOffset: -0.5
         }
     }
 }
