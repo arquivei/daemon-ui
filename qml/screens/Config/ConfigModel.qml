@@ -1,5 +1,6 @@
 import '../..'
 import '../../services'
+import '../../constants/error-messages.js' as Errors
 
 Model {
     id: root
@@ -59,7 +60,7 @@ Model {
         }
 
         onValidateFolderError: {
-            root.validateFolderError(folder, errorTitle, errorMessage);
+            root.validateFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
         }
 
         onSaveConfigsSuccess: {
@@ -67,7 +68,7 @@ Model {
         }
 
         onSaveConfigsError: {
-            root.saveConfigsError(errorTitle, errorMessage);
+            root.saveConfigsError(Errors.Config.SaveConfigs[code].title, Errors.Config.SaveConfigs[code].description);
         }
     }
 

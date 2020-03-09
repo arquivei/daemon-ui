@@ -5,9 +5,9 @@ Item {
     id: root
 
     signal validateFolderSuccess(string folder);
-    signal validateFolderError(string folder, string errorTitle, string errorMessage);
+    signal validateFolderError(string folder, string code);
     signal saveConfigsSuccess();
-    signal saveConfigsError(string errorTitle, string errorMessage);
+    signal saveConfigsError(string code);
 
     function isConfigured() {
         return QmlBridge.uploadFolderPath ? true : false;
@@ -31,14 +31,14 @@ Item {
             if (success) {
                 root.validateFolderSuccess(folder);
             } else {
-                root.validateFolderError(folder, ErrorMessages.ValidateFolder[code].title, ErrorMessages.ValidateFolder[code].description);
+                root.validateFolderError(folder, code);
             }
         }
         onSaveConfigsSignal: {
             if (success) {
                 root.saveConfigsSuccess();
             } else {
-                root.saveConfigsError(ErrorMessages.SaveConfigs[code].title, ErrorMessages.SaveConfigs[code].description);
+                root.saveConfigsError(code);
             }
         }
     }
