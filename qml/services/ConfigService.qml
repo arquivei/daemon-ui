@@ -17,6 +17,14 @@ Item {
         return QmlBridge.uploadFolderPath;
     }
 
+    function getDownloadFolder() {
+        return null;
+    }
+
+    function hasDownload() {
+        return false;
+    }
+
     function validateFolder(folder) {
         QmlBridge.validateFolder(folder);
     }

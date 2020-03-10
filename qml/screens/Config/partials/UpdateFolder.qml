@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import '../../../components'
+import '../../../constants/texts.js' as Texts
 
 Item {
     width: root.width
@@ -12,7 +13,7 @@ Item {
     }
 
     DsLink {
-        label: 'Alterar Pasta'
+        label: Texts.Config.CHANGE_FOLDER_BUTTON_LABEL
         isBlocked: root.isBlocked
 
         anchors {

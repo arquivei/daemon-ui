@@ -57,6 +57,7 @@ Presenter {
         computerName: model.getHostName() || null
         webDetailLink: model.getWebDetailLink() || null
         logsPath: model.getLogsPath() || null
+        hasDownload: model.hasDownload()
         anchors.fill: parent;
     }
 }

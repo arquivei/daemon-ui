@@ -1,6 +1,7 @@
 .import "addresses.js" as Address;
 
 const General = {
+    HIRE_DOWNLOAD_LABEL: 'Contratar agora',
     Modals: {
         LogoutAlert: {
             TITLE: 'Você deseja sair?',
@@ -29,12 +30,33 @@ const Config = {
     TITLE: 'Configurar Integração',
     UPLOAD_SECTION_TITLE: 'Upload de Documentos',
     UPLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde estão os arquivos XML ou ZIP que deseja enviar para o Arquivei.',
+    DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
+    DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados da Arquivei.',
+    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
+    SELECT_FOLDER_BUTTON_LABEL: 'Selecionar pasta',
+    CHANGE_FOLDER_BUTTON_LABEL: 'Alterar pasta',
+    FileDialogs: {
+        UploadFolder: {
+            TITLE: 'Escolha o diretório de upload'
+        },
+        DownloadFolder: {
+            TITLE: 'Escolha o diretório de download'
+        }
+    },
     Modals: {
         BeginTour: {
             TITLE: 'Configurando o DocBox',
             DESCRIPTION: 'Seja bem-vindo ao DocBox! Para começar, veja como configurar o upload automático de XMLs para o Arquivei.',
             PRIMARY: 'Começar o Tour',
             SECONDARY: 'Sair'
+        },
+        ChangeDownloadConfig: {
+            TITLE: 'Configurar opções de Download',
+            DESCRIPTION: 'Serão baixados documentos que chegarem ao Arquivei a partir da contratação do aplicativo. Deseja alterar essa e outras configurações de Download?<br/><br/>Obs: Você será encaminhado para a web onde poderá realizar as alterações desejadas.',
+            PRIMARY: 'Continuar assim',
+            SECONDARY: 'Alterar Configurações'
         },
         ReadingPermissionError: {
             TITLE: 'Atenção! Erro de permissão',
@@ -67,8 +89,11 @@ const Config = {
 const Main = {
     UPLOAD_SECTION_TITLE: 'Upload de Documentos',
     UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus documentos para a Arquivei.',
-    DOWNLOAD_SECTION_TITLE: 'Download de documentos: em breve!',
-    DOWNLOAD_SECTION_DESCRIPTION: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
+    DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados da Arquivei para seu computador.',
+    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     SUCCESS_SENDING_WARNING_TITLE: 'Um ou mais arquivos não foram enviados.',
     SUCCESS_SENDING_WARNING_DESCRIPTION: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.',
     Modals: {
@@ -99,6 +124,18 @@ const Main = {
             DESCRIPTION: `Sua sessão expirou ou o usuário logado não possui mais permissão no aplicativo. Entre novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
             PRIMARY: 'Ir para Login'
         }
+    },
+    Download: {
+        STATUS_INFO: 'Baixando <strong>%{0}</strong> documentos',
+        SyncStatus: {
+            DEFAULT: 'Nenhum documento encontrado',
+            LOADING: 'Baixando arquivos',
+            SUCCESS: 'Download finalizado',
+            ERROR: 'Download interrompido'
+        }
+    },
+    Upload: {
+        STATUS_INFO: 'Arquivos XML / ZIP enviados hoje: <strong>%{0}</strong> de <strong>%{1}</strong>'
     }
 }
 
