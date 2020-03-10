@@ -210,7 +210,7 @@ Page {
 
         DsButton {
             id: btnDetails
-            text: 'Ver detalhes'
+            text: Texts.Main.WEB_DETAILS_BUTTON_LABEL
             anchors {
                 right: content.right
                 bottom: content.bottom

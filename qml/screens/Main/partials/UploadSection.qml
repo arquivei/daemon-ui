@@ -1,6 +1,7 @@
 import '../../../components'
 import '../../../constants/colors.js' as Colors
 import '../../../constants/server-codes.js' as Codes
+import '../../../constants/texts.js' as Texts
 
 DsCard {
     property string title
@@ -73,10 +74,10 @@ DsCard {
 
     SyncProgress {
         id: progress
-        defaultLabel: 'Arquivos XML e ZIP não encontrados'
-        loadingLabel: 'Enviando arquivos'
-        successLabel: 'Envio finalizado'
-        errorLabel: 'Envio interrompido'
+        defaultLabel: Texts.Main.Upload.SyncStatus.DEFAULT
+        loadingLabel: Texts.Main.Upload.SyncStatus.LOADING
+        successLabel: Texts.Main.Upload.SyncStatus.SUCCESS
+        errorLabel: Texts.Main.Upload.SyncStatus.ERROR
         status: getSyncProgressStatus(processingStatus)
 
         anchors {

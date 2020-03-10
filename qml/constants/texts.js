@@ -12,7 +12,7 @@ const General = {
     },
     Menu: {
         CONFIG: 'Configurações',
-        ACCESS_PLATFORM: 'Acessar a Plataforma',
+        ACCESS_PLATFORM: 'Ver detalhes no Arquivei',
         TOUR: 'Tour',
         ABOUT: 'Sobre o DocBox',
         LOGS: 'Ver Logs',
@@ -31,9 +31,9 @@ const Config = {
     UPLOAD_SECTION_TITLE: 'Upload de Documentos',
     UPLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde estão os arquivos XML ou ZIP que deseja enviar para o Arquivei.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
-    DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados da Arquivei.',
+    DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados do Arquivei.',
     DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei. Seja um dos primeiros a testar!',
     DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     SELECT_FOLDER_BUTTON_LABEL: 'Selecionar pasta',
     CHANGE_FOLDER_BUTTON_LABEL: 'Alterar pasta',
@@ -88,14 +88,15 @@ const Config = {
 
 const Main = {
     UPLOAD_SECTION_TITLE: 'Upload de Documentos',
-    UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus documentos para a Arquivei.',
+    UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus documentos para o Arquivei.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
-    DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados da Arquivei para seu computador.',
+    DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados do Arquivei para seu computador.',
     DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto da Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei. Seja um dos primeiros a testar!',
     DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     SUCCESS_SENDING_WARNING_TITLE: 'Um ou mais arquivos não foram enviados.',
     SUCCESS_SENDING_WARNING_DESCRIPTION: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.',
+    WEB_DETAILS_BUTTON_LABEL: 'Ver detalhes no Arquivei',
     Modals: {
         ConnectionError: {
             TITLE: 'Offline - Erro de conexão!',
@@ -128,14 +129,20 @@ const Main = {
     Download: {
         STATUS_INFO: 'Baixando <strong>%{0}</strong> documentos',
         SyncStatus: {
-            DEFAULT: 'Nenhum documento encontrado',
+            DEFAULT: 'Buscando documentos',
             LOADING: 'Baixando arquivos',
             SUCCESS: 'Download finalizado',
             ERROR: 'Download interrompido'
         }
     },
     Upload: {
-        STATUS_INFO: 'Arquivos XML / ZIP enviados hoje: <strong>%{0}</strong> de <strong>%{1}</strong>'
+        STATUS_INFO: 'Arquivos XML / ZIP enviados hoje: <strong>%{0}</strong> de <strong>%{1}</strong>',
+        SyncStatus: {
+            DEFAULT: 'Buscando arquivos',
+            LOADING: 'Enviando arquivos',
+            SUCCESS: 'Envio finalizado',
+            ERROR: 'Envio interrompido'
+        }
     }
 }
 
