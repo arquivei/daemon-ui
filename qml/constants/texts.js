@@ -14,7 +14,7 @@ const General = {
         CONFIG: 'Configurações',
         ACCESS_PLATFORM: 'Ver detalhes no Arquivei',
         TOUR: 'Tour',
-        ABOUT: 'Sobre o DocBox',
+        ABOUT: 'Sobre o Software',
         LOGS: 'Ver Logs',
         LOGOUT: 'Sair'
     }
@@ -28,7 +28,7 @@ const Auth = {
 
 const Config = {
     TITLE: 'Configurar Integração',
-    UPLOAD_SECTION_TITLE: 'Upload de Documentos',
+    UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     UPLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde estão os arquivos XML ou ZIP que deseja enviar para o Arquivei.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados do Arquivei.',
@@ -47,8 +47,8 @@ const Config = {
     },
     Modals: {
         BeginTour: {
-            TITLE: 'Configurando o DocBox',
-            DESCRIPTION: 'Seja bem-vindo ao DocBox! Para começar, veja como configurar o upload automático de XMLs para o Arquivei.',
+            TITLE: 'Tour de Configuração',
+            DESCRIPTION: 'Seja bem-vindo! Para começar, veja como configurar o upload automático de XMLs para o Arquivei.',
             PRIMARY: 'Começar o Tour',
             SECONDARY: 'Sair'
         },
@@ -87,8 +87,8 @@ const Config = {
 }
 
 const Main = {
-    UPLOAD_SECTION_TITLE: 'Upload de Documentos',
-    UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus documentos para o Arquivei.',
+    UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
+    UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus arquivos para o Arquivei.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados do Arquivei para seu computador.',
     DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',

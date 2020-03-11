@@ -11,7 +11,7 @@ ApplicationWindow {
     maximumWidth: 670
     minimumHeight: 524
     maximumHeight: 524
-    title: 'Arquivei DocBox'
+    title: 'Arquivei'
 
     function navigateTo(screen) {
         const currentItem = stack.currentItem;
