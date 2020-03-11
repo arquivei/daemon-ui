@@ -29,6 +29,7 @@ Item {
 
     function triggerLoginAction() {
         resetErrors();
+        emailValue = emailValue.trim();
         validateEmail(emailValue);
 
         if (!invalidEmailMsg) {

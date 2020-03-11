@@ -59,7 +59,7 @@ Item {
 
         DsText {
             id: textPartial4
-            text: ' da Arquivei'
+            text: ' do Arquivei'
 
             anchors.left: linkPrivacyPolicy.right
             anchors.verticalCenter: linkPrivacyPolicy.verticalCenter

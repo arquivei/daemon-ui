@@ -16,7 +16,7 @@ Rectangle {
     }
 
     property var colors: {
-        0: Colors.GRAYSCALE_400,
+        0: Colors.BRAND_PRIMARY_DEFAULT,
         1: Colors.BRAND_PRIMARY_DEFAULT,
         2: Colors.FEEDBACK_SUCCESS_DEFAULT,
         3: Colors.FEEDBACK_ERROR_DEFAULT
@@ -29,6 +29,13 @@ Rectangle {
         3: errorLabel
     }
 
+    function isDefaultOrLoading() {
+        if (root.status === SyncProgress.Status.Loading || root.status === SyncProgress.Status.Default) {
+            return true;
+        }
+        return false;
+    }
+
     id: root
     color: colors[status]
     radius: 20
@@ -37,8 +44,8 @@ Rectangle {
 
     Item {
         id: statusIcon
-        implicitWidth: status === SyncProgress.Status.Loading ? syncIcon.width : successIcon.width
-        implicitHeight: status === SyncProgress.Status.Loading ? syncIcon.height : successIcon.height
+        implicitWidth: isDefaultOrLoading() ? syncIcon.width : successIcon.width
+        implicitHeight: isDefaultOrLoading() ? syncIcon.height : successIcon.height
 
         Image {
             id: successIcon
@@ -50,14 +57,14 @@ Rectangle {
         Image {
             id: dangerIcon
             source: "qrc:/images/white-alert-danger.svg"
-            visible: root.status === SyncProgress.Status.Default || root.status === SyncProgress.Status.Error
+            visible: root.status === SyncProgress.Status.Error
             fillMode: Image.PreserveAspectFit
         }
 
         Image {
             id: syncIcon
             source: "qrc:/images/white-alert-sync.svg"
-            visible: root.status === SyncProgress.Status.Loading
+            visible: isDefaultOrLoading()
             fillMode: Image.PreserveAspectFit
 
             RotationAnimation on rotation {
@@ -70,7 +77,7 @@ Rectangle {
 
         anchors {
             left: parent.left
-            leftMargin: status === SyncProgress.Status.Loading ? 4 : 6
+            leftMargin: isDefaultOrLoading() ? 4 : 6
             verticalCenter: parent.verticalCenter
         }
     }
@@ -85,7 +92,7 @@ Rectangle {
 
         anchors {
             left: statusIcon.right
-            leftMargin: status === SyncProgress.Status.Loading ? 8 : 10
+            leftMargin: isDefaultOrLoading() ? 8 : 10
             verticalCenter: statusIcon.verticalCenter
         }
     }
