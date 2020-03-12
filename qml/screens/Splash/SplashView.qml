@@ -16,26 +16,31 @@ Page {
             leftMargin: 32
         }
 
-        Image {
-            id: imageMain
-            source: "qrc:/images/app-logo-placeholder.svg"
+//        Image {
+//            id: imageMain
+//            source: "qrc:/images/app-logo-placeholder.svg"
 
-            fillMode: Image.PreserveAspectFit
+//            fillMode: Image.PreserveAspectFit
 
-            anchors {
-                horizontalCenter: content.horizontalCenter
-                verticalCenter: content.verticalCenter
-            }
-        }
+//            anchors {
+//                horizontalCenter: content.horizontalCenter
+//                verticalCenter: content.verticalCenter
+//            }
+//        }
 
         Item {
             id: infoSection
             height: childrenRect.height
             width: childrenRect.width
 
+//            anchors {
+//                bottom: content.bottom
+//                horizontalCenter: content.horizontalCenter
+//            }
+
             anchors {
-                bottom: content.bottom
                 horizontalCenter: content.horizontalCenter
+                verticalCenter: content.verticalCenter
             }
 
             DsText {
@@ -50,8 +55,8 @@ Page {
             Image {
                 id: imageLogo
                 source: "qrc:/images/arquivei-main.svg"
-                height: 20
-                width: 100
+                height: 31.75
+                width: 159.6
                 fillMode: Image.PreserveAspectFit
 
                 anchors {
