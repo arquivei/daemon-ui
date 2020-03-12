@@ -10,6 +10,7 @@ Item {
     property bool showCloseAction: true
     property var ref
     property var position
+    property var customWidth
 
     signal next()
     signal prev()
@@ -17,13 +18,21 @@ Item {
 
     function start() {
         visible = true
-        ref.isBlocked = true
+
+        if (typeof ref.isBlocked === 'boolean') {
+            ref.isBlocked = true
+        }
+
         ref.z = Z.ABOVE_OVERLAY
     }
 
     function stop() {
         visible = false
-        ref.isBlocked = false
+
+        if (typeof ref.isBlocked === 'boolean') {
+            ref.isBlocked = false
+        }
+
         ref.z = Z.DEFAULT
     }
 
@@ -52,6 +61,7 @@ Item {
         prevLabel: root.prevLabel
         nextLabel: root.nextLabel
         showCloseAction: root.showCloseAction
+        customWidth: root.customWidth
         onPrev: {
             stop();
             root.prev();

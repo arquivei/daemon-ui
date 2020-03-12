@@ -10,6 +10,11 @@ Presenter {
     property MainModel model: MainModel {}
 
     Component.onCompleted: {
+        Timer.setTimeout(() => {
+            if(!model.isMainTourViewed()) {
+                view.showTourNotification();
+            }
+        }, Times.TOUR_DELAY);
         Timer.setInterval(() => model.validateFolder(), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
     }
 
@@ -18,6 +23,10 @@ Presenter {
 
         onGoToConfig: {
             app.navigateTo('Config');
+        }
+
+        onMainTourViewed: {
+            model.setMainTourIsViewed();
         }
 
         onLogout: {
@@ -58,6 +67,7 @@ Presenter {
         webDetailLink: model.getWebDetailLink() || null
         logsPath: model.getLogsPath() || null
         hasDownload: model.hasDownload()
+        isMainTourViewed: model.isMainTourViewed()
         anchors.fill: parent;
     }
 }

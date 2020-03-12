@@ -9,6 +9,7 @@ Rectangle {
     property string prevLabel
     property string nextLabel
     property bool showCloseAction
+    property var customWidth
 
     signal prev()
     signal next()
@@ -18,7 +19,7 @@ Rectangle {
     color: Colors.PURE_WHITE
     radius: 8
     implicitHeight: childrenRect.height + 32
-    width: 239
+    width: customWidth || 239
 
     Item {
         id: content

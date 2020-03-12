@@ -25,6 +25,7 @@
         <file>qml/components/Tour.qml</file>
         <file>qml/components/TourCard.qml</file>
         <file>qml/components/TourStep.qml</file>
+        <file>qml/components/TourStepWrapper.qml</file>
         <file>qml/constants/addresses.js</file>
         <file>qml/constants/colors.js</file>
         <file>qml/constants/error-messages.js</file>

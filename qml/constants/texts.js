@@ -98,6 +98,12 @@ const Main = {
     SUCCESS_SENDING_WARNING_DESCRIPTION: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.',
     WEB_DETAILS_BUTTON_LABEL: 'Ver detalhes no Arquivei',
     Modals: {
+        BeginTour: {
+            TITLE: 'Tela Principal',
+            DESCRIPTION: 'Agora que você configurou a pasta de upload, iremos mostrar como o software funciona e quais informações você poderá acompanhar enquanto a integração com o Arquivei é feita.',
+            PRIMARY: 'Começar o Tour',
+            SECONDARY: 'Sair'
+        },
         ConnectionError: {
             TITLE: 'Offline - Erro de conexão!',
             DESCRIPTION: `<strong>Falha ao tentar conectar aos nossos servidores.</strong><br>Verifique sua conexão com a internet, firewall, configuração de proxy ou antivírus. <strong><a href="${Address.ABOUT_CONNECTION_ERROR_URL}">Saiba Mais</a></strong><br><br>Tentaremos reconectar automaticamente a cada 60s...`

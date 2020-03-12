@@ -13,8 +13,93 @@ Page {
     property string webDetailLink
     property string logsPath
     property bool hasDownload
+    property bool isMainTourViewed
+
+    property var tourSteps: [
+    {
+        id: 'step1',
+        ref: title,
+        parent: content,
+        title: 'Nome da máquina',
+        description: 'Este é o nome da máquina na qual este software está instalado.',
+        chipInfo: '01/05',
+        position: {
+            top: title.bottom,
+            topMargin: 16,
+            left: title.left,
+            leftMargin: -8
+        },
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step2',
+        ref: connectionStatus,
+        parent: content,
+        title: 'Status da integração',
+        description: 'Aqui você verifica se o software está ou não conectado ao Arquivei. Com o status Online é possível enviar e baixar documentos.',
+        chipInfo: '02/05',
+        position: {
+            top: connectionStatus.bottom,
+            topMargin: 16,
+            right: connectionStatus.right,
+            rightMargin: -8
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step3',
+        ref: uploadSection,
+        parent: content,
+        title: 'Acompanhando o Upload',
+        description: 'Neste espaço você poderá acompanhar se os arquivos XML e ZIP da pasta selecionada estão sendo lidos e enviados.',
+        chipInfo: '03/05',
+        position: {
+            top: uploadSection.bottom,
+            topMargin: 8,
+            left: uploadSection.left
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step4',
+        ref: btnDetails,
+        parent: content,
+        title: 'Detalhes do processamento',
+        description: 'Clicando nesse botão você poderá acompanhar todos os detalhes do processamento direto no Arquivei.',
+        chipInfo: '04/05',
+        customWidth: 260,
+        position: {
+            bottom: btnDetails.top,
+            bottomMargin: 16,
+            right: btnDetails.right,
+            rightMargin: -8
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step5',
+        ref: menu,
+        parent: content,
+        title: 'Menu do usuário',
+        description: 'Neste menu você tem acesso às configurações, aos logs da aplicação e ao tour caso tenha ficado alguma dúvida.',
+        chipInfo: '05/05',
+        customWidth: 260,
+        position: {
+            top: menu.bottom,
+            topMargin: 16,
+            right: menu.right,
+            rightMargin: -8
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Finalizar'
+    },
+    ]
 
     signal goToConfig()
+    signal mainTourViewed()
     signal logout()
 
     function setProcessingStatus(processingStatus, total, totalSent, hasDocumentError) {
@@ -25,12 +110,16 @@ Page {
     }
 
     function setConnectionStatus(isOnline) {
-        connectionStatus.isOnline = isOnline;
+        connectionStatusContent.isOnline = isOnline;
         if (!isOnline) {
             connectionErrorModal.open();
         } else {
             connectionErrorModal.close();
         }
+    }
+
+    function showTourNotification() {
+        tourNotificationModal.open();
     }
 
     function showNotAuthenticatedModal() {
@@ -44,6 +133,17 @@ Page {
     }
 
     id: root
+
+    Tour {
+        id: guidedTour
+        steps: root.tourSteps
+
+        onStarted: {
+            if (!isMainTourViewed) {
+                root.mainTourViewed()
+            }
+        }
+    }
 
     DsModal {
         id: logoutModal
@@ -93,6 +193,20 @@ Page {
         titleColor: Colors.FEEDBACK_ERROR_DEFAULT
     }
 
+    DsModal {
+        id: tourNotificationModal
+        title: Texts.Main.Modals.BeginTour.TITLE
+        showSecondaryButton: true
+        text: Texts.Main.Modals.BeginTour.DESCRIPTION
+        secondaryActionLabel: Texts.Main.Modals.BeginTour.SECONDARY
+        primaryActionLabel: Texts.Main.Modals.BeginTour.PRIMARY
+        onPrimaryAction: {
+            tourNotificationModal.close();
+            guidedTour.start();
+        }
+        onSecondaryAction: tourNotificationModal.close()
+    }
+
     Item {
         id: content
 
@@ -104,55 +218,90 @@ Page {
             leftMargin: 32
         }
 
-        Header {
-            id: header
-            userEmail: root.userEmail
-            alertAction: logoutAction
-            actions: [
-                Action {
-                    id: configAction
-                    text: Texts.General.Menu.CONFIG
-                    onTriggered: root.goToConfig();
-                },
-                Action {
-                    id: accessPlatformAction
-                    text: Texts.General.Menu.ACCESS_PLATFORM
-                    onTriggered: Qt.openUrlExternally(webDetailLink)
-                },
-                Action {
-                    id: aboutAction
-                    text: Texts.General.Menu.ABOUT
-                    onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
-                },
-                Action {
-                    id: logsAction
-                    text: Texts.General.Menu.LOGS
-                    onTriggered: Qt.openUrlExternally(logsPath)
-                },
-                Action {
-                    id: logoutAction
-                    text: Texts.General.Menu.LOGOUT
-                    onTriggered: logoutModal.open()
-                }
-            ]
-        }
-
-        DsText {
-            id: title
-            text: root.computerName
-            fontSize: 24
-            font.weight: 'Bold'
-            lineHeight: 32
-            color: Colors.BRAND_TERTIARY_DEFAULT
+        Image {
+            id: imageLogo
+            source: "qrc:/images/arquivei-icon.svg"
+            fillMode: Image.PreserveAspectFit
 
             anchors {
-                top: header.bottom
+                top: parent.top
+                topMargin: 8
+                left: parent.left
+            }
+        }
+
+        TourStepWrapper {
+            id: menu
+
+            DsDropDownMenu {
+                id: menuContent
+                menuText: root.userEmail
+                alertAction: logoutAction
+                isBlocked: parent.isBlocked
+                actions: [
+                    Action {
+                        id: configAction
+                        text: Texts.General.Menu.CONFIG
+                        onTriggered: root.goToConfig();
+                    },
+                    Action {
+                        id: accessPlatformAction
+                        text: Texts.General.Menu.ACCESS_PLATFORM
+                        onTriggered: Qt.openUrlExternally(webDetailLink)
+                    },
+                    Action {
+                        id: tourAction
+                        text: Texts.General.Menu.TOUR
+                        onTriggered: guidedTour.start()
+                    },
+                    Action {
+                        id: aboutAction
+                        text: Texts.General.Menu.ABOUT
+                        onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
+                    },
+                    Action {
+                        id: logsAction
+                        text: Texts.General.Menu.LOGS
+                        onTriggered: Qt.openUrlExternally(logsPath)
+                    },
+                    Action {
+                        id: logoutAction
+                        text: Texts.General.Menu.LOGOUT
+                        onTriggered: logoutModal.open()
+                    }
+                ]
+            }
+
+            anchors {
+                top: parent.top
+                right: parent.right
+            }
+        }
+
+        TourStepWrapper {
+            id: title
+
+            DsText {
+                id: titleContent
+                text: root.computerName
+                fontSize: 24
+                font.weight: 'Bold'
+                lineHeight: 32
+                color: Colors.BRAND_TERTIARY_DEFAULT
+            }
+
+            anchors {
+                top: imageLogo.bottom
                 topMargin: 32
             }
         }
 
-        ConnectionStatus {
+        TourStepWrapper {
             id: connectionStatus
+
+            ConnectionStatus {
+                id: connectionStatusContent
+            }
 
             anchors {
                 verticalCenter: title.verticalCenter
@@ -208,14 +357,20 @@ Page {
 //            }
 //        }
 
-        DsButton {
+        TourStepWrapper {
             id: btnDetails
-            text: Texts.Main.WEB_DETAILS_BUTTON_LABEL
+
+            DsButton {
+                id: btnDetailsContent
+                text: Texts.Main.WEB_DETAILS_BUTTON_LABEL
+                isBlocked: parent.isBlocked
+                onClicked: Qt.openUrlExternally(webDetailLink);
+            }
+
             anchors {
                 right: content.right
                 bottom: content.bottom
             }
-            onClicked: Qt.openUrlExternally(webDetailLink);
         }
     }
 }

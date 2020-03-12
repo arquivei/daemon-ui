@@ -8,6 +8,7 @@ Item {
     property alias menuText: headerText.text
     property Action current
     property Action alertAction
+    property bool isBlocked: false
 
     function getMenuItemTextColor(menuItem) {
         if (menuItem.highlighted && menuItem.action === alertAction) {
@@ -152,6 +153,10 @@ Item {
         }
 
         onClicked: {
+            if (root.isBlocked) {
+                return;
+            }
+
             !menu.opened ? menu.open() : menu.close();
         }
     }

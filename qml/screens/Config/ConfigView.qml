@@ -115,8 +115,8 @@ Page {
         title: Texts.Config.Modals.BeginTour.TITLE
         showSecondaryButton: true
         text: Texts.Config.Modals.BeginTour.DESCRIPTION
-        secondaryActionLabel: 'Sair'
-        primaryActionLabel: 'Começar o Tour'
+        secondaryActionLabel: Texts.Config.Modals.BeginTour.SECONDARY
+        primaryActionLabel: Texts.Config.Modals.BeginTour.PRIMARY
         onPrimaryAction: {
             tourNotificationModal.close();
             guidedTour.start();

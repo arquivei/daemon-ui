@@ -27,8 +27,16 @@ Model {
         return clientService.getLogsPath();
     }
 
+    function setMainTourIsViewed() {
+        configService.setMainTourIsViewed();
+    }
+
     function hasDownload() {
         return configService.hasDownload();
+    }
+
+    function isMainTourViewed() {
+        return configService.isMainTourViewed();
     }
 
     function validateFolder() {

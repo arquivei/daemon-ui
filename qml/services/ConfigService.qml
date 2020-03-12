@@ -9,12 +9,20 @@ Item {
     signal saveConfigsSuccess();
     signal saveConfigsError(string code);
 
+    function isMainTourViewed() {
+        return QmlBridge.isMainTourViewed;
+    }
+
     function isConfigured() {
         return QmlBridge.uploadFolderPath ? true : false;
     }
 
     function getUploadFolder() {
         return QmlBridge.uploadFolderPath;
+    }
+
+    function setMainTourIsViewed() {
+        QmlBridge.setMainTourIsViewed();
     }
 
     function getDownloadFolder() {
