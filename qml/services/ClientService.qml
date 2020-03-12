@@ -26,6 +26,12 @@ Item {
     Connections {
         target: QmlBridge
         onClientStatusSignal: {
+            if (processingStatus === Codes.DocumentProcessingStatus.STATUS_DEFAULT) {
+                updateConnectionStatus(true);
+                updateProcessingStatus(processingStatus, totalSent, total, hasDocumentError);
+                return;
+            }
+
             if (processingStatus === Codes.DocumentProcessingStatus.STATUS_ERROR_CONNECTION) {
                 updateConnectionStatus(false);
             } else {
