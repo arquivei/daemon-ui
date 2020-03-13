@@ -21,6 +21,7 @@ type Response struct {
 	UserEmail           string
 	IsAuthenticated     bool
 	LogsPath            string
+	IsTourViewed        bool
 }
 
 //NewCommand method creates a new command

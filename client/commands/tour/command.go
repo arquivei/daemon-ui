@@ -1,7 +1,8 @@
-package ping
+package tour
 
 import (
 	"encoding/json"
+	"errors"
 
 	"arquivei.com.br/daemon-ui/client/commands"
 )
@@ -11,10 +12,15 @@ type Command struct {
 	Name commands.CommandName
 }
 
+//Response ...
+type Response struct {
+	Error *string `json:",omitempty"`
+}
+
 //NewCommand method creates a new command
 func NewCommand() commands.CommandInterface {
 	return &Command{
-		Name: "PING_CMD",
+		Name: "UPDATE_TOUR_CMD",
 	}
 }
 
@@ -26,4 +32,17 @@ func (c Command) Encode() (encoded string, err error) {
 	}
 	encoded = string(json.RawMessage(d))
 	return
+}
+
+//NewResponse method creates a new response
+func NewResponse(data []byte) (r Response, err error) {
+	if err := json.Unmarshal(data, &r); err != nil {
+		return r, err
+	}
+
+	if r.Error != nil {
+		return r, errors.New(*r.Error)
+	}
+
+	return r, nil
 }

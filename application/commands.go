@@ -6,6 +6,7 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
+	"arquivei.com.br/daemon-ui/client/commands/tour"
 	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
 )
 
@@ -91,4 +92,11 @@ func (app App) doGetClientStatus() (r clientstatus.Response, err error) {
 	}
 
 	return
+}
+
+func (app App) doUpdateTour() (err error) {
+	if _, err := app.c.SendCommand(tour.NewCommand()); err != nil {
+		return err
+	}
+	return nil
 }

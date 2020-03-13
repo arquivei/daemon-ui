@@ -6,7 +6,6 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/clientinfo"
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
-	"arquivei.com.br/daemon-ui/client/commands/ping"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
 	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
 	"github.com/sirupsen/logrus"
@@ -51,7 +50,7 @@ func (app App) SaveConfigs(uploadFolder string) (r saveconfigs.Response) {
 	return
 }
 
-//Authenticate method authenticate an user
+//Authenticate method authenticates an user
 func (app App) Authenticate(email, password string) (r authenticate.Response) {
 	r, err := app.doAuthenticate(email, password)
 	if err != nil {
@@ -66,11 +65,11 @@ func (app App) Authenticate(email, password string) (r authenticate.Response) {
 
 //Ping method verifies if the server is alive
 func (app App) Ping() (err error) {
-	_, err = app.c.SendCommand(ping.NewCommand())
+	_, err = app.doGetClientStatus()
 	return
 }
 
-//ValidateFolder method should validate a folder
+//ValidateFolder method validates a folder
 func (app App) ValidateFolder(path string) (r validatefolder.Response) {
 	r, err := app.doValidateFolder(path)
 	if err != nil {
@@ -83,7 +82,7 @@ func (app App) ValidateFolder(path string) (r validatefolder.Response) {
 	return
 }
 
-//GetClientInformation method get informations about the client
+//GetClientInformation method returns informations about the client
 func (app App) GetClientInformation() (r clientinfo.Response) {
 	r, err := app.doGetClientInformation()
 	if err != nil {
@@ -94,7 +93,7 @@ func (app App) GetClientInformation() (r clientinfo.Response) {
 	return
 }
 
-//GetClientStatus method get the status about the client
+//GetClientStatus method returns the client status
 func (app App) GetClientStatus() (r clientstatus.Response) {
 	r, err := app.doGetClientStatus()
 	if err != nil {
@@ -104,4 +103,13 @@ func (app App) GetClientStatus() (r clientstatus.Response) {
 		r = clientstatus.NewGenericError()
 	}
 	return
+}
+
+//UpdateTour method updates the tour status
+func (app App) UpdateTour() {
+	if err := app.doUpdateTour(); err != nil {
+		app.logger.
+			WithError(err).
+			Error("An error occurred while updating main tour")
+	}
 }

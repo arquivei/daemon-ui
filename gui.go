@@ -21,10 +21,12 @@ type QmlBridge struct {
 	_ string                                                                         `property:"userEmail"`
 	_ string                                                                         `property:"webDetailLink"`
 	_ string                                                                         `property:"logsPath"`
+	_ bool                                                                           `property:"isMainTourViewed"`
 	_ func(email string, password string)                                            `slot:"authenticate"`
 	_ func()                                                                         `slot:"logout"`
 	_ func(uploadFolder string)                                                      `slot:"saveConfigs"`
 	_ func(folder string)                                                            `slot:"validateFolder"`
+	_ func()                                                                         `slot:"setMainTourIsViewed"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateFolderSignal"`
 	_ func(success bool, message string)                                             `signal:"authenticateSignal"`
@@ -42,6 +44,7 @@ func (bridge *QmlBridge) init() {
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
+	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
 }
 
 func newGuiInterface() {
@@ -92,6 +95,13 @@ func newGuiInterface() {
 			folder = formatFolderPath(folder)
 			resp := r.appConnection.ValidateFolder(folder)
 			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
+		}()
+	})
+
+	qmlBridge.ConnectSetMainTourIsViewed(func() {
+		go func() {
+			r.appConnection.UpdateTour()
+			qmlBridge.SetIsMainTourViewed(true)
 		}()
 	})
 
