@@ -204,7 +204,10 @@ Page {
             tourNotificationModal.close();
             guidedTour.start();
         }
-        onSecondaryAction: tourNotificationModal.close()
+        onSecondaryAction: {
+            root.mainTourViewed();
+            tourNotificationModal.close();
+        }
     }
 
     Item {

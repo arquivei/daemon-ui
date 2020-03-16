@@ -20,6 +20,12 @@ Item {
         return Colors.GRAYSCALE_500;
     }
 
+    function getMenuWidth(childrenWidth) {
+        const defaultWidth = 183;
+        const dynamicWidth = childrenWidth + 24;
+        return dynamicWidth < defaultWidth ? defaultWidth : dynamicWidth;
+    }
+
     id: root
     implicitWidth: childrenRect.width
     implicitHeight: headerIcon.height
@@ -65,7 +71,7 @@ Item {
         id: menu
         closePolicy: Popup.CloseOnEscape | Popup.NoAutoClose | Popup.CloseOnPressOutsideParent
 
-        width: childrenRect.width + 24
+        width: getMenuWidth(childrenRect.width)
         x: parent.width - menu.width
         y: headerIcon.height + 8
 
