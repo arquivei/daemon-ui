@@ -7,8 +7,8 @@ pipelines:
           name: Building Windows x32
           image: therecipe/qt:windows_32_static
           script:
-            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
-            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - mkdir -p ${GOPATH}/src/arquivei.com.br
+            - ln -s $(pwd) ${GOPATH}/src/arquivei.com.br/${BITBUCKET_REPO_SLUG}
             - make vendor && qtdeploy -debug build windows .
             - mv deploy/windows/build.exe gui.exe
           artifacts:
@@ -25,8 +25,8 @@ pipelines:
           name: Building Windows x64
           image: therecipe/qt:windows_64_static
           script:
-            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
-            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - mkdir -p ${GOPATH}/src/arquivei.com.br
+            - ln -s $(pwd) ${GOPATH}/src/arquivei.com.br/${BITBUCKET_REPO_SLUG}
             - make vendor && qtdeploy -debug build windows .
             - mv deploy/windows/build.exe gui.exe
           artifacts:
@@ -43,8 +43,8 @@ pipelines:
           name: Building Linux
           image: therecipe/qt:linux_static
           script:
-            - mkdir -p ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}
-            - ln -s $(pwd) ${GOPATH}/src/bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
+            - mkdir -p ${GOPATH}/src/arquivei.com.br
+            - ln -s $(pwd) ${GOPATH}/src/arquivei.com.br/${BITBUCKET_REPO_SLUG}
             - make vendor && qtdeploy -debug build linux .
             - mv deploy/linux/build gui
           artifacts:
