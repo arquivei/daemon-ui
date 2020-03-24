@@ -54,6 +54,8 @@
         <file>images/white-alert-danger.svg</file>
         <file>images/white-alert-success.svg</file>
         <file>images/white-alert-sync.svg</file>
+        <file>qml/lib/google-analytics.js</file>
+        <file>qml/lib/http-request.js</file>
         <file>qml/screens/Auth/partials/FormAlert.qml</file>
         <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
         <file>qml/screens/Auth/partials/LoginForm.qml</file>
