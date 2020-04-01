@@ -32,6 +32,24 @@ Para rodar o programa localmente, instale as dependências e execute a aplicaç�
 	$ make vendor
     $ make run
 
+### Limitações
+
+Para o correto funcionamento da interface gráfica, é necessário ter instalado a versão do OpenGL(ES) 2.0 ou superior na máquina cliente. [Link](https://www.qt.io/blog/2016/08/15/the-qt-quick-graphics-stack-in-qt-5-8)
+
+Caso o OpenGL não exista, podemos setar manualmente os drivers gráficos disponiveis abaixo:
+
+Default     - Request with the "" string
+Software    - Request with the "software"
+Direct3D 12 - Request with the "d3d12"
+OpenVG      - Request with the "openvg"
+
+Para correto funcionamento do software em máquinas virtuais (VMs) é necessário utilizar o modo de renderização via `Software`
+
+A alteração será feita adicionando uma nova variável de ambiente de sistema chamada `QT_QUICK_BACKEND`. [Link](https://docs.oracle.com/en/database/oracle/r-enterprise/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0)
+
+Exemplo:
+    $ QT_QUICK_BACKEND=software
+
 ### Gerando binários executáveis
 
 Você pode gerar binário para as plataformas x32 ou x64, que estarão disponíveis na pasta deploy/
