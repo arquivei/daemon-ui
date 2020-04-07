@@ -11,7 +11,7 @@ Item {
         return QmlBridge.userEmail;
     }
 
-    function getMackAddress() {
+    function getMacAddress() {
         return QmlBridge.macAddress;
     }
 

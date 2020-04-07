@@ -22,7 +22,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        GA.setClientId(clientService.getMackAddress());
+        GA.setClientId(clientService.getMacAddress());
         GA.startSession();
     }
 

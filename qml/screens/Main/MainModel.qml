@@ -24,7 +24,7 @@ Model {
     }
 
     function getMacAddress() {
-        return clientService.getMackAddress();
+        return clientService.getMacAddress();
     }
 
     function getLogsPath() {

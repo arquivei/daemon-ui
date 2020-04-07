@@ -47,6 +47,7 @@ func (r *resources) setupClient() error {
 	}
 
 	r.version = clientInfo.CurrentVersion
+	r.macAddress = clientInfo.MacAddress
 
 	return nil
 }

@@ -21,6 +21,7 @@ type QmlBridge struct {
 	_ string                                                                         `property:"userEmail"`
 	_ string                                                                         `property:"webDetailLink"`
 	_ string                                                                         `property:"logsPath"`
+	_ string                                                                         `property:"macAddress"`
 	_ bool                                                                           `property:"isMainTourViewed"`
 	_ func(email string, password string)                                            `slot:"authenticate"`
 	_ func()                                                                         `slot:"logout"`
@@ -45,6 +46,7 @@ func (bridge *QmlBridge) init() {
 	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
 	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
+	bridge.SetMacAddress(r.macAddress)
 }
 
 func newGuiInterface() {
@@ -71,6 +73,7 @@ func newGuiInterface() {
 			qmlBridge.SetHostName(clientInformation.ClientHostname)
 			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+			qmlBridge.SetMacAddress(r.macAddress)
 		}()
 	})
 

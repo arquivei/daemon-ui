@@ -3,6 +3,7 @@ package client
 //Information contains some informations about the client
 type Information struct {
 	CurrentVersion string
+	MacAddress     string
 	GUI            struct {
 		Filename string
 		PID      int
