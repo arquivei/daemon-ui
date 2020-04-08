@@ -19,6 +19,14 @@ Model {
         return configService.isConfigured();
     }
 
+    function getMacAddress() {
+        return clientService.getMackAddress();
+    }
+
+    function getEmail() {
+        return clientService.getUserEmail();
+    }
+
     AuthService {
         id: authService
         onAuthenticateSuccess: {
@@ -31,5 +39,9 @@ Model {
 
     ConfigService {
         id: configService
+    }
+
+    ClientService {
+        id: clientService
     }
 }

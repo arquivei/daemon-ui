@@ -6,9 +6,11 @@ import './partials'
 import '../../constants/colors.js' as Colors
 import '../../constants/addresses.js' as Address
 import '../../constants/texts.js' as Texts
+import '../../lib/google-analytics.js' as GA
 
 Page {
     property string userEmail
+    property string macAddress
     property string computerName
     property string webDetailLink
     property string logsPath
@@ -134,6 +136,11 @@ Page {
 
     id: root
 
+    Component.onCompleted: {
+        GA.setClientId(macAddress);
+        GA.trackScreen(GA.ScreenNames.MAIN);
+    }
+
     Tour {
         id: guidedTour
         steps: root.tourSteps
@@ -250,22 +257,34 @@ Page {
                     Action {
                         id: accessPlatformAction
                         text: Texts.General.Menu.ACCESS_PLATFORM
-                        onTriggered: Qt.openUrlExternally(webDetailLink)
+                        onTriggered: {
+                            GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_ACCESS_PLATFORM);
+                            Qt.openUrlExternally(webDetailLink);
+                        }
                     },
                     Action {
                         id: tourAction
                         text: Texts.General.Menu.TOUR
-                        onTriggered: guidedTour.start()
+                        onTriggered: {
+                            GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_TOUR_MAIN);
+                            guidedTour.start();
+                        }
                     },
                     Action {
                         id: aboutAction
                         text: Texts.General.Menu.ABOUT
-                        onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
+                        onTriggered: {
+                            GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_ABOUT);
+                            Qt.openUrlExternally(Address.ABOUT_URL);
+                        }
                     },
                     Action {
                         id: logsAction
                         text: Texts.General.Menu.LOGS
-                        onTriggered: Qt.openUrlExternally(logsPath)
+                        onTriggered: {
+                            GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_LOGS);
+                            Qt.openUrlExternally(logsPath);
+                        }
                     },
                     Action {
                         id: logoutAction
@@ -367,7 +386,10 @@ Page {
                 id: btnDetailsContent
                 text: Texts.Main.WEB_DETAILS_BUTTON_LABEL
                 isBlocked: parent.isBlocked
-                onClicked: Qt.openUrlExternally(webDetailLink);
+                onClicked: {
+                    GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_DETAILS_BUTTON);
+                    Qt.openUrlExternally(webDetailLink);
+                }
             }
 
             anchors {

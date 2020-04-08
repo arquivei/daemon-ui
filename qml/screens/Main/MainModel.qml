@@ -23,6 +23,10 @@ Model {
         return clientService.getWebDetailLink();
     }
 
+    function getMacAddress() {
+        return clientService.getMackAddress();
+    }
+
     function getLogsPath() {
         return clientService.getLogsPath();
     }

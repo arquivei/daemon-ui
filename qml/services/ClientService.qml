@@ -11,6 +11,10 @@ Item {
         return QmlBridge.userEmail;
     }
 
+    function getMackAddress() {
+        return QmlBridge.macAddress;
+    }
+
     function getHostName() {
         return QmlBridge.hostName;
     }
