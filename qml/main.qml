@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import './helpers/factory.js' as Factory
+import './lib/google-analytics.js' as GA
+import './services';
 
 ApplicationWindow {
     id: app
@@ -17,6 +19,15 @@ ApplicationWindow {
         const currentItem = stack.currentItem;
         stack.replace(currentItem, Factory.createPresenter(screen));
         currentItem.destroy();
+    }
+
+    Component.onCompleted: {
+        GA.setClientId(clientService.getMackAddress());
+        GA.startSession();
+    }
+
+    Component.onDestruction: {
+        GA.endSession();
     }
 
     FontLoader {
@@ -39,5 +50,9 @@ ApplicationWindow {
         id: stack
         initialItem: Factory.createPresenter('Splash')
         anchors.fill: parent
+    }
+
+    ClientService {
+        id: clientService
     }
 }

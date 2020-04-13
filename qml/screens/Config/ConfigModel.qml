@@ -53,6 +53,10 @@ Model {
         return clientService.getWebDetailLink();
     }
 
+    function getMacAddress() {
+        return clientService.getMackAddress();
+    }
+
     AuthService {
         id: authService
         onLogoutSuccess: {

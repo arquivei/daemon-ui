@@ -7,6 +7,7 @@ import '../../constants/colors.js' as Colors
 import '../../constants/addresses.js' as Address
 import '../../constants/texts.js' as Texts
 import '../../helpers/factory.js' as Factory
+import '../../lib/google-analytics.js' as GA
 
 Page {
     property bool showReturnAction
@@ -14,6 +15,7 @@ Page {
     property bool isLoading: false
     property bool hasDownload
     property string userEmail
+    property string macAddress
     property string uploadFolderPath
     property string downloadFolderPath
     property string webDetailLink
@@ -78,6 +80,11 @@ Page {
     }
 
     id: root
+
+    Component.onCompleted: {
+        GA.setClientId(macAddress);
+        GA.trackScreen(GA.ScreenNames.CONFIG);
+    }
 
     Tour {
         id: guidedTour
@@ -202,22 +209,34 @@ Page {
                 Action {
                     id: accessPlatformAction
                     text: Texts.General.Menu.ACCESS_PLATFORM
-                    onTriggered: Qt.openUrlExternally(webDetailLink)
+                    onTriggered: {
+                        GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_ACCESS_PLATFORM);
+                        Qt.openUrlExternally(webDetailLink);
+                    }
                 },
                 Action {
                     id: tourAction
                     text: Texts.General.Menu.TOUR
-                    onTriggered: guidedTour.start()
+                    onTriggered: {
+                        GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_TOUR_CONFIG);
+                        guidedTour.start();
+                    }
                 },
                 Action {
                     id: aboutAction
                     text: Texts.General.Menu.ABOUT
-                    onTriggered: Qt.openUrlExternally(Address.ABOUT_URL)
+                    onTriggered: {
+                        GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_ABOUT);
+                        Qt.openUrlExternally(Address.ABOUT_URL);
+                    }
                 },
                 Action {
                     id: logsAction
                     text: Texts.General.Menu.LOGS
-                    onTriggered: Qt.openUrlExternally(logsPath)
+                    onTriggered: {
+                        GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.CLICKED_ON_LOGS);
+                        Qt.openUrlExternally(logsPath);
+                    }
                 },
                 Action {
                     id: logoutAction
