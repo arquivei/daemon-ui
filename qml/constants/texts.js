@@ -2,6 +2,7 @@
 
 const General = {
     HIRE_DOWNLOAD_LABEL: 'Contratar agora',
+    CONFIG_LABEL: 'Configurar agora',
     Modals: {
         LogoutAlert: {
             TITLE: 'Você deseja sair?',
@@ -58,6 +59,14 @@ const Config = {
             PRIMARY: 'Continuar assim',
             SECONDARY: 'Alterar Configurações'
         },
+        SameAsUploadFolderError: {
+            TITLE: 'Atenção! Pasta já selecionada para Upload',
+            DESCRIPTION: 'A pasta selecionada para Download de documentos não pode ser a mesma escolhida para Upload. Por favor, selecione outra pasta.',
+        },
+        SameAsDownloadFolderError: {
+            TITLE: 'Atenção! Pasta já selecionada para Download',
+            DESCRIPTION: 'A pasta selecionada para Upload de documentos não pode ser a mesma escolhida para Download. Por favor, selecione outra pasta.',
+        },
         ReadingPermissionError: {
             TITLE: 'Atenção! Erro de permissão',
             DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_READING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
@@ -75,7 +84,7 @@ const Config = {
         },
         NotSavedModifications: {
             TITLE: 'Alteração não salva',
-            DESCRIPTION: 'Você alterou a pasta de upload, mas não salvou a alteração. Deseja voltar mesmo assim?',
+            DESCRIPTION: 'Você alterou suas configurações, mas não salvou a alteração. Deseja voltar mesmo assim?',
             PRIMARY: 'Sim',
             SECONDARY: 'Fechar'
         },
@@ -89,11 +98,13 @@ const Config = {
 const Main = {
     UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus arquivos para o Arquivei.',
+    UPLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de upload de documentos.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados do Arquivei para seu computador.',
     DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
     DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei. Seja um dos primeiros a testar!',
     DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
+    DOWNLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de download de documentos.',
     SUCCESS_SENDING_WARNING_TITLE: 'Um ou mais arquivos não foram enviados.',
     SUCCESS_SENDING_WARNING_DESCRIPTION: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.',
     WEB_DETAILS_BUTTON_LABEL: 'Ver detalhes no Arquivei',
@@ -108,21 +119,39 @@ const Main = {
             TITLE: 'Offline - Erro de conexão!',
             DESCRIPTION: `<strong>Falha ao tentar conectar aos nossos servidores.</strong><br>Verifique sua conexão com a internet, firewall, configuração de proxy ou antivírus. <strong><a href="${Address.ABOUT_CONNECTION_ERROR_URL}">Saiba Mais</a></strong><br><br>Tentaremos reconectar automaticamente a cada 60s...`
         },
-        ReadingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão',
+        UploadReadingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão na pasta de Upload',
             DESCRIPTION: 'Não é possível fazer o upload dos arquivos a partir da pasta selecionada por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta.',
             PRIMARY: 'Ir para Configurações',
             SECONDARY: 'Fechar'
         },
-        WritingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão',
+        UploadWritingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão na pasta de Upload',
             DESCRIPTION: 'Não é possível fazer o upload dos arquivos a partir da pasta selecionada por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta.',
             PRIMARY: 'Ir para Configurações',
             SECONDARY: 'Fechar'
         },
-        UseFolderUnknownError: {
-            TITLE: 'Atenção! Erro interno',
+        UploadUseFolderUnknownError: {
+            TITLE: 'Atenção! Erro interno na pasta de Upload',
             DESCRIPTION: `Não é possível fazer o upload dos arquivos a partir da pasta selecionada por um erro interno. Tente configurar novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
+            PRIMARY: 'Ir para Configurações',
+            SECONDARY: 'Fechar'
+        },
+        DownloadReadingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão na pasta de Download',
+            DESCRIPTION: 'Não é possível baixar os arquivos para a pasta selecionada por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta.',
+            PRIMARY: 'Ir para Configurações',
+            SECONDARY: 'Fechar'
+        },
+        DownloadWritingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão na pasta de Download',
+            DESCRIPTION: 'Não é possível baixar os arquivos para a pasta selecionada por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta.',
+            PRIMARY: 'Ir para Configurações',
+            SECONDARY: 'Fechar'
+        },
+        DownloadUseFolderUnknownError: {
+            TITLE: 'Atenção! Erro interno na pasta de Download',
+            DESCRIPTION: `Não é possível baixar os arquivos para a pasta selecionada por um erro interno. Tente configurar novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
             PRIMARY: 'Ir para Configurações',
             SECONDARY: 'Fechar'
         },

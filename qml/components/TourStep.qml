@@ -21,6 +21,8 @@ Item {
 
         if (typeof ref.isBlocked === 'boolean') {
             ref.isBlocked = true
+        } else if (ref.item && typeof ref.item.isBlocked === 'boolean') {
+            ref.item.isBlocked = true
         }
 
         ref.z = Z.ABOVE_OVERLAY
@@ -31,6 +33,8 @@ Item {
 
         if (typeof ref.isBlocked === 'boolean') {
             ref.isBlocked = false
+        } else if (ref.item && typeof ref.item.isBlocked === 'boolean') {
+            ref.item.isBlocked = false
         }
 
         ref.z = Z.DEFAULT

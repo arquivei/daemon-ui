@@ -1,11 +1,11 @@
 import '../../../components'
 import '../../../constants/colors.js' as Colors
-import '../../../constants/addresses.js' as Address
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title: Texts.Main.DOWNLOAD_SECTION_TITLE_SOON
-    property string description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION_SOON
+    property string title: Texts.Main.DOWNLOAD_SECTION_TITLE
+    property string description: Texts.Main.DOWNLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION
+    property bool isBlocked: false
 
     id: root
     width: parent.width
@@ -14,7 +14,7 @@ DsCard {
     height: 132
 
     DsText {
-        id: titleText
+        id: title
         text: root.title
         fontSize: 18
         font.weight: 'Bold'
@@ -37,38 +37,23 @@ DsCard {
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: titleText.bottom
-            left: parent.left
-            leftMargin: 16
-        }
-    }
-
-    DsText {
-        id: contactText
-        text: 'Fale com a gente em '
-        fontSize: 12
-        lineHeight: 16
-        color: Colors.GRAYSCALE_500
-
-        anchors {
-            top: descriptionText.bottom
-            topMargin: 6
+            top: title.bottom
             left: parent.left
             leftMargin: 16
         }
     }
 
     DsLink {
-        id: emailLink
-        label: Address.SUPPORT_EMAIL
-        href: `mailto:?to=${Address.SUPPORT_EMAIL}`
-        fontSize: 12
-        lineHeight: 16
+        label: Texts.General.CONFIG_LABEL
+        isBlocked: root.isBlocked
 
         anchors {
-            left: contactText.right
-            verticalCenter: contactText.verticalCenter
-            verticalCenterOffset: -0.5
+            top: descriptionText.bottom
+            topMargin: 24
+            left: parent.left
+            leftMargin: 16
         }
+
+        onClick: goToConfig()
     }
 }

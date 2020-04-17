@@ -5,10 +5,12 @@ import '../../constants/error-messages.js' as Errors
 Model {
     id: root
 
-    signal updateProcessingStatus(string processingStatus, int totalSent, int total, bool hasDocumentError);
+    signal updateUploadProcessingStatus(string processingStatus, int totalSent, int total, bool hasDocumentError);
+    signal updateDownloadProcessingStatus(string processingStatus, int totalDownloaded);
     signal updateConnectionStatus(bool isOnline);
     signal checkAuth(bool isAuthenticated);
-    signal validateFolderError(string errorTitle, string errorMessage);
+    signal validateDownloadFolderError(string errorTitle, string errorMessage);
+    signal validateUploadFolderError(string errorTitle, string errorMessage);
     signal logoutSuccess();
 
     function getHostName() {
@@ -31,20 +33,32 @@ Model {
         return clientService.getLogsPath();
     }
 
+    function getUploadFolder() {
+        return configService.getUploadFolder();
+    }
+
+    function getDownloadFolder() {
+        return configService.getDownloadFolder();
+    }
+
     function setMainTourIsViewed() {
         configService.setMainTourIsViewed();
     }
 
-    function hasDownload() {
-        return configService.hasDownload();
+    function canDownload() {
+        return configService.canDownload();
     }
 
     function isMainTourViewed() {
         return configService.isMainTourViewed();
     }
 
-    function validateFolder() {
-        configService.validateFolder(configService.getUploadFolder());
+    function validateDownloadFolder(folder) {
+        configService.validateDownloadFolder(folder);
+    }
+
+    function validateUploadFolder(folder) {
+        configService.validateUploadFolder(folder);
     }
 
     function logout() {
@@ -54,8 +68,13 @@ Model {
     ClientService {
         id: clientService
 
-        onUpdateProcessingStatus: {
-            root.updateProcessingStatus(processingStatus, totalSent, total, hasDocumentError);
+        onUpdateUploadProcessingStatus: {
+            root.updateUploadProcessingStatus(processingStatus, totalSent, total, hasDocumentError);
+            root.checkAuth(authService.isAuthenticated());
+        }
+
+        onUpdateDownloadProcessingStatus: {
+            root.updateDownloadProcessingStatus(processingStatus, totalDownloaded);
             root.checkAuth(authService.isAuthenticated());
         }
 
@@ -75,8 +94,12 @@ Model {
     ConfigService {
         id: configService
 
-        onValidateFolderError: {
-            root.validateFolderError(Errors.Main.ValidateFolder[code].title, Errors.Main.ValidateFolder[code].description);
+        onValidateDownloadFolderError: {
+            root.validateDownloadFolderError(Errors.Main.ValidateDownloadFolder[code].title, Errors.Main.ValidateDownloadFolder[code].description);
+        }
+
+        onValidateUploadFolderError: {
+            root.validateUploadFolderError(Errors.Main.ValidateUploadFolder[code].title, Errors.Main.ValidateUploadFolder[code].description);
         }
     }
 }

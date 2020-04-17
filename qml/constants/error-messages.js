@@ -24,18 +24,32 @@ const Config = {
 };
 
 const Main = {
-    ValidateFolder: {
+    ValidateDownloadFolder: {
         NO_WRITE_PERMISSION: {
-            title: Texts.Main.Modals.WritingPermissionError.TITLE,
-            description: Texts.Main.Modals.WritingPermissionError.DESCRIPTION
+            title: Texts.Main.Modals.DownloadWritingPermissionError.TITLE,
+            description: Texts.Main.Modals.DownloadWritingPermissionError.DESCRIPTION
         },
         NO_READ_PERMISSION: {
-            title: Texts.Main.Modals.ReadingPermissionError.TITLE,
-            description: Texts.Main.Modals.ReadingPermissionError.DESCRIPTION
+            title: Texts.Main.Modals.DownloadReadingPermissionError.TITLE,
+            description: Texts.Main.Modals.DownloadReadingPermissionError.DESCRIPTION
         },
         UNKNOWN_SERVER_ERROR: {
-            title: Texts.Main.Modals.UseFolderUnknownError.TITLE,
-            description: Texts.Main.Modals.UseFolderUnknownError.DESCRIPTION
+            title: Texts.Main.Modals.DownloadUseFolderUnknownError.TITLE,
+            description: Texts.Main.Modals.DownloadUseFolderUnknownError.DESCRIPTION
+        }
+    },
+    ValidateUploadFolder: {
+        NO_WRITE_PERMISSION: {
+            title: Texts.Main.Modals.UploadWritingPermissionError.TITLE,
+            description: Texts.Main.Modals.UploadWritingPermissionError.DESCRIPTION
+        },
+        NO_READ_PERMISSION: {
+            title: Texts.Main.Modals.UploadReadingPermissionError.TITLE,
+            description: Texts.Main.Modals.UploadReadingPermissionError.DESCRIPTION
+        },
+        UNKNOWN_SERVER_ERROR: {
+            title: Texts.Main.Modals.UploadUseFolderUnknownError.TITLE,
+            description: Texts.Main.Modals.UploadUseFolderUnknownError.DESCRIPTION
         }
     }
 };

@@ -13,7 +13,7 @@ Page {
     property bool showReturnAction
     property bool hasBeenEdited
     property bool isLoading: false
-    property bool hasDownload
+    property bool canDownload
     property string userEmail
     property string macAddress
     property string uploadFolderPath
@@ -52,13 +52,15 @@ Page {
     }
     ]
 
-    signal saveConfigs(string uploadFolder)
-    signal validateFolder(string folder)
+    signal saveConfigs(string uploadFolder, string downloadFolder)
+    signal selectDownloadFolder(string folder)
+    signal selectUploadFolder(string folder)
     signal returnToMain()
     signal logout()
 
-    function openUploadFolderDialog() {
-        uploadFolderDialog.open();
+    function setDownloadFolder(folder) {
+        downloadFolderPath = folder;
+        changeDownloadConfigModal.open();
     }
 
     function setUploadFolder(folder) {
@@ -77,6 +79,13 @@ Page {
 
     function showTourNotification() {
         tourNotificationModal.open();
+    }
+
+    // Comparação de pastas teve que ser dessa forma por causa dos prefixos do
+    // sistema de arquivos que variam de acordo com SO
+    function isSameFolder(selectedFolder, comparedFolder) {
+        const pattern = new RegExp(`${comparedFolder}$`);
+        return pattern.test(selectedFolder);
     }
 
     id: root
@@ -98,7 +107,12 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = uploadFolderDialog.fileUrl.toString();
-            validateFolder(url);
+            if (downloadFolderPath && isSameFolder(url, downloadFolderPath)) {
+                const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsDownloadFolderError;
+                openErrorDialog(TITLE, DESCRIPTION);
+                return;
+            }
+            selectUploadFolder(url);
         }
     }
 
@@ -109,11 +123,13 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = downloadFolderDialog.fileUrl.toString();
-            if (downloadFolderPath) {
-                changeDownloadConfigModal.open()
-            } else {
-                console.log('validate and select download folder...')
+            if (uploadFolderPath && isSameFolder(url, uploadFolderPath)) {
+                const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsUploadFolderError;
+                openErrorDialog(TITLE, DESCRIPTION);
+                return;
             }
+
+            selectDownloadFolder(url);
         }
     }
 
@@ -153,12 +169,11 @@ Page {
         secondaryActionLabel: Texts.Config.Modals.ChangeDownloadConfig.SECONDARY
         primaryActionLabel: Texts.Config.Modals.ChangeDownloadConfig.PRIMARY
         onPrimaryAction: {
-            console.log('validate and select download folder...')
             changeDownloadConfigModal.close();
         }
         onSecondaryAction: {
-            console.log('validate, select download folder and go to web config')
             changeDownloadConfigModal.close();
+            Qt.openUrlExternally(webDetailLink);
         }
     }
 
@@ -271,29 +286,29 @@ Page {
                 topMargin: 16
             }
 
-            onOpenDialog: openUploadFolderDialog()
+            onOpenDialog: uploadFolderDialog.open()
         }
 
-//        DownloadSection {
-//            id: downloadSection
-//            folderPath: downloadFolderPath
-//            title: Texts.Config.DOWNLOAD_SECTION_TITLE
-//            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
-//            visible: hasDownload
-//            anchors {
-//                top: uploadSection.bottom
-//                topMargin: 8
-//            }
+        DownloadSection {
+            id: downloadSection
+            folderPath: downloadFolderPath
+            title: Texts.Config.DOWNLOAD_SECTION_TITLE
+            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
+            visible: canDownload
+            anchors {
+                top: uploadSection.bottom
+                topMargin: 8
+            }
 
-//            onOpenDialog: downloadFolderDialog.open()
-//        }
+            onOpenDialog: downloadFolderDialog.open()
+        }
 
 //        DownloadSectionHire {
 //            id: downloadSectionHire
 //            title: Texts.Config.DOWNLOAD_SECTION_TITLE
 //            description: Texts.Config.DOWNLOAD_SECTION_HIRE_DESCRIPTION
 //            hireDownloadUrl: Address.HIRE_DOWNLOAD_URL
-//            visible: !hasDownload
+//            visible: !canDownload
 //            anchors {
 //                top: uploadSection.bottom
 //                topMargin: 8
@@ -331,7 +346,7 @@ Page {
                 right: content.right
                 bottom: content.bottom
             }
-            onClicked: saveConfigs(uploadFolderPath)
+            onClicked: saveConfigs(uploadFolderPath, downloadFolderPath)
         }
     }
 }
