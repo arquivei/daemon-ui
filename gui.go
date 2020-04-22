@@ -16,7 +16,9 @@ type QmlBridge struct {
 	core.QObject
 
 	_ bool                                                                           `property:"isAuthenticated"`
+	_ bool                                                                           `property:"canDownload"`
 	_ string                                                                         `property:"uploadFolderPath"`
+	_ string                                                                         `property:"downloadFolderPath"`
 	_ string                                                                         `property:"hostName"`
 	_ string                                                                         `property:"userEmail"`
 	_ string                                                                         `property:"webDetailLink"`
@@ -25,14 +27,17 @@ type QmlBridge struct {
 	_ bool                                                                           `property:"isMainTourViewed"`
 	_ func(email string, password string)                                            `slot:"authenticate"`
 	_ func()                                                                         `slot:"logout"`
-	_ func(uploadFolder string)                                                      `slot:"saveConfigs"`
-	_ func(folder string)                                                            `slot:"validateFolder"`
+	_ func(uploadFolder, downloadFolder string)                                      `slot:"saveConfigs"`
+	_ func(folder string)                                                            `slot:"validateUploadFolder"`
+	_ func(folder string)                                                            `slot:"validateDownloadFolder"`
 	_ func()                                                                         `slot:"setMainTourIsViewed"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
-	_ func(success bool, code, folder string)                                        `signal:"validateFolderSignal"`
+	_ func(success bool, code, folder string)                                        `signal:"ValidateUploadFolderSignal"`
+	_ func(success bool, code, folder string)                                        `signal:"ValidateDownloadFolderSignal"`
 	_ func(success bool, message string)                                             `signal:"authenticateSignal"`
 	_ func(success bool, code string)                                                `signal:"logoutSignal"`
-	_ func(processingStatus string, totalSent int, total int, hasDocumentError bool) `signal:"clientStatusSignal"`
+	_ func(processingStatus string, totalSent int, total int, hasDocumentError bool) `signal:"uploadStatusSignal"`
+	_ func(processingStatus string, totalDownloaded int)                             `signal:"downloadStatusSignal"`
 	_ func()                                                                         `constructor:"init"`
 }
 
@@ -44,8 +49,11 @@ func (bridge *QmlBridge) init() {
 	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
+	bridge.SetDownloadFolderPath(clientInformation.DownloadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
 	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
+	//bridge.SetCanDownload(clientInformation.CanDownload)
+	bridge.SetCanDownload(false) // set as false while download feature is not implemented yet
 	bridge.SetMacAddress(r.macAddress)
 }
 
@@ -73,6 +81,8 @@ func newGuiInterface() {
 			qmlBridge.SetHostName(clientInformation.ClientHostname)
 			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+			//qmlBridge.SetCanDownload(clientInformation.CanDownload)
+			qmlBridge.SetCanDownload(false) // set as false while download feature is not implemented yet
 			qmlBridge.SetMacAddress(r.macAddress)
 		}()
 	})
@@ -84,20 +94,29 @@ func newGuiInterface() {
 		}()
 	})
 
-	qmlBridge.ConnectSaveConfigs(func(uploadFolder string) {
+	qmlBridge.ConnectSaveConfigs(func(uploadFolder, downloadFolder string) {
 		go func() {
 			uploadFolder = formatFolderPath(uploadFolder)
-			resp := r.appConnection.SaveConfigs(uploadFolder)
+			resp := r.appConnection.SaveConfigs(uploadFolder, downloadFolder)
 			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
 			qmlBridge.SetUploadFolderPath(uploadFolder)
+			qmlBridge.SetDownloadFolderPath(downloadFolder)
 		}()
 	})
 
-	qmlBridge.ConnectValidateFolder(func(folder string) {
+	qmlBridge.ConnectValidateUploadFolder(func(folder string) {
 		go func() {
 			folder = formatFolderPath(folder)
 			resp := r.appConnection.ValidateFolder(folder)
-			qmlBridge.ValidateFolderSignal(resp.Success, resp.Code, folder)
+			qmlBridge.ValidateUploadFolderSignal(resp.Success, resp.Code, folder)
+		}()
+	})
+
+	qmlBridge.ConnectValidateDownloadFolder(func(folder string) {
+		go func() {
+			folder = formatFolderPath(folder)
+			resp := r.appConnection.ValidateFolder(folder)
+			qmlBridge.ValidateDownloadFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})
 
@@ -111,11 +130,16 @@ func newGuiInterface() {
 	go func() {
 		for range time.NewTicker(time.Second * 5).C {
 			clientStatus := r.appConnection.GetClientStatus()
-			qmlBridge.ClientStatusSignal(
-				clientStatus.ProcessingStatus,
-				clientStatus.TotalSent,
-				clientStatus.TotalDocuments,
-				clientStatus.HasDocumentError,
+			qmlBridge.UploadStatusSignal(
+				clientStatus.Upload.ProcessingStatus,
+				clientStatus.Upload.TotalSent,
+				clientStatus.Upload.TotalDocuments,
+				clientStatus.Upload.HasDocumentError,
+			)
+
+			qmlBridge.DownloadStatusSignal(
+				clientStatus.Download.ProcessingStatus,
+				clientStatus.Download.TotalDownloaded,
 			)
 
 			clientInformation := r.appConnection.GetClientInformation()

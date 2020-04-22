@@ -10,8 +10,8 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
 )
 
-func (app App) doSaveConfigs(uploadFolder string) (r saveconfigs.Response, err error) {
-	data, err := app.c.SendCommand(saveconfigs.NewCommand(uploadFolder))
+func (app App) doSaveConfigs(uploadFolder, downloadFolder string) (r saveconfigs.Response, err error) {
+	data, err := app.c.SendCommand(saveconfigs.NewCommand(uploadFolder, downloadFolder))
 	if err != nil {
 		return r, err
 	}

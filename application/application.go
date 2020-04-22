@@ -38,8 +38,8 @@ func (app App) Logout() (r logout.Response) {
 }
 
 //SaveConfigs method saves the user configs
-func (app App) SaveConfigs(uploadFolder string) (r saveconfigs.Response) {
-	r, err := app.doSaveConfigs(uploadFolder)
+func (app App) SaveConfigs(uploadFolder, downloadFolder string) (r saveconfigs.Response) {
+	r, err := app.doSaveConfigs(uploadFolder, downloadFolder)
 	if err != nil {
 		app.logger.
 			WithError(err).

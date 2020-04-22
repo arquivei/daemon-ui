@@ -7,6 +7,18 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands"
 )
 
+type download struct {
+	ProcessingStatus string
+	TotalDownloaded  int
+}
+
+type upload struct {
+	ProcessingStatus string
+	TotalDocuments   int
+	TotalSent        int
+	HasDocumentError bool
+}
+
 //Command ...
 type Command struct {
 	Name commands.CommandName
@@ -14,11 +26,9 @@ type Command struct {
 
 //Response ...
 type Response struct {
-	Error            string `json:",omitempty"`
-	ProcessingStatus string
-	TotalDocuments   int
-	TotalSent        int
-	HasDocumentError bool
+	Error    string `json:",omitempty"`
+	Upload   upload
+	Download download
 }
 
 //NewCommand method creates a new command
@@ -54,6 +64,11 @@ func NewResponse(data []byte) (r Response, err error) {
 //NewGenericError creates a generic error
 func NewGenericError() Response {
 	return Response{
-		ProcessingStatus: "STATUS_ERROR_UNKNOWN",
+		Upload: upload{
+			ProcessingStatus: "STATUS_ERROR_UNKNOWN",
+		},
+		Download: download{
+			ProcessingStatus: "STATUS_ERROR_UNKNOWN",
+		},
 	}
 }

@@ -18,10 +18,12 @@ type Response struct {
 	ClientWebDetailLink string
 	ClientHostname      string
 	UploadFolder        string
+	DownloadFolder      string
 	UserEmail           string
 	IsAuthenticated     bool
 	LogsPath            string
 	IsTourViewed        bool
+	CanDownload         bool
 }
 
 //NewCommand method creates a new command
