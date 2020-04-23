@@ -10,6 +10,19 @@ Presenter {
 
     property MainModel model: MainModel {}
 
+    function setValidateFolderTimers() {
+        const uploadFolder = model.getUploadFolder();
+        const downloadFolder = model.getDownloadFolder();
+
+        if (uploadFolder) {
+            Timer.setInterval(() => model.validateUploadFolder(uploadFolder), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+        }
+
+        if (downloadFolder) {
+            Timer.setInterval(() => model.validateDownloadFolder(downloadFolder), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+        }
+    }
+
     Component.onCompleted: {
         GA.setClientId(model.getMacAddress());
         GA.trackScreen(GA.ScreenNames.MAIN);
@@ -18,7 +31,8 @@ Presenter {
                 view.showTourNotification();
             }
         }, Times.TOUR_DELAY);
-        Timer.setInterval(() => model.validateFolder(), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+
+        setValidateFolderTimers();
     }
 
     Connections {
@@ -40,8 +54,12 @@ Presenter {
     Connections {
         target: model
 
-        onUpdateProcessingStatus: {
-            view.setProcessingStatus(processingStatus, total, totalSent, hasDocumentError);
+        onUpdateDownloadProcessingStatus: {
+            view.setDownloadProcessingStatus(processingStatus, totalDownloaded);
+        }
+
+        onUpdateUploadProcessingStatus: {
+            view.setUploadProcessingStatus(processingStatus, total, totalSent, hasDocumentError);
         }
 
         onUpdateConnectionStatus: {
@@ -55,8 +73,13 @@ Presenter {
             }
         }
 
-        onValidateFolderError: {
+        onValidateUploadFolderError: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_FOLDER_SYNC, errorMessage);
+            view.showFolderValidationErrorModal(errorTitle, errorMessage);
+        }
+
+        onValidateDownloadFolderError: {
+            // track GA Event
             view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
@@ -73,7 +96,9 @@ Presenter {
         computerName: model.getHostName() || null
         webDetailLink: model.getWebDetailLink() || null
         logsPath: model.getLogsPath() || null
-        hasDownload: model.hasDownload()
+        canDownload: model.canDownload()
+        downloadFolderPath: model.getDownloadFolder() || null
+        uploadFolderPath: model.getUploadFolder() || null
         isMainTourViewed: model.isMainTourViewed()
         anchors.fill: parent;
     }

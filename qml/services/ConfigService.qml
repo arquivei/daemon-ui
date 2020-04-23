@@ -4,8 +4,10 @@ import '../constants/error-messages.js' as ErrorMessages
 Item {
     id: root
 
-    signal validateFolderSuccess(string folder);
-    signal validateFolderError(string folder, string code);
+    signal validateDownloadFolderSuccess(string folder);
+    signal validateDownloadFolderError(string folder, string code);
+    signal validateUploadFolderSuccess(string folder);
+    signal validateUploadFolderError(string folder, string code);
     signal saveConfigsSuccess();
     signal saveConfigsError(string code);
 
@@ -14,7 +16,15 @@ Item {
     }
 
     function isConfigured() {
-        return QmlBridge.uploadFolderPath ? true : false;
+        if (QmlBridge.canDownload) {
+            return QmlBridge.uploadFolderPath || QmlBridge.downloadFolderPath;
+        }
+
+        return QmlBridge.uploadFolderPath;
+    }
+
+    function getDownloadFolder() {
+        return QmlBridge.downloadFolderPath;
     }
 
     function getUploadFolder() {
@@ -25,29 +35,38 @@ Item {
         QmlBridge.setMainTourIsViewed();
     }
 
-    function getDownloadFolder() {
-        return null;
+    function canDownload() {
+        return QmlBridge.canDownload;
     }
 
-    function hasDownload() {
-        return false;
+    function validateDownloadFolder(folder) {
+        QmlBridge.validateDownloadFolder(folder);
     }
 
-    function validateFolder(folder) {
-        QmlBridge.validateFolder(folder);
+    function validateUploadFolder(folder) {
+        QmlBridge.validateUploadFolder(folder);
     }
 
-    function saveConfigs(uploadFolder) {
-        QmlBridge.saveConfigs(uploadFolder);
+    function saveConfigs(uploadFolder, downloadFolder) {
+        const _uploadFolder = uploadFolder || null;
+        const _downloadFolder = downloadFolder || null;
+        QmlBridge.saveConfigs(_uploadFolder, _downloadFolder);
     }
 
     Connections {
         target: QmlBridge
-        onValidateFolderSignal: {
+        onValidateDownloadFolderSignal: {
             if (success) {
-                root.validateFolderSuccess(folder);
+                root.validateDownloadFolderSuccess(folder);
             } else {
-                root.validateFolderError(folder, code);
+                root.validateDownloadFolderError(folder, code);
+            }
+        }
+        onValidateUploadFolderSignal: {
+            if (success) {
+                root.validateUploadFolderSuccess(folder);
+            } else {
+                root.validateUploadFolderError(folder, code);
             }
         }
         onSaveConfigsSignal: {

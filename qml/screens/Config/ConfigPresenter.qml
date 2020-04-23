@@ -23,13 +23,17 @@ Presenter {
     Connections {
         target: view
 
-        onValidateFolder: {
-            model.validateFolder(folder);
+        onSelectDownloadFolder: {
+            model.selectDownloadFolder(folder);
+        }
+
+        onSelectUploadFolder: {
+            model.selectUploadFolder(folder);
         }
 
         onSaveConfigs: {
             view.toggleLoading();
-            model.saveConfigs(uploadFolder);
+            model.saveConfigs(uploadFolder, downloadFolder);
         }
 
         onReturnToMain: {
@@ -45,13 +49,23 @@ Presenter {
     Connections {
         target: model
 
-        onValidateFolderSuccess: {
+        onSelectUploadFolderSuccess: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_FOLDER_CHOICE, folder);
             view.setUploadFolder(folder);
         }
 
-        onValidateFolderError: {
+        onSelectUploadFolderError: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_FOLDER_CHOICE, `${folder} - ${errorMessage}`);
+            view.openErrorDialog(errorTitle, errorMessage);
+        }
+
+        onSelectDownloadFolderSuccess: {
+            // Trackear evento GA
+            view.setDownloadFolder(folder);
+        }
+
+        onSelectDownloadFolderError: {
+            // Trackear evento GA
             view.openErrorDialog(errorTitle, errorMessage);
         }
 
@@ -81,9 +95,9 @@ Presenter {
         webDetailLink: model.getWebDetailLink() || null
         macAddress: model.getMacAddress() || null
         logsPath: model.getLogsPath() || null
-        showReturnAction: model.getUploadFolder() && true
-        hasDownload: model.hasDownload()
-        hasBeenEdited: model.hasUploadFolderChanged
+        showReturnAction: model.getUploadFolder() || model.getDownloadFolder()
+        canDownload: model.canDownload()
+        hasBeenEdited: model.hasBeenEdited()
         anchors.fill: parent;
     }
 }

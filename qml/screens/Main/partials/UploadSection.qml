@@ -4,14 +4,10 @@ import '../../../constants/server-codes.js' as Codes
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title
-    property string description
-    property string successWarningTitle
-    property string successWarningDescription
-    property string processingStatus
-    property int totalSent: 0
-    property int total: 0
-    property bool hasDocumentError: false
+    property string title: Texts.Main.UPLOAD_SECTION_TITLE
+    property string description: Texts.Main.UPLOAD_SECTION_DESCRIPTION
+    property string successWarningTitle: Texts.Main.SUCCESS_SENDING_WARNING_TITLE
+    property string successWarningDescription: Texts.Main.SUCCESS_SENDING_WARNING_DESCRIPTION
 
     function getSyncProgressStatus(processingStatus) {
         switch (processingStatus) {
@@ -78,7 +74,7 @@ DsCard {
         loadingLabel: Texts.Main.Upload.SyncStatus.LOADING
         successLabel: Texts.Main.Upload.SyncStatus.SUCCESS
         errorLabel: Texts.Main.Upload.SyncStatus.ERROR
-        status: getSyncProgressStatus(processingStatus)
+        status: getSyncProgressStatus(uploadProcessingStatus)
 
         anchors {
             top: descriptionText.bottom
@@ -90,9 +86,9 @@ DsCard {
 
     SendingStatusInfo {
         id: sendingStatusInfo
-        show: showStatusInfo(root.processingStatus)
-        totalFiles: root.total
-        sentFiles: root.totalSent
+        show: showStatusInfo(uploadProcessingStatus)
+        totalFiles: uploadTotal
+        sentFiles: uploadTotalSent
 
         anchors {
             left: progress.right
@@ -103,7 +99,7 @@ DsCard {
 
     SendSuccessWarning {
         id: sendSuccessWarning
-        show: processingStatus === Codes.DocumentProcessingStatus.STATUS_FINISHED && hasDocumentError
+        show: uploadProcessingStatus === Codes.DocumentProcessingStatus.STATUS_FINISHED && uploadHasDocumentError
         title: root.successWarningTitle
         description: root.successWarningDescription
 

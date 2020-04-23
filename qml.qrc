@@ -72,12 +72,14 @@
         <file>qml/screens/Config/ConfigModel.qml</file>
         <file>qml/screens/Config/ConfigPresenter.qml</file>
         <file>qml/screens/Config/ConfigView.qml</file>
+        <file>qml/screens/Main/partials/DownloadNotConfigured.qml</file>
         <file>qml/screens/Main/partials/DownloadSection.qml</file>
         <file>qml/screens/Main/partials/DownloadSectionHire.qml</file>
         <file>qml/screens/Main/partials/DownloadSectionSoon.qml</file>
         <file>qml/screens/Main/partials/DownloadStatusInfo.qml</file>
         <file>qml/screens/Main/partials/SendingStatusInfo.qml</file>
         <file>qml/screens/Main/partials/SendSuccessWarning.qml</file>
+        <file>qml/screens/Main/partials/UploadNotConfigured.qml</file>
         <file>qml/screens/Main/partials/UploadSection.qml</file>
         <file>qml/screens/Main/MainModel.qml</file>
         <file>qml/screens/Main/MainPresenter.qml</file>

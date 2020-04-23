@@ -7,6 +7,7 @@ import '../../constants/colors.js' as Colors
 import '../../constants/addresses.js' as Address
 import '../../constants/texts.js' as Texts
 import '../../lib/google-analytics.js' as GA
+import '../../helpers/factory.js' as Factory
 
 Page {
     property string userEmail
@@ -14,8 +15,18 @@ Page {
     property string computerName
     property string webDetailLink
     property string logsPath
-    property bool hasDownload
+    property string uploadFolderPath
+    property string downloadFolderPath
+    property bool canDownload
     property bool isMainTourViewed
+
+    property string uploadProcessingStatus
+    property int uploadTotal: 0
+    property int uploadTotalSent: 0
+    property bool uploadHasDocumentError: false
+
+    property string downloadProcessingStatus
+    property int downloadTotal: 0
 
     property var tourSteps: [
     {
@@ -104,11 +115,16 @@ Page {
     signal mainTourViewed()
     signal logout()
 
-    function setProcessingStatus(processingStatus, total, totalSent, hasDocumentError) {
-        uploadSection.processingStatus = processingStatus;
-        uploadSection.totalSent = totalSent;
-        uploadSection.total = total;
-        uploadSection.hasDocumentError = hasDocumentError;
+    function setUploadProcessingStatus(processingStatus, total, totalSent, hasDocumentError) {
+        uploadProcessingStatus = processingStatus;
+        uploadTotalSent = totalSent;
+        uploadTotal = total;
+        uploadHasDocumentError = hasDocumentError;
+    }
+
+    function setDownloadProcessingStatus(processingStatus, totalDownloaded) {
+        downloadProcessingStatus = processingStatus;
+        downloadTotal = totalDownloaded;
     }
 
     function setConnectionStatus(isOnline) {
@@ -132,6 +148,19 @@ Page {
         folderValidationErrorModal.title = errorTitle;
         folderValidationErrorModal.text = errorMessage;
         folderValidationErrorModal.open();
+    }
+
+    function getDownloadComponent() {
+        if (!canDownload) {
+            // Quando feature estiver finalizada, substituir pela seção de contratação do Download
+            return Factory.createPartialFragment('Main', 'DownloadSectionSoon');
+        }
+
+        if (!downloadFolderPath) {
+            return Factory.createPartialFragment('Main', 'DownloadNotConfigured');
+        }
+
+        return Factory.createPartialFragment('Main', 'DownloadSection');
     }
 
     id: root
@@ -224,7 +253,7 @@ Page {
             fill: parent
             topMargin: 24
             rightMargin: 32
-            bottomMargin: 40
+            bottomMargin: 46
             leftMargin: 32
         }
 
@@ -332,52 +361,25 @@ Page {
             }
         }
 
-        UploadSection {
+        Loader {
             id: uploadSection
-            title: Texts.Main.UPLOAD_SECTION_TITLE
-            description: Texts.Main.UPLOAD_SECTION_DESCRIPTION
-            successWarningTitle: Texts.Main.SUCCESS_SENDING_WARNING_TITLE
-            successWarningDescription: Texts.Main.SUCCESS_SENDING_WARNING_DESCRIPTION
-
+            sourceComponent: uploadFolderPath ? Factory.createPartialFragment('Main', 'UploadSection') : Factory.createPartialFragment('Main', 'UploadNotConfigured')
+            width: parent.width
             anchors {
                 top: title.bottom
                 topMargin: 16
             }
         }
 
-        DownloadSectionSoon {
+        Loader {
             id: downloadSection
-            title: Texts.Main.DOWNLOAD_SECTION_TITLE_SOON
-            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION_SOON
-
+            sourceComponent: getDownloadComponent()
+            width: parent.width
             anchors {
                 top: uploadSection.bottom
-                topMargin: 8
+                topMargin: uploadFolderPath ? 8 : 14
             }
         }
-
-//        DownloadSection {
-//            id: downloadSection
-//            title: Texts.Main.DOWNLOAD_SECTION_TITLE
-//            description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
-//            visible: hasDownload
-//            anchors {
-//                top: uploadSection.bottom
-//                topMargin: 8
-//            }
-//        }
-
-//        DownloadSectionHire {
-//            id: downloadSectionHire
-//            title: Texts.Main.DOWNLOAD_SECTION_TITLE
-//            description: Texts.Main.DOWNLOAD_SECTION_HIRE_DESCRIPTION
-//            hireDownloadUrl: Address.HIRE_DOWNLOAD_URL
-//            visible: !hasDownload
-//            anchors {
-//                top: uploadSection.bottom
-//                topMargin: 8
-//            }
-//        }
 
         TourStepWrapper {
             id: btnDetails

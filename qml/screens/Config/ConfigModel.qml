@@ -6,9 +6,12 @@ Model {
     id: root
 
     property bool hasUploadFolderChanged: false;
+    property bool hasDownloadFolderChanged: false;
 
-    signal validateFolderSuccess(string folder);
-    signal validateFolderError(string folder, string errorTitle, string errorMessage);
+    signal selectUploadFolderSuccess(string folder);
+    signal selectUploadFolderError(string folder, string errorTitle, string errorMessage);
+    signal selectDownloadFolderSuccess(string folder);
+    signal selectDownloadFolderError(string folder, string errorTitle, string errorMessage);
     signal saveConfigsSuccess();
     signal saveConfigsError(string errorTitle, string errorMessage);
     signal logoutSuccess();
@@ -17,12 +20,16 @@ Model {
         authService.logout();
     }
 
-    function validateFolder(folder) {
-        configService.validateFolder(folder);
+    function selectDownloadFolder(folder) {
+        configService.validateDownloadFolder(folder);
     }
 
-    function saveConfigs(uploadFolder) {
-        configService.saveConfigs(uploadFolder);
+    function selectUploadFolder(folder) {
+        configService.validateUploadFolder(folder);
+    }
+
+    function saveConfigs(uploadFolder, downloadFolder) {
+        configService.saveConfigs(uploadFolder, downloadFolder);
     }
 
     function getUploadFolder() {
@@ -37,8 +44,12 @@ Model {
         return configService.isConfigured();
     }
 
-    function hasDownload() {
-        return configService.hasDownload();
+    function canDownload() {
+        return configService.canDownload();
+    }
+
+    function hasBeenEdited() {
+        return hasDownloadFolderChanged || hasUploadFolderChanged;
     }
 
     function getUserEmail() {
@@ -66,13 +77,23 @@ Model {
 
     ConfigService {
         id: configService
-        onValidateFolderSuccess: {
-            root.hasUploadFolderChanged = true;
-            root.validateFolderSuccess(folder);
+
+        onValidateDownloadFolderSuccess: {
+            root.hasDownloadFolderChanged = true;
+            root.selectDownloadFolderSuccess(folder);
         }
 
-        onValidateFolderError: {
-            root.validateFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
+        onValidateDownloadFolderError: {
+            root.selectDownloadFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
+        }
+
+        onValidateUploadFolderSuccess: {
+            root.hasUploadFolderChanged = true;
+            root.selectUploadFolderSuccess(folder);
+        }
+
+        onValidateUploadFolderError: {
+            root.selectUploadFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
         }
 
         onSaveConfigsSuccess: {

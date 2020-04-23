@@ -4,7 +4,8 @@ import '../constants/server-codes.js' as Codes
 Item {
     id: root
 
-    signal updateProcessingStatus(string processingStatus, int totalSent, int total, bool hasDocumentError);
+    signal updateUploadProcessingStatus(string processingStatus, int totalSent, int total, bool hasDocumentError);
+    signal updateDownloadProcessingStatus(string processingStatus, int totalDownloaded);
     signal updateConnectionStatus(bool isOnline);
 
     function getUserEmail() {
@@ -29,10 +30,10 @@ Item {
 
     Connections {
         target: QmlBridge
-        onClientStatusSignal: {
+        onUploadStatusSignal: {
             if (processingStatus === Codes.DocumentProcessingStatus.STATUS_DEFAULT) {
                 updateConnectionStatus(true);
-                updateProcessingStatus(processingStatus, totalSent, total, hasDocumentError);
+                updateUploadProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalSent, total, hasDocumentError);
                 return;
             }
 
@@ -42,7 +43,22 @@ Item {
                 updateConnectionStatus(true);
             }
 
-            updateProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalSent, total, hasDocumentError);
+            updateUploadProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalSent, total, hasDocumentError);
+        }
+        onDownloadStatusSignal: {
+            if (processingStatus === Codes.DocumentProcessingStatus.STATUS_DEFAULT) {
+                updateConnectionStatus(true);
+                updateDownloadProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalDownloaded);
+                return;
+            }
+
+            if (processingStatus === Codes.DocumentProcessingStatus.STATUS_ERROR_CONNECTION) {
+                updateConnectionStatus(false);
+            } else {
+                updateConnectionStatus(true);
+            }
+
+            updateDownloadProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalDownloaded);
         }
     }
 }
