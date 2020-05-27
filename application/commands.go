@@ -7,7 +7,8 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
 	"arquivei.com.br/daemon-ui/client/commands/tour"
-	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
+	"arquivei.com.br/daemon-ui/client/commands/validateupload"
+	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
 )
 
 func (app App) doSaveConfigs(uploadFolder, downloadFolder string) (r saveconfigs.Response, err error) {
@@ -38,13 +39,13 @@ func (app App) doAuthenticate(email, password string) (r authenticate.Response, 
 	return
 }
 
-func (app App) doValidateFolder(path string) (r validatefolder.Response, err error) {
-	data, err := app.c.SendCommand(validatefolder.NewCommand(path))
+func (app App) doValidateUploadFolder(path string) (r validateupload.Response, err error) {
+	data, err := app.c.SendCommand(validateupload.NewCommand(path))
 	if err != nil {
 		return r, err
 	}
 
-	r, err = validatefolder.NewResponse(data)
+	r, err = validateupload.NewResponse(data)
 	if err != nil {
 		return r, err
 	}
@@ -99,4 +100,18 @@ func (app App) doUpdateTour() (err error) {
 		return err
 	}
 	return nil
+}
+
+func (app App) doValidateDownloadFolder(path string) (r validatedownload.Response, err error) {
+	data, err := app.c.SendCommand(validatedownload.NewCommand(path))
+	if err != nil {
+		return r, err
+	}
+
+	r, err = validatedownload.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
+	return
 }

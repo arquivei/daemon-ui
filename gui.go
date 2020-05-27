@@ -107,7 +107,7 @@ func newGuiInterface() {
 	qmlBridge.ConnectValidateUploadFolder(func(folder string) {
 		go func() {
 			folder = formatFolderPath(folder)
-			resp := r.appConnection.ValidateFolder(folder)
+			resp := r.appConnection.ValidateUploadFolder(folder)
 			qmlBridge.ValidateUploadFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})
@@ -115,7 +115,7 @@ func newGuiInterface() {
 	qmlBridge.ConnectValidateDownloadFolder(func(folder string) {
 		go func() {
 			folder = formatFolderPath(folder)
-			resp := r.appConnection.ValidateFolder(folder)
+			resp := r.appConnection.ValidateDownloadFolder(folder)
 			qmlBridge.ValidateDownloadFolderSignal(resp.Success, resp.Code, folder)
 		}()
 	})

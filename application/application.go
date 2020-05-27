@@ -7,7 +7,8 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
-	"arquivei.com.br/daemon-ui/client/commands/validatefolder"
+	"arquivei.com.br/daemon-ui/client/commands/validateupload"
+	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
 	"github.com/sirupsen/logrus"
 )
 
@@ -69,15 +70,15 @@ func (app App) Ping() (err error) {
 	return
 }
 
-//ValidateFolder method validates a folder
-func (app App) ValidateFolder(path string) (r validatefolder.Response) {
-	r, err := app.doValidateFolder(path)
+//ValidateUploadFolder method validates a folder
+func (app App) ValidateUploadFolder(path string) (r validateupload.Response) {
+	r, err := app.doValidateUploadFolder(path)
 	if err != nil {
 		app.logger.
 			WithError(err).
 			WithField("path", path).
-			Error("An unknown error occurred while validating the folder")
-		r = validatefolder.NewGenericError()
+			Error("An unknown error occurred while validating the upload folder")
+		r = validateupload.NewGenericError()
 	}
 	return
 }
@@ -112,4 +113,17 @@ func (app App) UpdateTour() {
 			WithError(err).
 			Error("An error occurred while updating main tour")
 	}
+}
+
+//ValidateDownloadFolder method validates a folder
+func (app App) ValidateDownloadFolder(path string) (r validatedownload.Response) {
+	r, err := app.doValidateDownloadFolder(path)
+	if err != nil {
+		app.logger.
+			WithError(err).
+			WithField("path", path).
+			Error("An unknown error occurred while validating the download folder")
+		r = validatedownload.NewGenericError()
+	}
+	return
 }
