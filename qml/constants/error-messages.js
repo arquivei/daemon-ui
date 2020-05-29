@@ -36,6 +36,10 @@ const Main = {
         UNKNOWN_SERVER_ERROR: {
             title: Texts.Main.Modals.DownloadUseFolderUnknownError.TITLE,
             description: Texts.Main.Modals.DownloadUseFolderUnknownError.DESCRIPTION
+        },
+        NO_VALID_FOLDER: {
+            title: Texts.Main.Modals.DownloadUnexistentFolderError.TITLE,
+            description: Texts.Main.Modals.DownloadUnexistentFolderError.DESCRIPTION
         }
     },
     ValidateUploadFolder: {
@@ -50,6 +54,10 @@ const Main = {
         UNKNOWN_SERVER_ERROR: {
             title: Texts.Main.Modals.UploadUseFolderUnknownError.TITLE,
             description: Texts.Main.Modals.UploadUseFolderUnknownError.DESCRIPTION
+        },
+        NO_VALID_FOLDER: {
+            title: Texts.Main.Modals.UploadUnexistentFolderError.TITLE,
+            description: Texts.Main.Modals.UploadUnexistentFolderError.DESCRIPTION
         }
     }
 };
