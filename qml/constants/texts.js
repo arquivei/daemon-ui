@@ -137,6 +137,12 @@ const Main = {
             PRIMARY: 'Ir para Configurações',
             SECONDARY: 'Fechar'
         },
+        UploadUnexistentFolderError: {
+            TITLE: 'Atenção! Erro ao acessar a pasta',
+            DESCRIPTION: 'Não foi possível acessar a pasta selecionada para o upload dos documentos pois ela está inacessível ou não existe mais. Verifique se as permissões foram alteradas ou escolha uma nova pasta.',
+            PRIMARY: 'Ir para Configurações',
+            SECONDARY: 'Fechar'
+        },
         DownloadReadingPermissionError: {
             TITLE: 'Atenção! Erro de permissão na pasta de Download',
             DESCRIPTION: 'Não é possível baixar os arquivos para a pasta selecionada por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta.',
@@ -152,6 +158,12 @@ const Main = {
         DownloadUseFolderUnknownError: {
             TITLE: 'Atenção! Erro interno na pasta de Download',
             DESCRIPTION: `Não é possível baixar os arquivos para a pasta selecionada por um erro interno. Tente configurar novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
+            PRIMARY: 'Ir para Configurações',
+            SECONDARY: 'Fechar'
+        },
+        DownloadUnexistentFolderError: {
+            TITLE: 'Atenção! Erro ao acessar a pasta',
+            DESCRIPTION: 'Não foi possível acessar a pasta selecionada para o download dos documentos pois ela está inacessível ou não existe mais. Verifique se as permissões foram alteradas ou escolha uma nova pasta.',
             PRIMARY: 'Ir para Configurações',
             SECONDARY: 'Fechar'
         },
