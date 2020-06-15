@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import './helpers/factory.js' as Factory
+import './helpers/timer.js' as Timer
+import './constants/times.js' as Times
 import './lib/google-analytics.js' as GA
 import './services';
 
@@ -24,9 +26,11 @@ ApplicationWindow {
     Component.onCompleted: {
         GA.setClientId(clientService.getMacAddress());
         GA.startSession();
+        Timer.setInterval(() => GA.trackEvent(GA.EventCategories.ACTIVITY, GA.EventActions.APP_RUNNING), Times.APP_ACTIVITY_GA_EVENT_INTERVAL, app);
     }
 
     Component.onDestruction: {
+        GA.setClientId(clientService.getMacAddress());
         GA.endSession();
     }
 

@@ -2,12 +2,16 @@
 
 // Event Constants
 const EventCategories = {
+    ACTIVITY: 'Atividade',
     AUTHENTICATION: 'Autenticação',
     NAVIGATION: 'Navegação',
     UPLOAD: 'Upload'
 };
 
 const EventActions = {
+    // Activity
+    APP_RUNNING: 'App em atividade',
+
     // Authentication
     SUCCESS_LOGIN: 'Login com sucesso',
     SUCCESS_LOGOUT: 'Logout com sucesso',
