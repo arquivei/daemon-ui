@@ -26,8 +26,8 @@ Page {
         ref: uploadSection,
         parent: content,
         title: 'Configurar Upload',
-        description: 'Primeiro, você deve escolher a pasta onde estão os documentos que serão enviados para o Arquivei.',
-        chipInfo: '01/02',
+        description: 'Primeiro, você pode escolher a pasta onde estão os arquivos XML/ZIP que serão enviados para o Arquivei.',
+        chipInfo: '01/03',
         position: {
             top: uploadSection.bottom,
             topMargin: 8,
@@ -37,11 +37,27 @@ Page {
     },
     {
         id: 'step2',
+        ref: downloadSection,
+        parent: content,
+        title: 'Configurar Download',
+        description: 'Caso tenha o Download, selecione a pasta para configurar onde serão baixados os documentos do Arquivei para seu computador.',
+        chipInfo: '02/03',
+        position: {
+            bottom: downloadSection.top,
+            bottomMargin: 8,
+            left: downloadSection.left
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step3',
         ref: btnSave,
         parent: content,
         title: 'Finalizar Configuração',
-        description: 'Depois de escolher a pasta, é só clicar em Salvar. Vamos lá?',
-        chipInfo: '02/02',
+        description: 'Depois da configuração, é só clicar em Salvar. Vamos lá?',
+        customWidth: 244,
+        chipInfo: '03/03',
         position: {
             bottom: btnSave.top,
             bottomMargin: 8,
@@ -289,42 +305,15 @@ Page {
             onOpenDialog: uploadFolderDialog.open()
         }
 
-        DownloadSection {
+        Loader {
             id: downloadSection
-            folderPath: downloadFolderPath
-            title: Texts.Config.DOWNLOAD_SECTION_TITLE
-            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
-            visible: canDownload
+            sourceComponent: canDownload ? Factory.createPartialFragment('Config', 'DownloadSection') : Factory.createPartialFragment('Config', 'DownloadSectionSoon')
+            width: parent.width
             anchors {
                 top: uploadSection.bottom
                 topMargin: 8
             }
-
-            onOpenDialog: downloadFolderDialog.open()
         }
-
-//        DownloadSectionHire {
-//            id: downloadSectionHire
-//            title: Texts.Config.DOWNLOAD_SECTION_TITLE
-//            description: Texts.Config.DOWNLOAD_SECTION_HIRE_DESCRIPTION
-//            hireDownloadUrl: Address.HIRE_DOWNLOAD_URL
-//            visible: !canDownload
-//            anchors {
-//                top: uploadSection.bottom
-//                topMargin: 8
-//            }
-//        }
-
-//        DownloadSectionSoon {
-//            id: downloadSection
-//            title: Texts.Config.DOWNLOAD_SECTION_TITLE_SOON
-//            description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION_SOON
-
-//            anchors {
-//                top: uploadSection.bottom
-//                topMargin: 8
-//            }
-//        }
 
         Loader {
             id: returnButtonLoader

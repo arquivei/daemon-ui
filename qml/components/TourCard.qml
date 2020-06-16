@@ -59,11 +59,13 @@ Rectangle {
             fontSize: 18
             font.weight: 'Bold'
             lineHeight: 26
+            wrapMode: Text.WordWrap
 
             anchors {
                 top: stepsChip.bottom
                 topMargin: 16
                 left: content.left
+                right: content.right
             }
         }
 

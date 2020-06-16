@@ -1,17 +1,18 @@
 import '../../../components'
 import '../../../constants/colors.js' as Colors
 import '../../../constants/addresses.js' as Address
+import '../../../constants/texts.js' as Texts
 
 DsCard {
     property bool isBlocked: false
-    property string title
-    property string description
+    property string title: Texts.Config.DOWNLOAD_SECTION_TITLE_SOON
+    property string description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION_SOON
 
     id: root
     width: parent.width
     type: DsCard.Types.Bordered
 
-    height: 132
+    height: 142
 
     DsText {
         id: titleText

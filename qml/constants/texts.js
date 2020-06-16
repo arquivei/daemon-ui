@@ -33,8 +33,8 @@ const Config = {
     UPLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde estão os arquivos XML ou ZIP que deseja enviar para o Arquivei.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados do Arquivei.',
-    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei',
     DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     SELECT_FOLDER_BUTTON_LABEL: 'Selecionar pasta',
     CHANGE_FOLDER_BUTTON_LABEL: 'Alterar pasta',
@@ -49,7 +49,7 @@ const Config = {
     Modals: {
         BeginTour: {
             TITLE: 'Tour de Configuração',
-            DESCRIPTION: 'Seja bem-vindo! Para começar, veja como configurar o upload automático de XMLs para o Arquivei.',
+            DESCRIPTION: 'Seja bem-vindo! Para começar, veja como configurar o upload ou o download automático de XMLs para o Arquivei.',
             PRIMARY: 'Começar o Tour',
             SECONDARY: 'Sair'
         },
@@ -101,8 +101,8 @@ const Main = {
     UPLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de upload de documentos.',
     DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados do Arquivei para seu computador.',
-    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos: em breve!',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei. Seja um dos primeiros a testar!',
+    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos',
+    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei',
     DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     DOWNLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de download de documentos.',
     SUCCESS_SENDING_WARNING_TITLE: 'Um ou mais arquivos não foram enviados.',
@@ -111,7 +111,7 @@ const Main = {
     Modals: {
         BeginTour: {
             TITLE: 'Tela Principal',
-            DESCRIPTION: 'Agora que você configurou a pasta de upload, iremos mostrar como o software funciona e quais informações você poderá acompanhar enquanto a integração com o Arquivei é feita.',
+            DESCRIPTION: 'Agora que você configurou a aplicação, iremos mostrar como o software funciona e quais informações você poderá acompanhar enquanto a integração com o Arquivei é feita.',
             PRIMARY: 'Começar o Tour',
             SECONDARY: 'Sair'
         },
