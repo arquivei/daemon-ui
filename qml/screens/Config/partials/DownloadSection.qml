@@ -2,14 +2,17 @@ import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
 import '../../../helpers/factory.js' as Factory
+import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title
-    property string description
-    property string folderPath
+    property string title: Texts.Config.DOWNLOAD_SECTION_TITLE
+    property string description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
+    property string folderPath: downloadFolderPath
     property bool isBlocked: false
 
-    signal openDialog
+    function openDialog() {
+        downloadFolderDialog.open();
+    }
 
     id: root
     width: parent.width

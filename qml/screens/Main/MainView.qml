@@ -35,7 +35,7 @@ Page {
         parent: content,
         title: 'Nome da máquina',
         description: 'Este é o nome da máquina na qual este software está instalado.',
-        chipInfo: '01/05',
+        chipInfo: '01/06',
         position: {
             top: title.bottom,
             topMargin: 16,
@@ -50,7 +50,7 @@ Page {
         parent: content,
         title: 'Status da integração',
         description: 'Aqui você verifica se o software está ou não conectado ao Arquivei. Com o status Online é possível enviar e baixar documentos.',
-        chipInfo: '02/05',
+        chipInfo: '02/06',
         position: {
             top: connectionStatus.bottom,
             topMargin: 16,
@@ -66,7 +66,8 @@ Page {
         parent: content,
         title: 'Acompanhando o Upload',
         description: 'Neste espaço você poderá acompanhar se os arquivos XML e ZIP da pasta selecionada estão sendo lidos e enviados.',
-        chipInfo: '03/05',
+        chipInfo: '03/06',
+        customWidth: 240,
         position: {
             top: uploadSection.bottom,
             topMargin: 8,
@@ -77,11 +78,27 @@ Page {
     },
     {
         id: 'step4',
+        ref: downloadSection,
+        parent: content,
+        title: 'Acompanhando o Download',
+        description: 'Neste espaço você poderá acompanhar se os documentos do Arquivei estão sendo baixados para seu computador.',
+        chipInfo: '04/06',
+        customWidth: 240,
+        position: {
+            bottom: downloadSection.top,
+            bottomMargin: 8,
+            left: downloadSection.left
+        },
+        prevLabel: 'Voltar',
+        nextLabel: 'Avançar'
+    },
+    {
+        id: 'step5',
         ref: btnDetails,
         parent: content,
         title: 'Detalhes do processamento',
         description: 'Clicando nesse botão você poderá acompanhar todos os detalhes do processamento direto no Arquivei.',
-        chipInfo: '04/05',
+        chipInfo: '05/06',
         customWidth: 260,
         position: {
             bottom: btnDetails.top,
@@ -93,12 +110,12 @@ Page {
         nextLabel: 'Avançar'
     },
     {
-        id: 'step5',
+        id: 'step6',
         ref: menu,
         parent: content,
         title: 'Menu do usuário',
         description: 'Neste menu você tem acesso às configurações, aos logs da aplicação e ao tour caso tenha ficado alguma dúvida.',
-        chipInfo: '05/05',
+        chipInfo: '06/06',
         customWidth: 260,
         position: {
             top: menu.bottom,

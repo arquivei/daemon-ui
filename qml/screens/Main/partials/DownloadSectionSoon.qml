@@ -4,6 +4,7 @@ import '../../../constants/addresses.js' as Address
 import '../../../constants/texts.js' as Texts
 
 DsCard {
+    property bool isBlocked: false
     property string title: Texts.Main.DOWNLOAD_SECTION_TITLE_SOON
     property string description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION_SOON
 
@@ -64,6 +65,7 @@ DsCard {
         href: `mailto:?to=${Address.SUPPORT_EMAIL}`
         fontSize: 12
         lineHeight: 16
+        isBlocked: root.isBlocked
 
         anchors {
             left: contactText.right
