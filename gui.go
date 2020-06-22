@@ -55,8 +55,7 @@ func (bridge *QmlBridge) init() {
 	bridge.SetDownloadFolderPath(clientInformation.DownloadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
 	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
-	//bridge.SetCanDownload(clientInformation.CanDownload)
-	bridge.SetCanDownload(false) // set as false while download feature is not implemented yet
+	bridge.SetCanDownload(clientInformation.CanDownload)
 	bridge.SetMacAddress(r.macAddress)
 }
 
@@ -125,8 +124,7 @@ func newGuiInterface() {
 			qmlBridge.SetHostName(clientInformation.ClientHostname)
 			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
-			//qmlBridge.SetCanDownload(clientInformation.CanDownload)
-			qmlBridge.SetCanDownload(false) // set as false while download feature is not implemented yet
+			qmlBridge.SetCanDownload(clientInformation.CanDownload)
 			qmlBridge.SetMacAddress(r.macAddress)
 		}()
 	})
