@@ -60,5 +60,8 @@ Item {
 
             updateDownloadProcessingStatus(Codes.DocumentProcessingStatus[processingStatus], totalDownloaded);
         }
+        onShowMainWindowSignal: {
+            app.showNormal()
+        }
     }
 }

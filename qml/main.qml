@@ -16,6 +16,9 @@ ApplicationWindow {
     minimumHeight: 524
     maximumHeight: 524
     title: 'Arquivei'
+    onClosing: {
+        app.hide();
+    }
 
     function navigateTo(screen) {
         const currentItem = stack.currentItem;

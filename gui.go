@@ -5,10 +5,12 @@ import (
 	"strings"
 	"time"
 
+	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/impl/file"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
+	"github.com/therecipe/qt/widgets"
 )
 
 //QmlBridge ...
@@ -32,12 +34,13 @@ type QmlBridge struct {
 	_ func(folder string)                                                            `slot:"validateDownloadFolder"`
 	_ func()                                                                         `slot:"setMainTourIsViewed"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
-	_ func(success bool, code, folder string)                                        `signal:"ValidateUploadFolderSignal"`
-	_ func(success bool, code, folder string)                                        `signal:"ValidateDownloadFolderSignal"`
+	_ func(success bool, code, folder string)                                        `signal:"validateUploadFolderSignal"`
+	_ func(success bool, code, folder string)                                        `signal:"validateDownloadFolderSignal"`
 	_ func(success bool, message string)                                             `signal:"authenticateSignal"`
 	_ func(success bool, code string)                                                `signal:"logoutSignal"`
 	_ func(processingStatus string, totalSent int, total int, hasDocumentError bool) `signal:"uploadStatusSignal"`
 	_ func(processingStatus string, totalDownloaded int)                             `signal:"downloadStatusSignal"`
+	_ func()                                                                         `signal:"showMainWindowSignal"`
 	_ func()                                                                         `constructor:"init"`
 }
 
@@ -57,6 +60,24 @@ func (bridge *QmlBridge) init() {
 	bridge.SetMacAddress(r.macAddress)
 }
 
+func (bridge *QmlBridge) syncStatus(clientStatus clientstatus.Response) {
+	bridge.UploadStatusSignal(
+		clientStatus.Upload.ProcessingStatus,
+		clientStatus.Upload.TotalSent,
+		clientStatus.Upload.TotalDocuments,
+		clientStatus.Upload.HasDocumentError,
+	)
+
+	bridge.DownloadStatusSignal(
+		clientStatus.Download.ProcessingStatus,
+		clientStatus.Download.TotalDownloaded,
+	)
+
+	clientInformation := r.appConnection.GetClientInformation()
+	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
+	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
+}
+
 func newGuiInterface() {
 	//needed to get the application working on VMs when using the windows docker images
 	//quick.QQuickWindow_SetSceneGraphBackend(quick.QSGRendererInterface__Software)
@@ -64,13 +85,36 @@ func newGuiInterface() {
 	//needed to fix an QML Settings issue on windows
 	core.QCoreApplication_SetOrganizationName("Arquivei")
 
-	gui.NewQGuiApplication(len(os.Args), os.Args)
+	app := widgets.NewQApplication(len(os.Args), os.Args)
+	app.SetWindowIcon(gui.NewQIcon5("favicon.ico"))
 
 	var qmlBridge = NewQmlBridge(nil)
 
-	var app = qml.NewQQmlApplicationEngine(nil)
-	app.RootContext().SetContextProperty("QmlBridge", qmlBridge)
-	app.Load(core.NewQUrl3("qrc:/qml/main.qml", 0))
+	var engine = qml.NewQQmlApplicationEngine(nil)
+	engine.RootContext().SetContextProperty("QmlBridge", qmlBridge)
+	engine.Load(core.NewQUrl3("qrc:/qml/main.qml", 0))
+
+	systray := NewQSystemTrayIconCustomSlot(nil)
+	systray.SetIcon(app.WindowIcon())
+
+	var systrayMenu = widgets.NewQMenu(nil)
+	var openAction = systrayMenu.AddAction("Abrir")
+	var exitAction = systrayMenu.AddAction("Sair")
+
+	systray.SetContextMenu(systrayMenu)
+	systray.Show()
+
+	systray.ShowMessage(systemTrayTitle, "Iniciando aplicativo...", widgets.QSystemTrayIcon__Information, 5000)
+
+	openAction.ConnectTriggered(func(checked bool) {
+		go func() {
+			qmlBridge.ShowMainWindowSignal()
+		}()
+	})
+
+	exitAction.ConnectTriggered(func(checked bool) {
+		app.Quit()
+	})
 
 	qmlBridge.ConnectAuthenticate(func(email string, password string) {
 		go func() {
@@ -130,25 +174,13 @@ func newGuiInterface() {
 	go func() {
 		for range time.NewTicker(time.Second * 5).C {
 			clientStatus := r.appConnection.GetClientStatus()
-			qmlBridge.UploadStatusSignal(
-				clientStatus.Upload.ProcessingStatus,
-				clientStatus.Upload.TotalSent,
-				clientStatus.Upload.TotalDocuments,
-				clientStatus.Upload.HasDocumentError,
-			)
-
-			qmlBridge.DownloadStatusSignal(
-				clientStatus.Download.ProcessingStatus,
-				clientStatus.Download.TotalDownloaded,
-			)
-
-			clientInformation := r.appConnection.GetClientInformation()
-			qmlBridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
-			qmlBridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
+			qmlBridge.syncStatus(clientStatus)
+			systray.showDownloadStatus(clientStatus)
+			systray.showUploadStatus(clientStatus)
 		}
 	}()
 
-	gui.QGuiApplication_Exec()
+	widgets.QApplication_Exec()
 }
 
 func formatFolderPath(path string) string {
