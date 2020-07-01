@@ -184,5 +184,8 @@ func newGuiInterface() {
 }
 
 func formatFolderPath(path string) string {
-	return strings.Replace(path, file.GetURIScheme(), "", -1)
+	for _, uriScheme := range file.GetAvailableSchemes() {
+		path = strings.ReplaceAll(path, uriScheme, "")
+	}
+	return path
 }
