@@ -1,7 +1,10 @@
 package main
 
 import (
+	"runtime/debug"
+
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
+	log "github.com/sirupsen/logrus"
 	"github.com/therecipe/qt/widgets"
 )
 
@@ -24,7 +27,17 @@ type QSystemTrayIconCustomSlot struct {
 }
 
 //triggerSlot just needs to call the passed function to execute it inside the main thread
-func (tray *QSystemTrayIconCustomSlot) triggerSlot(f func()) { f() }
+func (tray *QSystemTrayIconCustomSlot) triggerSlot(f func()) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.WithField("error", r).
+				WithField("stacktrace", string(debug.Stack())).
+				Error("[SystemTray::triggerSlot] Recovered from panic!")
+		}
+	}()
+
+	f()
+}
 
 func (tray *QSystemTrayIconCustomSlot) showDownloadStatus(clientStatus clientstatus.Response) {
 	var message string
