@@ -7,12 +7,12 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
 	"arquivei.com.br/daemon-ui/client/commands/tour"
-	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
+	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 )
 
-func (app App) doSaveConfigs(uploadFolder, downloadFolder string) (r saveconfigs.Response, err error) {
-	data, err := app.c.SendCommand(saveconfigs.NewCommand(uploadFolder, downloadFolder))
+func (app App) doSaveConfigs(uploadFolders []string, downloadFolder string) (r saveconfigs.Response, err error) {
+	data, err := app.c.SendCommand(saveconfigs.NewCommand(uploadFolders, downloadFolder))
 	if err != nil {
 		return r, err
 	}

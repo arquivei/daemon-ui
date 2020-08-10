@@ -7,8 +7,8 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
-	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
+	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 	"github.com/sirupsen/logrus"
 )
 
@@ -39,12 +39,13 @@ func (app App) Logout() (r logout.Response) {
 }
 
 //SaveConfigs method saves the user configs
-func (app App) SaveConfigs(uploadFolder, downloadFolder string) (r saveconfigs.Response) {
-	r, err := app.doSaveConfigs(uploadFolder, downloadFolder)
+func (app App) SaveConfigs(uploadFolders []string, downloadFolder string) (r saveconfigs.Response) {
+	r, err := app.doSaveConfigs(uploadFolders, downloadFolder)
 	if err != nil {
 		app.logger.
 			WithError(err).
-			WithField("uploadFolder", uploadFolder).
+			WithField("upload_folders", uploadFolders).
+			WithField("download_folder", downloadFolder).
 			Error("An error occurred while saving user configs")
 		r = saveconfigs.NewGenericError()
 	}

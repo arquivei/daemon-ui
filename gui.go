@@ -51,12 +51,15 @@ func (bridge *QmlBridge) init() {
 	bridge.SetHostName(clientInformation.ClientHostname)
 	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
-	bridge.SetUploadFolderPath(clientInformation.UploadFolder)
 	bridge.SetDownloadFolderPath(clientInformation.DownloadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
 	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
 	bridge.SetCanDownload(clientInformation.CanDownload)
 	bridge.SetMacAddress(r.macAddress)
+
+	if len(clientInformation.UploadFolders) > 0 {
+		bridge.SetUploadFolderPath(clientInformation.UploadFolders[0])
+	}
 }
 
 func (bridge *QmlBridge) syncStatus(clientStatus clientstatus.Response) {
@@ -139,7 +142,7 @@ func newGuiInterface() {
 	qmlBridge.ConnectSaveConfigs(func(uploadFolder, downloadFolder string) {
 		go func() {
 			uploadFolder = formatFolderPath(uploadFolder)
-			resp := r.appConnection.SaveConfigs(uploadFolder, downloadFolder)
+			resp := r.appConnection.SaveConfigs([]string{uploadFolder}, downloadFolder)
 			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
 			qmlBridge.SetUploadFolderPath(uploadFolder)
 			qmlBridge.SetDownloadFolderPath(downloadFolder)
