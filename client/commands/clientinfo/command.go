@@ -17,7 +17,7 @@ type Response struct {
 	Error               string `json:",omitempty"`
 	ClientWebDetailLink string
 	ClientHostname      string
-	UploadFolder        string
+	UploadFolders       []string
 	DownloadFolder      string
 	UserEmail           string
 	IsAuthenticated     bool

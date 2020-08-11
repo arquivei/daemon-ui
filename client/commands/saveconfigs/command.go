@@ -9,7 +9,7 @@ import (
 //Command ...
 type Command struct {
 	Name           commands.CommandName
-	UploadFolder   string
+	UploadFolders  []string
 	DownloadFolder string
 }
 
@@ -21,10 +21,10 @@ type Response struct {
 }
 
 //NewCommand method creates a new command
-func NewCommand(uploadFolder, downloadFolder string) commands.CommandInterface {
+func NewCommand(uploadFolders []string, downloadFolder string) commands.CommandInterface {
 	return &Command{
 		Name:           "SAVE_CONFIGS_CMD",
-		UploadFolder:   uploadFolder,
+		UploadFolders:  uploadFolders,
 		DownloadFolder: downloadFolder,
 	}
 }
