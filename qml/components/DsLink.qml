@@ -1,13 +1,16 @@
 import QtQuick 2.12
 import '../constants/colors.js' as Colors
+import '../helpers/factory.js' as Factory
 
-DsText {
+Item {
     property string href
     property string label
     property bool isHovered: false
     property bool isBlocked: false
+    property bool isLoading: false
 
-    property alias fontSize: root.font.pixelSize
+    property alias fontSize: textLink.font.pixelSize
+    property alias lineHeight: textLink.lineHeight
 
     signal click()
 
@@ -17,30 +20,52 @@ DsText {
     }
 
     id: root
-    textFormat: Text.StyledText
-    linkColor: Colors.BRAND_SECONDARY_DEFAULT
-    text: getText()
-    fontSize: 14
-    font.weight: "Bold"
-    lineHeight: 22
+    implicitHeight: childrenRect.height
+    implicitWidth: childrenRect.width
 
-    MouseArea {
-        cursorShape: Qt.PointingHandCursor
-        width: parent.width
-        height: parent.height
-        onClicked: {
-            if (!isBlocked) {
-                href ? root.linkActivated(href) : root.click()
-            }
+    Loader {
+        id: spinnerLoader
+        sourceComponent: isLoading ? Factory.createComponentFragment('LinkSpinner') : null
+
+        anchors {
+            verticalCenter: textLink.verticalCenter
         }
-        hoverEnabled: !isBlocked
-        onHoveredChanged: {
-            isHovered = !isHovered;
+    }
 
-            if (isHovered) {
-                linkColor = Colors.BRAND_SECONDARY_DARK;
-            } else {
-                linkColor = Colors.BRAND_SECONDARY_DEFAULT;
+    DsText {
+        id: textLink
+        textFormat: Text.StyledText
+        linkColor: Colors.BRAND_SECONDARY_DEFAULT
+        text: getText()
+        fontSize: 14
+        font.weight: "Bold"
+        lineHeight: 22
+
+        anchors {
+            left: isLoading ? spinnerLoader.right : parent.left
+            leftMargin: isLoading ? 8 : 0
+        }
+
+        MouseArea {
+            cursorShape: isLoading || isBlocked ? Qt.ArrowCursor : Qt.PointingHandCursor
+            width: parent.width
+            height: parent.height
+            onClicked: {
+                if (!isBlocked && !isLoading) {
+                    href ? textLink.linkActivated(href) : root.click()
+                }
+            }
+            hoverEnabled: true
+            onHoveredChanged: {
+                if (!isLoading && !isBlocked) {
+                    isHovered = !isHovered;
+                }
+
+                if (isHovered) {
+                    textLink.linkColor = Colors.BRAND_SECONDARY_DARK;
+                } else {
+                    textLink.linkColor = Colors.BRAND_SECONDARY_DEFAULT;
+                }
             }
         }
     }

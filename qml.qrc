@@ -5,6 +5,7 @@
         <file>qml/components/fragments/DsModalActions.qml</file>
         <file>qml/components/fragments/DsModalSecondaryButton.qml</file>
         <file>qml/components/fragments/Empty.qml</file>
+        <file>qml/components/fragments/LinkSpinner.qml</file>
         <file>qml/components/fragments/TourCardPrevAction.qml</file>
         <file>qml/components/fragments/TourCardCloseAction.qml</file>
         <file>qml/components/ConnectionStatus.qml</file>
@@ -47,6 +48,7 @@
         <file>images/app-logo-placeholder.svg</file>
         <file>images/arquivei-icon.svg</file>
         <file>images/arquivei-main.svg</file>
+        <file>images/link-loader.svg</file>
         <file>images/loader.svg</file>
         <file>images/material-arrow-down.svg</file>
         <file>images/material-close.svg</file>
