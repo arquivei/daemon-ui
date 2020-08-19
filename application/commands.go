@@ -8,6 +8,7 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
 	"arquivei.com.br/daemon-ui/client/commands/tour"
 	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
+	"arquivei.com.br/daemon-ui/client/commands/validatepermission"
 	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 )
 
@@ -109,6 +110,20 @@ func (app App) doValidateDownloadFolder(path string) (r validatedownload.Respons
 	}
 
 	r, err = validatedownload.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
+	return
+}
+
+func (app App) doValidatePermission() (r validatepermission.Response, err error) {
+	data, err := app.c.SendCommand(validatepermission.NewCommand())
+	if err != nil {
+		return r, err
+	}
+
+	r, err = validatepermission.NewResponse(data)
 	if err != nil {
 		return r, err
 	}

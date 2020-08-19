@@ -8,6 +8,7 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/logout"
 	"arquivei.com.br/daemon-ui/client/commands/saveconfigs"
 	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
+	"arquivei.com.br/daemon-ui/client/commands/validatepermission"
 	"arquivei.com.br/daemon-ui/client/commands/validateupload"
 	"github.com/sirupsen/logrus"
 )
@@ -125,6 +126,18 @@ func (app App) ValidateDownloadFolder(path string) (r validatedownload.Response)
 			WithField("path", path).
 			Error("An unknown error occurred while validating the download folder")
 		r = validatedownload.NewGenericError()
+	}
+	return
+}
+
+//ValidatePermission method validates the permissions
+func (app App) ValidatePermission() (r validatepermission.Response) {
+	r, err := app.doValidatePermission()
+	if err != nil {
+		app.logger.
+			WithError(err).
+			Error("An unknown error occurred while validating permissions")
+		r = validatepermission.NewGenericError()
 	}
 	return
 }
