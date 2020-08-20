@@ -33,6 +33,7 @@ type QmlBridge struct {
 	_ func(folder string)                                                            `slot:"validateUploadFolder"`
 	_ func(folder string)                                                            `slot:"validateDownloadFolder"`
 	_ func()                                                                         `slot:"setMainTourIsViewed"`
+	_ func()                                                                         `slot:"checkDownloadPermission"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateUploadFolderSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateDownloadFolderSignal"`
@@ -41,6 +42,7 @@ type QmlBridge struct {
 	_ func(processingStatus string, totalSent int, total int, hasDocumentError bool) `signal:"uploadStatusSignal"`
 	_ func(processingStatus string, totalDownloaded int)                             `signal:"downloadStatusSignal"`
 	_ func()                                                                         `signal:"showMainWindowSignal"`
+	_ func(code string)                                                              `signal:"downloadPermissionSignal"`
 	_ func()                                                                         `constructor:"init"`
 }
 
@@ -78,6 +80,7 @@ func (bridge *QmlBridge) syncStatus(clientStatus clientstatus.Response) {
 	clientInformation := r.appConnection.GetClientInformation()
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
+	bridge.SetCanDownload(clientInformation.CanDownload)
 }
 
 func newGuiInterface() {
@@ -169,6 +172,19 @@ func newGuiInterface() {
 		go func() {
 			r.appConnection.UpdateTour()
 			qmlBridge.SetIsMainTourViewed(true)
+		}()
+	})
+
+	qmlBridge.ConnectCheckDownloadPermission(func() {
+		go func() {
+			qmlBridge.SetCanDownload(false)
+			resp := r.appConnection.ValidatePermission()
+			qmlBridge.DownloadPermissionSignal(resp.Code)
+
+			if resp.Code == "DOWNLOAD_ALLOWED" {
+				qmlBridge.SetCanDownload(true)
+			}
+
 		}()
 	})
 
