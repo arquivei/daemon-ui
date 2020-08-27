@@ -2,7 +2,7 @@ import QtQuick 2.12
 
 Image {
     id: spinner
-    source: "qrc:/images/link-loader.svg"
+    source: "qrc:/images/spinner-link.svg"
     fillMode: Image.PreserveAspectFit
 
     RotationAnimation on rotation {
