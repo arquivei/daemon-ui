@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/components/fragments/DsButtonSpinner.qml</file>
         <file>qml/components/fragments/DsInputErrorText.qml</file>
         <file>qml/components/fragments/DsModalActions.qml</file>
         <file>qml/components/fragments/DsModalSecondaryButton.qml</file>
@@ -22,6 +21,7 @@
         <file>qml/components/DsText.qml</file>
         <file>qml/components/Header.qml</file>
         <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/Spinner.qml</file>
         <file>qml/components/SyncProgress.qml</file>
         <file>qml/components/Tour.qml</file>
         <file>qml/components/TourCard.qml</file>
@@ -48,11 +48,12 @@
         <file>images/app-logo-placeholder.svg</file>
         <file>images/arquivei-icon.svg</file>
         <file>images/arquivei-main.svg</file>
-        <file>images/link-loader.svg</file>
-        <file>images/loader.svg</file>
         <file>images/material-arrow-down.svg</file>
         <file>images/material-close.svg</file>
         <file>images/material-folder.svg</file>
+        <file>images/spinner.svg</file>
+        <file>images/spinner-inline.svg</file>
+        <file>images/spinner-link.svg</file>
         <file>images/white-alert-danger.svg</file>
         <file>images/white-alert-success.svg</file>
         <file>images/white-alert-sync.svg</file>
