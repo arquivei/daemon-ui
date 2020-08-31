@@ -12,6 +12,9 @@ Model {
     signal selectUploadFolderError(string folder, string errorTitle, string errorMessage);
     signal selectDownloadFolderSuccess(string folder);
     signal selectDownloadFolderError(string folder, string errorTitle, string errorMessage);
+    signal downloadAllowed();
+    signal downloadNotAllowed();
+    signal downloadCheckError(string errorTitle, string errorMessage);
     signal saveConfigsSuccess();
     signal saveConfigsError(string errorTitle, string errorMessage);
     signal logoutSuccess();
@@ -30,6 +33,10 @@ Model {
 
     function saveConfigs(uploadFolder, downloadFolder) {
         configService.saveConfigs(uploadFolder, downloadFolder);
+    }
+
+    function checkDownloadPermission() {
+        configService.checkDownloadPermission();
     }
 
     function getUploadFolder() {
@@ -94,6 +101,18 @@ Model {
 
         onValidateUploadFolderError: {
             root.selectUploadFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
+        }
+
+        onDownloadAllowed: {
+            root.downloadAllowed();
+        }
+
+        onDownloadNotAllowed: {
+            root.downloadNotAllowed();
+        }
+
+        onDownloadCheckError: {
+            root.downloadCheckError(Errors.General.CheckDownloadPermission[code].title, Errors.General.CheckDownloadPermission[code].description)
         }
 
         onSaveConfigsSuccess: {

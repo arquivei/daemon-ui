@@ -10,9 +10,10 @@ import '../../helpers/factory.js' as Factory
 import '../../lib/google-analytics.js' as GA
 
 Page {
+    id: root
+
     property bool showReturnAction
     property bool hasBeenEdited
-    property bool isLoading: false
     property bool canDownload
     property string userEmail
     property string macAddress
@@ -20,57 +21,90 @@ Page {
     property string downloadFolderPath
     property string webDetailLink
     property string logsPath
-    property var tourSteps: [
-    {
-        id: 'step1',
-        ref: uploadSection,
-        parent: content,
-        title: 'Configurar Upload',
-        description: 'Primeiro, você pode escolher a pasta onde estão os arquivos XML/ZIP que serão enviados para o Arquivei.',
-        chipInfo: '01/03',
-        position: {
-            top: uploadSection.bottom,
-            topMargin: 8,
-            left: uploadSection.left
-        },
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step2',
-        ref: downloadSection,
-        parent: content,
-        title: 'Configurar Download',
-        description: 'Caso tenha o Download, selecione a pasta para configurar onde serão baixados os documentos do Arquivei para seu computador.',
-        chipInfo: '02/03',
-        position: {
-            bottom: downloadSection.top,
-            bottomMargin: 8,
-            left: downloadSection.left
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step3',
-        ref: btnSave,
-        parent: content,
-        title: 'Finalizar Configuração',
-        description: 'Depois da configuração, é só clicar em Salvar. Vamos lá?',
-        customWidth: 244,
-        chipInfo: '03/03',
-        position: {
-            bottom: btnSave.top,
-            bottomMargin: 8,
-            right: btnSave.right
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Finalizar'
+
+    QtObject {
+        id: priv
+
+        property bool isSavingConfigs: false
+        property bool isVerifyingDownload: false
+        property var tourSteps: [
+            {
+                id: 'step1',
+                ref: uploadSection,
+                parent: content,
+                title: 'Configurar Upload',
+                description: 'Primeiro, você pode escolher a pasta onde estão os arquivos XML/ZIP que serão enviados para o Arquivei.',
+                chipInfo: '01/03',
+                position: {
+                    top: uploadSection.bottom,
+                    topMargin: 8,
+                    left: uploadSection.left
+                },
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step2',
+                ref: downloadSectionLoader,
+                parent: content,
+                title: 'Configurar Download',
+                description: 'Caso tenha o Download, selecione a pasta para configurar onde serão baixados os documentos do Arquivei para seu computador.',
+                chipInfo: '02/03',
+                position: {
+                    bottom: downloadSectionLoader.top,
+                    bottomMargin: 8,
+                    left: downloadSectionLoader.left
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step3',
+                ref: btnSave,
+                parent: content,
+                title: 'Finalizar Configuração',
+                description: 'Depois da configuração, é só clicar em Salvar. Vamos lá?',
+                customWidth: 244,
+                chipInfo: '03/03',
+                position: {
+                    bottom: btnSave.top,
+                    bottomMargin: 8,
+                    right: btnSave.right
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Finalizar'
+            }
+        ]
+
+        function handleDownloadSectionDisplay() {
+            if (canDownload) {
+                downloadSectionLoader.setSource('partials/DownloadSection.qml')
+            } else {
+                downloadSectionLoader.setSource('../partials/DownloadSectionPurchase.qml', {
+                    isVerifying: isVerifyingDownload,
+                    title: Texts.General.DOWNLOAD_SECTION_TITLE,
+                    description: Texts.General.DOWNLOAD_SECTION_PURCHASE_DESCRIPTION
+                })
+            }
+        }
+
+        // Comparação de pastas teve que ser dessa forma por causa dos prefixos do
+        // sistema de arquivos que variam de acordo com SO
+        function isSameFolder(selectedFolder, comparedFolder) {
+            const pattern = new RegExp(`${comparedFolder}$`);
+            return pattern.test(selectedFolder);
+        }
+
+        onIsVerifyingDownloadChanged: {
+            if (!canDownload) {
+                downloadSectionLoader.item.isVerifying = isVerifyingDownload
+            }
+        }
     }
-    ]
 
     signal saveConfigs(string uploadFolder, string downloadFolder)
     signal selectDownloadFolder(string folder)
     signal selectUploadFolder(string folder)
+    signal checkDownloadPermission()
     signal returnToMain()
     signal logout()
 
@@ -83,37 +117,41 @@ Page {
         uploadFolderPath = folder;
     }
 
-    function toggleLoading() {
-        isLoading = !isLoading;
+    function toggleIsSavingConfigs() {
+        priv.isSavingConfigs = !priv.isSavingConfigs;
     }
 
-    function openErrorDialog(errorTitle, errorMessage) {
-        errorModal.title = errorTitle;
-        errorModal.text = errorMessage;
-        errorModal.open();
+    function toggleIsVerifyingDownload() {
+        priv.isVerifyingDownload = !priv.isVerifyingDownload
+    }
+
+    function openGenericErrorModal(errorTitle, errorMessage) {
+        genericErrorModal.title = errorTitle;
+        genericErrorModal.text = errorMessage;
+        genericErrorModal.open();
+    }
+
+    function openDownloadNotAllowedModal() {
+        downloadNotAllowedModal.open()
     }
 
     function showTourNotification() {
         tourNotificationModal.open();
     }
 
-    // Comparação de pastas teve que ser dessa forma por causa dos prefixos do
-    // sistema de arquivos que variam de acordo com SO
-    function isSameFolder(selectedFolder, comparedFolder) {
-        const pattern = new RegExp(`${comparedFolder}$`);
-        return pattern.test(selectedFolder);
-    }
-
-    id: root
-
     Component.onCompleted: {
         GA.setClientId(macAddress);
         GA.trackScreen(GA.ScreenNames.CONFIG);
+        priv.handleDownloadSectionDisplay();
+    }
+
+    onCanDownloadChanged: {
+        priv.handleDownloadSectionDisplay();
     }
 
     Tour {
         id: guidedTour
-        steps: root.tourSteps
+        steps: priv.tourSteps
     }
 
     FileDialog {
@@ -123,7 +161,7 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = uploadFolderDialog.fileUrl.toString();
-            if (downloadFolderPath && isSameFolder(url, downloadFolderPath)) {
+            if (downloadFolderPath && priv.isSameFolder(url, downloadFolderPath)) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsDownloadFolderError;
                 openErrorDialog(TITLE, DESCRIPTION);
                 return;
@@ -139,7 +177,7 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = downloadFolderDialog.fileUrl.toString();
-            if (uploadFolderPath && isSameFolder(url, uploadFolderPath)) {
+            if (uploadFolderPath && priv.isSameFolder(url, uploadFolderPath)) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsUploadFolderError;
                 openErrorDialog(TITLE, DESCRIPTION);
                 return;
@@ -194,6 +232,22 @@ Page {
     }
 
     DsModal {
+        id: downloadNotAllowedModal
+        title: Texts.General.Modals.DownloadNotAllowed.TITLE
+        showSecondaryButton: true
+        text: Texts.General.Modals.DownloadNotAllowed.DESCRIPTION
+        secondaryActionLabel: Texts.General.Modals.DownloadNotAllowed.SECONDARY
+        primaryActionLabel: Texts.General.Modals.DownloadNotAllowed.PRIMARY
+        onPrimaryAction: {
+            Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
+            downloadNotAllowedModal.close();
+        }
+        onSecondaryAction: {
+            downloadNotAllowedModal.close();
+        }
+    }
+
+    DsModal {
         id: logoutModal
         title: Texts.General.Modals.LogoutAlert.TITLE
         showSecondaryButton: true
@@ -209,10 +263,10 @@ Page {
     }
 
     DsModal {
-        id: errorModal
+        id: genericErrorModal
         primaryActionLabel: 'Entendi'
         onPrimaryAction: {
-            errorModal.close();
+            genericErrorModal.close();
         }
     }
 
@@ -294,7 +348,7 @@ Page {
         UploadSection {
             id: uploadSection
             folderPath: uploadFolderPath
-            title: Texts.Config.UPLOAD_SECTION_TITLE
+            title: Texts.General.UPLOAD_SECTION_TITLE
             description: Texts.Config.UPLOAD_SECTION_DESCRIPTION
 
             anchors {
@@ -306,12 +360,24 @@ Page {
         }
 
         Loader {
-            id: downloadSection
-            sourceComponent: canDownload ? Factory.createPartialFragment('Config', 'DownloadSection') : Factory.createPartialFragment('Config', 'DownloadSectionSoon')
+            id: downloadSectionLoader
+
             width: parent.width
             anchors {
                 top: uploadSection.bottom
                 topMargin: 8
+            }
+
+            Connections {
+                id: downloadPurchaseConnection
+
+                target: canDownload ? null : downloadSectionLoader.item
+                onPurchase: {
+                    Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
+                }
+                onVerify: {
+                    checkDownloadPermission();
+                }
             }
         }
 
@@ -330,7 +396,7 @@ Page {
             loadingText: 'Salvando...'
             type: DsButton.Types.Special
             enabled: hasBeenEdited ? true : false
-            isLoading: root.isLoading
+            isLoading: priv.isSavingConfigs
             anchors {
                 right: content.right
                 bottom: content.bottom

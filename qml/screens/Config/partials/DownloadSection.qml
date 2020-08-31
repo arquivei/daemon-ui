@@ -5,7 +5,7 @@ import '../../../helpers/factory.js' as Factory
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title: Texts.Config.DOWNLOAD_SECTION_TITLE
+    property string title: Texts.General.DOWNLOAD_SECTION_TITLE
     property string description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
     property string folderPath: downloadFolderPath
     property bool isBlocked: false

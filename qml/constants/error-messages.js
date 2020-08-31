@@ -1,5 +1,14 @@
 .import "texts.js" as Texts
 
+const General = {
+    CheckDownloadPermission: {
+        UNKNOWN_SERVER_ERROR: {
+            title: Texts.General.Modals.CheckDownloadPermissionError.TITLE,
+            description: Texts.General.Modals.CheckDownloadPermissionError.DESCRIPTION,
+        }
+    }
+}
+
 const Config = {
     ValidateFolder: {
         NO_WRITE_PERMISSION: {

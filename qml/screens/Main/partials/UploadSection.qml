@@ -4,7 +4,7 @@ import '../../../constants/server-codes.js' as Codes
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title: Texts.Main.UPLOAD_SECTION_TITLE
+    property string title: Texts.General.UPLOAD_SECTION_TITLE
     property string description: Texts.Main.UPLOAD_SECTION_DESCRIPTION
     property string successWarningTitle: Texts.Main.SUCCESS_SENDING_WARNING_TITLE
     property string successWarningDescription: Texts.Main.SUCCESS_SENDING_WARNING_DESCRIPTION
@@ -74,7 +74,7 @@ DsCard {
         loadingLabel: Texts.Main.Upload.SyncStatus.LOADING
         successLabel: Texts.Main.Upload.SyncStatus.SUCCESS
         errorLabel: Texts.Main.Upload.SyncStatus.ERROR
-        status: getSyncProgressStatus(uploadProcessingStatus)
+        status: getSyncProgressStatus(priv.uploadProcessingStatus)
 
         anchors {
             top: descriptionText.bottom
@@ -86,9 +86,9 @@ DsCard {
 
     SendingStatusInfo {
         id: sendingStatusInfo
-        show: showStatusInfo(uploadProcessingStatus)
-        totalFiles: uploadTotal
-        sentFiles: uploadTotalSent
+        show: showStatusInfo(priv.uploadProcessingStatus)
+        totalFiles: priv.uploadTotal
+        sentFiles: priv.uploadTotalSent
 
         anchors {
             left: progress.right
@@ -99,7 +99,7 @@ DsCard {
 
     SendSuccessWarning {
         id: sendSuccessWarning
-        show: uploadProcessingStatus === Codes.DocumentProcessingStatus.STATUS_FINISHED && uploadHasDocumentError
+        show: priv.uploadProcessingStatus === Codes.DocumentProcessingStatus.STATUS_FINISHED && priv.uploadHasDocumentError
         title: root.successWarningTitle
         description: root.successWarningDescription
 

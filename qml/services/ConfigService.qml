@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import '../constants/error-messages.js' as ErrorMessages
+import '../constants/server-codes.js' as Codes
 
 Item {
     id: root
@@ -8,6 +8,9 @@ Item {
     signal validateDownloadFolderError(string folder, string code);
     signal validateUploadFolderSuccess(string folder);
     signal validateUploadFolderError(string folder, string code);
+    signal downloadAllowed();
+    signal downloadNotAllowed();
+    signal downloadCheckError(string code);
     signal saveConfigsSuccess();
     signal saveConfigsError(string code);
 
@@ -47,6 +50,10 @@ Item {
         QmlBridge.validateUploadFolder(folder);
     }
 
+    function checkDownloadPermission() {
+        QmlBridge.checkDownloadPermission();
+    }
+
     function saveConfigs(uploadFolder, downloadFolder) {
         const _uploadFolder = uploadFolder || null;
         const _downloadFolder = downloadFolder || null;
@@ -74,6 +81,18 @@ Item {
                 root.saveConfigsSuccess();
             } else {
                 root.saveConfigsError(code);
+            }
+        }
+        onDownloadPermissionSignal: {
+            switch (code) {
+            case Codes.DownloadPermissionStatus.DOWNLOAD_ALLOWED:
+                root.downloadAllowed();
+                break;
+            case Codes.DownloadPermissionStatus.DOWNLOAD_NOT_ALLOWED:
+                root.downloadNotAllowed();
+                break;
+            default:
+                root.downloadCheckError(code);
             }
         }
     }

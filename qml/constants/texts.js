@@ -1,7 +1,9 @@
 .import "addresses.js" as Address;
 
 const General = {
-    HIRE_DOWNLOAD_LABEL: 'Contratar agora',
+    DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
+    DOWNLOAD_SECTION_PURCHASE_DESCRIPTION: 'Comece a usar agora a função de download de documentos do Arquivei',
+    UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     CONFIG_LABEL: 'Configurar agora',
     Modals: {
         LogoutAlert: {
@@ -9,6 +11,16 @@ const General = {
             DESCRIPTION: 'Ao sair da aplicativo o envio e/ou download de documentos será interrrompido. Deseja sair mesmo assim?',
             PRIMARY: 'Não',
             SECONDARY: 'Sim, desejo'
+        },
+        CheckDownloadPermissionError: {
+            TITLE: 'Erro na verificação',
+            DESCRIPTION: 'Não foi possível realizar essa ação. Por favor, tente novamente em alguns minutos'
+        },
+        DownloadNotAllowed: {
+            TITLE: 'Download não contratado',
+            DESCRIPTION: 'Você ainda não possui o módulo de download de documentos. Acesse agora o Arquivei e contrate!',
+            PRIMARY: 'Contratar agora',
+            SECONDARY: 'Fechar'
         }
     },
     Menu: {
@@ -29,13 +41,8 @@ const Auth = {
 
 const Config = {
     TITLE: 'Configurar Integração',
-    UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     UPLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde estão os arquivos XML ou ZIP que deseja enviar para o Arquivei.',
-    DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Selecione a pasta onde deseja armazenar os documentos baixados do Arquivei.',
-    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei',
-    DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     SELECT_FOLDER_BUTTON_LABEL: 'Selecionar pasta',
     CHANGE_FOLDER_BUTTON_LABEL: 'Alterar pasta',
     FileDialogs: {
@@ -96,14 +103,9 @@ const Config = {
 }
 
 const Main = {
-    UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     UPLOAD_SECTION_DESCRIPTION: 'Status de envio de seus arquivos para o Arquivei.',
     UPLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de upload de documentos.',
-    DOWNLOAD_SECTION_TITLE: 'Download de Documentos',
     DOWNLOAD_SECTION_DESCRIPTION: 'Status dos documentos baixados do Arquivei para seu computador.',
-    DOWNLOAD_SECTION_TITLE_SOON: 'Download de documentos',
-    DOWNLOAD_SECTION_DESCRIPTION_SOON: 'Baixe automaticamente seus XMLs direto do Arquivei',
-    DOWNLOAD_SECTION_HIRE_DESCRIPTION: 'Você ainda não possui o módulo de download de documentos.',
     DOWNLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION: 'Você ainda não configurou o módulo de download de documentos.',
     SUCCESS_SENDING_WARNING_TITLE: 'Um ou mais arquivos não foram enviados.',
     SUCCESS_SENDING_WARNING_DESCRIPTION: 'Clique em <strong>Ver Detalhes</strong> para visualizar as falhas ocorridas.',
