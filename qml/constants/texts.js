@@ -21,6 +21,12 @@ const General = {
             DESCRIPTION: 'Você ainda não possui o módulo de download de documentos. Acesse agora o Arquivei e contrate!',
             PRIMARY: 'Contratar agora',
             SECONDARY: 'Fechar'
+        },
+        DownloadUnpurshased: {
+            TITLE: 'Download não contratado',
+            DESCRIPTION: 'Você não possui mais o módulo de download de documentos. Acesse agora o Arquivei e contrate novamente!',
+            PRIMARY: 'Contratar agora',
+            SECONDARY: 'Fechar'
         }
     },
     Menu: {

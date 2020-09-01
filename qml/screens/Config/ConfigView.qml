@@ -146,6 +146,10 @@ Page {
     }
 
     onCanDownloadChanged: {
+        if (!canDownload) {
+            downloadUnpurshasedModal.open();
+        }
+
         priv.handleDownloadSectionDisplay();
     }
 
@@ -244,6 +248,22 @@ Page {
         }
         onSecondaryAction: {
             downloadNotAllowedModal.close();
+        }
+    }
+
+    DsModal {
+        id: downloadUnpurshasedModal
+        title: Texts.General.Modals.DownloadUnpurshased.TITLE
+        showSecondaryButton: true
+        text: Texts.General.Modals.DownloadUnpurshased.DESCRIPTION
+        secondaryActionLabel: Texts.General.Modals.DownloadUnpurshased.SECONDARY
+        primaryActionLabel: Texts.General.Modals.DownloadUnpurshased.PRIMARY
+        onPrimaryAction: {
+            Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
+            downloadUnpurshasedModal.close();
+        }
+        onSecondaryAction: {
+            downloadUnpurshasedModal.close();
         }
     }
 
