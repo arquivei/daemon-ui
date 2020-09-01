@@ -5,7 +5,6 @@ const ABOUT_URL = 'https://arquivei.com.br/upload-automatico'
 const ABOUT_NO_WRITING_PERMISSION_ERROR_URL = 'https://ajuda.arquivei.com.br/pt-BR'
 const ABOUT_NO_READING_PERMISSION_ERROR_URL = 'https://ajuda.arquivei.com.br/pt-BR'
 const ABOUT_CONNECTION_ERROR_URL = 'https://ajuda.arquivei.com.br/pt-BR'
-
-const HIRE_DOWNLOAD_URL = 'https://app.arquivei.com.br'; // DEFINIR
+const PURCHASE_DOWNLOAD_URL = 'https://app.arquivei.com.br/Plus/shop/details/app/plus_daemon'
 
 const SUPPORT_EMAIL = 'suporte@arquivei.com.br';

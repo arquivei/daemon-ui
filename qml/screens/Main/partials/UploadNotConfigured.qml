@@ -3,7 +3,7 @@ import '../../../constants/colors.js' as Colors
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title: Texts.Main.UPLOAD_SECTION_TITLE
+    property string title: Texts.General.UPLOAD_SECTION_TITLE
     property string description: Texts.Main.UPLOAD_SECTION_NOT_CONFIGURED_DESCRIPTION
     property bool isBlocked: false
 

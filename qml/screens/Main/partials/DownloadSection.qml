@@ -4,7 +4,7 @@ import '../../../constants/server-codes.js' as Codes
 import '../../../constants/texts.js' as Texts
 
 DsCard {
-    property string title: Texts.Main.DOWNLOAD_SECTION_TITLE
+    property string title: Texts.General.DOWNLOAD_SECTION_TITLE
     property string description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
 
     function getSyncProgressStatus(processingStatus) {
@@ -72,7 +72,7 @@ DsCard {
         loadingLabel: Texts.Main.Download.SyncStatus.LOADING
         successLabel: Texts.Main.Download.SyncStatus.SUCCESS
         errorLabel: Texts.Main.Download.SyncStatus.ERROR
-        status: getSyncProgressStatus(downloadProcessingStatus)
+        status: getSyncProgressStatus(priv.downloadProcessingStatus)
 
         anchors {
             top: descriptionText.bottom
@@ -84,8 +84,8 @@ DsCard {
 
     DownloadStatusInfo {
         id: sendingStatusInfo
-        show: showStatusInfo(downloadProcessingStatus)
-        totalDownloaded: downloadTotal
+        show: showStatusInfo(priv.downloadProcessingStatus)
+        totalDownloaded: priv.downloadTotal
 
         anchors {
             left: progress.right

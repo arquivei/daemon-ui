@@ -1,21 +1,23 @@
-import '../../../components'
-import '../../../constants/colors.js' as Colors
-import '../../../constants/texts.js' as Texts
+import '../../components'
+import '../../constants/colors.js' as Colors
 
 DsCard {
+    id: root
+
+    property bool isBlocked: false
+    property bool isVerifying: false
     property string title
     property string description
-    property string hireDownloadUrl
-    property bool isBlocked: false
 
-    id: root
+    signal purchase()
+    signal verify()
+
     width: parent.width
     type: DsCard.Types.Bordered
-
     height: 132
 
     DsText {
-        id: title
+        id: titleText
         text: root.title
         fontSize: 18
         font.weight: 'Bold'
@@ -38,22 +40,39 @@ DsCard {
         color: Colors.GRAYSCALE_500
 
         anchors {
-            top: title.bottom
+            top: titleText.bottom
             left: parent.left
             leftMargin: 16
         }
     }
 
-    DsLink {
-        label: Texts.General.HIRE_DOWNLOAD_LABEL
+    DsButton {
+        id: btnPurchase
+        text: 'Contratar download'
+        size: DsButton.Sizes.Small
         isBlocked: root.isBlocked
-        href: root.hireDownloadUrl
-
         anchors {
-            top: descriptionText.bottom
-            topMargin: 24
             left: parent.left
             leftMargin: 16
+            top: descriptionText.bottom
+            topMargin: 24
         }
+        onClicked: purchase()
+    }
+
+    DsButton {
+        id: btnVerify
+        text: 'Já contratei'
+        size: DsButton.Sizes.Small
+        isLoading: isVerifying
+        isBlocked: root.isBlocked
+        loadingText: 'Verificando...'
+        type: DsButton.Types.Inline
+        anchors {
+            left: btnPurchase.right
+            leftMargin: 16
+            verticalCenter: btnPurchase.verticalCenter
+        }
+        onClicked: verify()
     }
 }

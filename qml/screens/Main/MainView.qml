@@ -10,6 +10,8 @@ import '../../lib/google-analytics.js' as GA
 import '../../helpers/factory.js' as Factory
 
 Page {
+    id: root
+
     property string userEmail
     property string macAddress
     property string computerName
@@ -20,128 +22,152 @@ Page {
     property bool canDownload
     property bool isMainTourViewed
 
-    property string uploadProcessingStatus
-    property int uploadTotal: 0
-    property int uploadTotalSent: 0
-    property bool uploadHasDocumentError: false
+    QtObject {
+        id: priv
 
-    property string downloadProcessingStatus
-    property int downloadTotal: 0
+        property bool isVerifyingDownload: false
+        property bool uploadHasDocumentError: false
+        property int uploadTotal: 0
+        property int uploadTotalSent: 0
+        property int downloadTotal: 0
+        property string uploadProcessingStatus
+        property string downloadProcessingStatus
+        property var tourSteps: [
+            {
+                id: 'step1',
+                ref: title,
+                parent: content,
+                title: 'Nome da máquina',
+                description: 'Este é o nome da máquina na qual este software está instalado.',
+                chipInfo: '01/06',
+                position: {
+                    top: title.bottom,
+                    topMargin: 16,
+                    left: title.left,
+                    leftMargin: -8
+                },
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step2',
+                ref: connectionStatus,
+                parent: content,
+                title: 'Status da integração',
+                description: 'Aqui você verifica se o software está ou não conectado ao Arquivei. Com o status Online é possível enviar e baixar documentos.',
+                chipInfo: '02/06',
+                position: {
+                    top: connectionStatus.bottom,
+                    topMargin: 16,
+                    right: connectionStatus.right,
+                    rightMargin: -8
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step3',
+                ref: uploadSection,
+                parent: content,
+                title: 'Acompanhando o Upload',
+                description: 'Neste espaço você poderá acompanhar se os arquivos XML e ZIP da pasta selecionada estão sendo lidos e enviados.',
+                chipInfo: '03/06',
+                customWidth: 240,
+                position: {
+                    top: uploadSection.bottom,
+                    topMargin: 8,
+                    left: uploadSection.left
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step4',
+                ref: downloadSectionLoader,
+                parent: content,
+                title: 'Acompanhando o Download',
+                description: 'Neste espaço você poderá acompanhar se os documentos do Arquivei estão sendo baixados para seu computador.',
+                chipInfo: '04/06',
+                customWidth: 240,
+                position: {
+                    bottom: downloadSectionLoader.top,
+                    bottomMargin: 8,
+                    left: downloadSectionLoader.left
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step5',
+                ref: btnDetails,
+                parent: content,
+                title: 'Detalhes do processamento',
+                description: 'Clicando nesse botão você poderá acompanhar todos os detalhes do processamento direto no Arquivei.',
+                chipInfo: '05/06',
+                customWidth: 260,
+                position: {
+                    bottom: btnDetails.top,
+                    bottomMargin: 16,
+                    right: btnDetails.right,
+                    rightMargin: -8
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Avançar'
+            },
+            {
+                id: 'step6',
+                ref: menu,
+                parent: content,
+                title: 'Menu do usuário',
+                description: 'Neste menu você tem acesso às configurações, aos logs da aplicação e ao tour caso tenha ficado alguma dúvida.',
+                chipInfo: '06/06',
+                customWidth: 260,
+                position: {
+                    top: menu.bottom,
+                    topMargin: 16,
+                    right: menu.right,
+                    rightMargin: -8
+                },
+                prevLabel: 'Voltar',
+                nextLabel: 'Finalizar'
+            },
+        ]
 
-    property var tourSteps: [
-    {
-        id: 'step1',
-        ref: title,
-        parent: content,
-        title: 'Nome da máquina',
-        description: 'Este é o nome da máquina na qual este software está instalado.',
-        chipInfo: '01/06',
-        position: {
-            top: title.bottom,
-            topMargin: 16,
-            left: title.left,
-            leftMargin: -8
-        },
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step2',
-        ref: connectionStatus,
-        parent: content,
-        title: 'Status da integração',
-        description: 'Aqui você verifica se o software está ou não conectado ao Arquivei. Com o status Online é possível enviar e baixar documentos.',
-        chipInfo: '02/06',
-        position: {
-            top: connectionStatus.bottom,
-            topMargin: 16,
-            right: connectionStatus.right,
-            rightMargin: -8
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step3',
-        ref: uploadSection,
-        parent: content,
-        title: 'Acompanhando o Upload',
-        description: 'Neste espaço você poderá acompanhar se os arquivos XML e ZIP da pasta selecionada estão sendo lidos e enviados.',
-        chipInfo: '03/06',
-        customWidth: 240,
-        position: {
-            top: uploadSection.bottom,
-            topMargin: 8,
-            left: uploadSection.left
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step4',
-        ref: downloadSection,
-        parent: content,
-        title: 'Acompanhando o Download',
-        description: 'Neste espaço você poderá acompanhar se os documentos do Arquivei estão sendo baixados para seu computador.',
-        chipInfo: '04/06',
-        customWidth: 240,
-        position: {
-            bottom: downloadSection.top,
-            bottomMargin: 8,
-            left: downloadSection.left
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step5',
-        ref: btnDetails,
-        parent: content,
-        title: 'Detalhes do processamento',
-        description: 'Clicando nesse botão você poderá acompanhar todos os detalhes do processamento direto no Arquivei.',
-        chipInfo: '05/06',
-        customWidth: 260,
-        position: {
-            bottom: btnDetails.top,
-            bottomMargin: 16,
-            right: btnDetails.right,
-            rightMargin: -8
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Avançar'
-    },
-    {
-        id: 'step6',
-        ref: menu,
-        parent: content,
-        title: 'Menu do usuário',
-        description: 'Neste menu você tem acesso às configurações, aos logs da aplicação e ao tour caso tenha ficado alguma dúvida.',
-        chipInfo: '06/06',
-        customWidth: 260,
-        position: {
-            top: menu.bottom,
-            topMargin: 16,
-            right: menu.right,
-            rightMargin: -8
-        },
-        prevLabel: 'Voltar',
-        nextLabel: 'Finalizar'
-    },
-    ]
+        function handleDownloadSectionDisplay() {
+            if (canDownload && downloadFolderPath) {
+               downloadSectionLoader.setSource('partials/DownloadSection.qml')
+            } else if (canDownload) {
+               downloadSectionLoader.setSource('partials/DownloadNotConfigured.qml')
+            } else {
+               downloadSectionLoader.setSource('../partials/DownloadSectionPurchase.qml', {
+                   isVerifying: isVerifyingDownload,
+                   title: Texts.General.DOWNLOAD_SECTION_TITLE,
+                   description: Texts.General.DOWNLOAD_SECTION_PURCHASE_DESCRIPTION
+               })
+            }
+        }
+
+        onIsVerifyingDownloadChanged: {
+            if (!canDownload) {
+                downloadSectionLoader.item.isVerifying = isVerifyingDownload
+            }
+        }
+    }
 
     signal goToConfig()
     signal mainTourViewed()
+    signal checkDownloadPermission()
     signal logout()
 
     function setUploadProcessingStatus(processingStatus, total, totalSent, hasDocumentError) {
-        uploadProcessingStatus = processingStatus;
-        uploadTotalSent = totalSent;
-        uploadTotal = total;
-        uploadHasDocumentError = hasDocumentError;
+        priv.uploadProcessingStatus = processingStatus;
+        priv.uploadTotalSent = totalSent;
+        priv.uploadTotal = total;
+        priv.uploadHasDocumentError = hasDocumentError;
     }
 
     function setDownloadProcessingStatus(processingStatus, totalDownloaded) {
-        downloadProcessingStatus = processingStatus;
-        downloadTotal = totalDownloaded;
+        priv.downloadProcessingStatus = processingStatus;
+        priv.downloadTotal = totalDownloaded;
     }
 
     function setConnectionStatus(isOnline) {
@@ -167,24 +193,28 @@ Page {
         folderValidationErrorModal.open();
     }
 
-    function getDownloadComponent() {
-        if (!canDownload) {
-            // Quando feature estiver finalizada, substituir pela seção de contratação do Download
-            return Factory.createPartialFragment('Main', 'DownloadSectionSoon');
-        }
-
-        if (!downloadFolderPath) {
-            return Factory.createPartialFragment('Main', 'DownloadNotConfigured');
-        }
-
-        return Factory.createPartialFragment('Main', 'DownloadSection');
+    function toggleIsVerifyingDownload() {
+        priv.isVerifyingDownload = !priv.isVerifyingDownload
     }
 
-    id: root
+    function openGenericErrorModal(errorTitle, errorMessage) {
+        genericErrorModal.title = errorTitle;
+        genericErrorModal.text = errorMessage;
+        genericErrorModal.open();
+    }
+
+    function openDownloadNotAllowedModal() {
+        downloadNotAllowedModal.open()
+    }
 
     Component.onCompleted: {
         GA.setClientId(macAddress);
         GA.trackScreen(GA.ScreenNames.MAIN);
+        priv.handleDownloadSectionDisplay();
+    }
+
+    onCanDownloadChanged: {
+        priv.handleDownloadSectionDisplay();
     }
 
     Tour {
@@ -260,6 +290,30 @@ Page {
         onSecondaryAction: {
             root.mainTourViewed();
             tourNotificationModal.close();
+        }
+    }
+
+    DsModal {
+        id: downloadNotAllowedModal
+        title: Texts.General.Modals.DownloadNotAllowed.TITLE
+        showSecondaryButton: true
+        text: Texts.General.Modals.DownloadNotAllowed.DESCRIPTION
+        secondaryActionLabel: Texts.General.Modals.DownloadNotAllowed.SECONDARY
+        primaryActionLabel: Texts.General.Modals.DownloadNotAllowed.PRIMARY
+        onPrimaryAction: {
+            Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
+            downloadNotAllowedModal.close();
+        }
+        onSecondaryAction: {
+            downloadNotAllowedModal.close();
+        }
+    }
+
+    DsModal {
+        id: genericErrorModal
+        primaryActionLabel: 'Entendi'
+        onPrimaryAction: {
+            genericErrorModal.close();
         }
     }
 
@@ -389,12 +443,24 @@ Page {
         }
 
         Loader {
-            id: downloadSection
-            sourceComponent: getDownloadComponent()
+            id: downloadSectionLoader
+
             width: parent.width
             anchors {
                 top: uploadSection.bottom
-                topMargin: uploadFolderPath ? 8 : 14
+                topMargin: 8
+            }
+
+            Connections {
+                id: downloadPurchaseConnection
+
+                target: canDownload ? null : downloadSectionLoader.item
+                onPurchase: {
+                    Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
+                }
+                onVerify: {
+                    checkDownloadPermission();
+                }
             }
         }
 

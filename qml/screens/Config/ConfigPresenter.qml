@@ -32,13 +32,18 @@ Presenter {
         }
 
         onSaveConfigs: {
-            view.toggleLoading();
+            view.toggleIsSavingConfigs();
             model.saveConfigs(uploadFolder, downloadFolder);
         }
 
         onReturnToMain: {
             GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.BACK_TO_MAIN);
             app.navigateTo('Main');
+        }
+
+        onCheckDownloadPermission: {
+            view.toggleIsVerifyingDownload();
+            model.checkDownloadPermission();
         }
 
         onLogout: {
@@ -56,7 +61,7 @@ Presenter {
 
         onSelectUploadFolderError: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_FOLDER_CHOICE, `${folder} - ${errorMessage}`);
-            view.openErrorDialog(errorTitle, errorMessage);
+            view.openGenericErrorModal(errorTitle, errorMessage);
         }
 
         onSelectDownloadFolderSuccess: {
@@ -66,19 +71,33 @@ Presenter {
 
         onSelectDownloadFolderError: {
             // Trackear evento GA
-            view.openErrorDialog(errorTitle, errorMessage);
+            view.openGenericErrorModal(errorTitle, errorMessage);
+        }
+
+        onDownloadAllowed: {
+            view.toggleIsVerifyingDownload();
+        }
+
+        onDownloadNotAllowed: {
+            view.toggleIsVerifyingDownload();
+            view.openDownloadNotAllowedModal();
+        }
+
+        onDownloadCheckError: {
+            view.toggleIsVerifyingDownload();
+            view.openGenericErrorModal(errorTitle, errorMessage);
         }
 
         onSaveConfigsSuccess: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_SAVE_CONFIG, model.getUploadFolder());
-            view.toggleLoading();
+            view.toggleIsSavingConfigs();
             app.navigateTo('Main');
         }
 
         onSaveConfigsError: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_SAVE_CONFIG, errorMessage);
-            view.toggleLoading();
-            view.openErrorDialog(errorTitle, errorMessage);
+            view.toggleIsSavingConfigs();
+            view.openGenericErrorModal(errorTitle, errorMessage);
         }
 
         onLogoutSuccess: {

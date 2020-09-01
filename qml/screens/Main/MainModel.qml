@@ -11,6 +11,9 @@ Model {
     signal checkAuth(bool isAuthenticated);
     signal validateDownloadFolderError(string errorTitle, string errorMessage);
     signal validateUploadFolderError(string errorTitle, string errorMessage);
+    signal downloadAllowed();
+    signal downloadNotAllowed();
+    signal downloadCheckError(string errorTitle, string errorMessage);
     signal logoutSuccess();
 
     function getHostName() {
@@ -61,6 +64,10 @@ Model {
         configService.validateUploadFolder(folder);
     }
 
+    function checkDownloadPermission() {
+        configService.checkDownloadPermission();
+    }
+
     function logout() {
         authService.logout();
     }
@@ -100,6 +107,18 @@ Model {
 
         onValidateUploadFolderError: {
             root.validateUploadFolderError(Errors.Main.ValidateUploadFolder[code].title, Errors.Main.ValidateUploadFolder[code].description);
+        }
+
+        onDownloadAllowed: {
+            root.downloadAllowed();
+        }
+
+        onDownloadNotAllowed: {
+            root.downloadNotAllowed();
+        }
+
+        onDownloadCheckError: {
+            root.downloadCheckError(Errors.General.CheckDownloadPermission[code].title, Errors.General.CheckDownloadPermission[code].description)
         }
     }
 }

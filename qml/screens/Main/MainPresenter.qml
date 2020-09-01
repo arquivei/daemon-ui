@@ -46,6 +46,11 @@ Presenter {
             model.setMainTourIsViewed();
         }
 
+        onCheckDownloadPermission: {
+            view.toggleIsVerifyingDownload();
+            model.checkDownloadPermission();
+        }
+
         onLogout: {
             model.logout();
         }
@@ -83,6 +88,21 @@ Presenter {
             view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
+        onDownloadAllowed: {
+            view.toggleIsVerifyingDownload();
+            app.navigateTo('Config');
+        }
+
+        onDownloadNotAllowed: {
+            view.toggleIsVerifyingDownload();
+            view.openDownloadNotAllowedModal();
+        }
+
+        onDownloadCheckError: {
+            view.toggleIsVerifyingDownload();
+            view.openGenericErrorModal(errorTitle, errorMessage);
+        }
+
         onLogoutSuccess: {
             GA.trackEvent(GA.EventCategories.AUTHENTICATION, GA.EventActions.SUCCESS_LOGOUT);
             app.navigateTo('Auth');
@@ -91,6 +111,7 @@ Presenter {
 
     MainView {
         id: view;
+
         userEmail: model.getUserEmail() || null
         macAddress: model.getMacAddress() || null
         computerName: model.getHostName() || null
