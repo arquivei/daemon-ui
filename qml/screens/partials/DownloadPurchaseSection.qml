@@ -1,7 +1,7 @@
 import '../../components'
 import '../../constants/colors.js' as Colors
 
-DsCard {
+Card {
     id: root
 
     property bool isBlocked: false
@@ -12,16 +12,14 @@ DsCard {
     signal purchase()
     signal verify()
 
-    width: parent.width
-    type: DsCard.Types.Bordered
-    height: 132
+    type: Card.Types.Bordered
 
     DsText {
         id: titleText
         text: root.title
-        fontSize: 18
+        fontSize: 20
         font.weight: 'Bold'
-        lineHeight: 26
+        lineHeight: 24
         color: Colors.BRAND_TERTIARY_DEFAULT
 
         anchors {
@@ -36,11 +34,12 @@ DsCard {
         id: descriptionText
         text: root.description
         fontSize: 12
-        lineHeight: 16
+        lineHeight: 18
         color: Colors.GRAYSCALE_500
 
         anchors {
             top: titleText.bottom
+            topMargin: 2
             left: parent.left
             leftMargin: 16
         }
@@ -54,8 +53,8 @@ DsCard {
         anchors {
             left: parent.left
             leftMargin: 16
-            top: descriptionText.bottom
-            topMargin: 24
+            bottom: parent.bottom
+            bottomMargin: 24
         }
         onClicked: purchase()
     }

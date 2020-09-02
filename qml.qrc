@@ -7,10 +7,10 @@
         <file>qml/components/fragments/LinkSpinner.qml</file>
         <file>qml/components/fragments/TourCardPrevAction.qml</file>
         <file>qml/components/fragments/TourCardCloseAction.qml</file>
+        <file>qml/components/Card.qml</file>
         <file>qml/components/ConnectionStatus.qml</file>
         <file>qml/components/DsAlert.qml</file>
         <file>qml/components/DsButton.qml</file>
-        <file>qml/components/DsCard.qml</file>
         <file>qml/components/DsChip.qml</file>
         <file>qml/components/DsDropDownMenu.qml</file>
         <file>qml/components/DsIconText.qml</file>
@@ -45,12 +45,11 @@
         <file>qml/helpers/validator.js</file>
         <file>images/alert-danger.svg</file>
         <file>images/alert-success.svg</file>
-        <file>images/app-logo-placeholder.svg</file>
-        <file>images/arquivei-icon.svg</file>
-        <file>images/arquivei-main.svg</file>
         <file>images/material-arrow-down.svg</file>
         <file>images/material-close.svg</file>
         <file>images/material-folder.svg</file>
+        <file>images/sincroniza-notas-logo.svg</file>
+        <file>images/sincroniza-notas-logo-full.svg</file>
         <file>images/spinner.svg</file>
         <file>images/spinner-inline.svg</file>
         <file>images/spinner-link.svg</file>
@@ -59,18 +58,17 @@
         <file>images/white-alert-sync.svg</file>
         <file>qml/lib/google-analytics.js</file>
         <file>qml/lib/http-request.js</file>
-        <file>qml/screens/partials/DownloadSectionPurchase.qml</file>
+        <file>qml/screens/partials/DownloadPurchaseSection.qml</file>
         <file>qml/screens/Auth/partials/FormAlert.qml</file>
         <file>qml/screens/Auth/partials/LicenseAgreementSection.qml</file>
         <file>qml/screens/Auth/partials/LoginForm.qml</file>
         <file>qml/screens/Auth/AuthModel.qml</file>
         <file>qml/screens/Auth/AuthPresenter.qml</file>
         <file>qml/screens/Auth/AuthView.qml</file>
-        <file>qml/screens/Config/partials/DownloadSection.qml</file>
+        <file>qml/screens/Config/partials/ConfigFolderSection.qml</file>
         <file>qml/screens/Config/partials/ReturnButton.qml</file>
         <file>qml/screens/Config/partials/SelectFolder.qml</file>
         <file>qml/screens/Config/partials/UpdateFolder.qml</file>
-        <file>qml/screens/Config/partials/UploadSection.qml</file>
         <file>qml/screens/Config/ConfigModel.qml</file>
         <file>qml/screens/Config/ConfigPresenter.qml</file>
         <file>qml/screens/Config/ConfigView.qml</file>

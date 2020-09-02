@@ -3,7 +3,7 @@ import '../../../components'
 import '../../../constants/texts.js' as Texts
 
 Item {
-    width: root.width
+    implicitHeight: childrenRect.height
 
     DsIconText {
         id: iconTextFolder

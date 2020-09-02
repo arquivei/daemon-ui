@@ -37,12 +37,14 @@ Page {
 
         Image {
             id: imageLogo
-            source: "qrc:/images/arquivei-main.svg"
+            source: "qrc:/images/sincroniza-notas-logo-full.svg"
+            height: 60
+            width: 240
             fillMode: Image.PreserveAspectFit
 
             anchors {
                 top: parent.top
-                topMargin: 64
+                topMargin: 56
                 horizontalCenter: parent.horizontalCenter
             }
         }
@@ -55,7 +57,7 @@ Page {
 
             anchors {
                 top: imageLogo.bottom
-                topMargin: 64
+                topMargin: 54
             }
         }
 

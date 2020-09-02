@@ -3,7 +3,9 @@ import '../../../constants/colors.js' as Colors
 import '../../../constants/server-codes.js' as Codes
 import '../../../constants/texts.js' as Texts
 
-DsCard {
+Card {
+    id: root
+
     property string title: Texts.General.DOWNLOAD_SECTION_TITLE
     property string description: Texts.Main.DOWNLOAD_SECTION_DESCRIPTION
 
@@ -32,16 +34,12 @@ DsCard {
         }
     }
 
-    id: root
-    width: parent.width
-    height: 138
-
     DsText {
         id: titleText
         text: root.title
-        fontSize: 18
+        fontSize: 20
         font.weight: 'Bold'
-        lineHeight: 26
+        lineHeight: 24
         color: Colors.BRAND_TERTIARY_DEFAULT
 
         anchors {
@@ -56,11 +54,12 @@ DsCard {
         id: descriptionText
         text: root.description
         fontSize: 12
-        lineHeight: 16
+        lineHeight: 18
         color: Colors.GRAYSCALE_500
 
         anchors {
             top: titleText.bottom
+            topMargin: 2
             left: parent.left
             leftMargin: 16
         }
@@ -75,8 +74,8 @@ DsCard {
         status: getSyncProgressStatus(priv.downloadProcessingStatus)
 
         anchors {
-            top: descriptionText.bottom
-            topMargin: 24
+            bottom: parent.bottom
+            bottomMargin: 24
             left: parent.left
             leftMargin: 12
         }
