@@ -77,9 +77,13 @@ Page {
 
         function handleDownloadSectionDisplay() {
             if (canDownload) {
-                downloadSectionLoader.setSource('partials/DownloadSection.qml')
+                downloadSectionLoader.setSource('partials/ConfigFolderSection.qml', {
+                    title: Texts.General.DOWNLOAD_SECTION_TITLE,
+                    description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION,
+                    folderPath: downloadFolderPath
+                })
             } else {
-                downloadSectionLoader.setSource('../partials/DownloadSectionPurchase.qml', {
+                downloadSectionLoader.setSource('../partials/DownloadPurchaseSection.qml', {
                     isVerifying: isVerifyingDownload,
                     title: Texts.General.DOWNLOAD_SECTION_TITLE,
                     description: Texts.General.DOWNLOAD_SECTION_PURCHASE_DESCRIPTION
@@ -153,6 +157,12 @@ Page {
         priv.handleDownloadSectionDisplay();
     }
 
+    onDownloadFolderPathChanged: {
+        if (canDownload && downloadSectionLoader.item) {
+            downloadSectionLoader.item.folderPath = downloadFolderPath
+        }
+    }
+
     Tour {
         id: guidedTour
         steps: priv.tourSteps
@@ -167,7 +177,7 @@ Page {
             const url = uploadFolderDialog.fileUrl.toString();
             if (downloadFolderPath && priv.isSameFolder(url, downloadFolderPath)) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsDownloadFolderError;
-                openErrorDialog(TITLE, DESCRIPTION);
+                openGenericErrorModal(TITLE, DESCRIPTION);
                 return;
             }
             selectUploadFolder(url);
@@ -183,7 +193,7 @@ Page {
             const url = downloadFolderDialog.fileUrl.toString();
             if (uploadFolderPath && priv.isSameFolder(url, uploadFolderPath)) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsUploadFolderError;
-                openErrorDialog(TITLE, DESCRIPTION);
+                openGenericErrorModal(TITLE, DESCRIPTION);
                 return;
             }
 
@@ -295,10 +305,8 @@ Page {
 
         anchors {
             fill: parent
-            topMargin: 24
-            rightMargin: 32
-            bottomMargin: 32
-            leftMargin: 32
+            margins: 32
+            bottomMargin: 40
         }
 
         Header {
@@ -354,18 +362,18 @@ Page {
         DsText {
             id: title
             text: Texts.Config.TITLE
-            fontSize: 24
+            fontSize: 16
             font.weight: 'Bold'
-            lineHeight: 32
+            lineHeight: 19
             color: Colors.BRAND_TERTIARY_DEFAULT
 
             anchors {
                 top: header.bottom
-                topMargin: 32
+                topMargin: 52
             }
         }
 
-        UploadSection {
+        ConfigFolderSection {
             id: uploadSection
             folderPath: uploadFolderPath
             title: Texts.General.UPLOAD_SECTION_TITLE
@@ -373,7 +381,7 @@ Page {
 
             anchors {
                 top: title.bottom
-                topMargin: 16
+                topMargin: 24
             }
 
             onOpenDialog: uploadFolderDialog.open()
@@ -397,6 +405,15 @@ Page {
                 }
                 onVerify: {
                     checkDownloadPermission();
+                }
+            }
+
+            Connections {
+                id: downloadConfigConnection
+
+                target: canDownload ? downloadSectionLoader.item : null
+                onOpenDialog: {
+                    downloadFolderDialog.open()
                 }
             }
         }

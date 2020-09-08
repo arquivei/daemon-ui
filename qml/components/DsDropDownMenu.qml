@@ -73,7 +73,7 @@ Item {
 
         width: getMenuWidth(childrenRect.width)
         x: parent.width - menu.width
-        y: headerIcon.height + 8
+        y: headerIcon.height - 1
 
         background: Rectangle {
             id: menuBackgroundContainer
@@ -105,14 +105,14 @@ Item {
         delegate: MenuItem {
             id: menuItem
             implicitWidth: 200
-            implicitHeight: 40
+            implicitHeight: 39
 
             contentItem: DsText {
                 text: menuItem.text
                 color: getMenuItemTextColor(menuItem)
                 font.weight: menuItem.action === current ? Font.Bold : Font.Normal
                 fontSize: 14
-                lineHeight: 22
+                lineHeight: 21
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight

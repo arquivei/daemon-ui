@@ -56,9 +56,9 @@ Rectangle {
             id: titleText
             text: root.title
             color: Colors.BRAND_TERTIARY_DEFAULT
-            fontSize: 18
+            fontSize: 20
             font.weight: 'Bold'
-            lineHeight: 26
+            lineHeight: 24
             wrapMode: Text.WordWrap
 
             anchors {
@@ -72,7 +72,6 @@ Rectangle {
         DsText {
             id: descriptionText
             text: root.description
-            lineHeight: 16
             wrapMode: Text.WordWrap
 
             anchors {

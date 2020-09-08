@@ -2,28 +2,23 @@ import QtQuick 2.12
 import '../../../components'
 import '../../../constants/colors.js' as Colors
 import '../../../helpers/factory.js' as Factory
-import '../../../constants/texts.js' as Texts
 
-DsCard {
-    property string title: Texts.General.DOWNLOAD_SECTION_TITLE
-    property string description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION
-    property string folderPath: downloadFolderPath
+Card {
+    id: root
+
+    property string title
+    property string description
+    property string folderPath
     property bool isBlocked: false
 
-    function openDialog() {
-        downloadFolderDialog.open();
-    }
-
-    id: root
-    width: parent.width
-    height: 142
+    signal openDialog
 
     DsText {
         id: titleText
         text: root.title
-        fontSize: 18
+        fontSize: 20
         font.weight: 'Bold'
-        lineHeight: 26
+        lineHeight: 24
         color: Colors.BRAND_TERTIARY_DEFAULT
 
         anchors {
@@ -38,11 +33,12 @@ DsCard {
         id: descriptionText
         text: root.description
         fontSize: 12
-        lineHeight: 16
+        lineHeight: 18
         color: Colors.GRAYSCALE_500
 
         anchors {
             top: titleText.bottom
+            topMargin: 2
             left: parent.left
             leftMargin: 16
         }
@@ -53,8 +49,8 @@ DsCard {
         sourceComponent: folderPath ? Factory.createPartialFragment('Config', 'UpdateFolder') : Factory.createPartialFragment('Config', 'SelectFolder')
 
         anchors {
-            top: descriptionText.bottom
-            topMargin: 24
+            bottom: parent.bottom
+            bottomMargin: 24
             left: parent.left
             leftMargin: 16
         }

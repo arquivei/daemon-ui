@@ -13,12 +13,13 @@ Item {
 
     Image {
         id: imageLogo
-        source: "qrc:/images/arquivei-icon.svg"
+        source: "qrc:/images/sincroniza-notas-logo.svg"
+        height: 24
+        width: 160
         fillMode: Image.PreserveAspectFit
 
         anchors {
-            top: menu.top
-            topMargin: 8
+            top: parent.top
             left: parent.left
         }
     }
@@ -31,6 +32,7 @@ Item {
         actions: root.actions
 
         anchors {
+            top: parent.top
             right: parent.right
         }
     }

@@ -10,60 +10,18 @@ Page {
 
         anchors {
             fill: parent
-            topMargin: 32
-            rightMargin: 32
-            bottomMargin: 32
-            leftMargin: 32
         }
 
-//        Image {
-//            id: imageMain
-//            source: "qrc:/images/app-logo-placeholder.svg"
-
-//            fillMode: Image.PreserveAspectFit
-
-//            anchors {
-//                horizontalCenter: content.horizontalCenter
-//                verticalCenter: content.verticalCenter
-//            }
-//        }
-
-        Item {
-            id: infoSection
-            height: childrenRect.height
-            width: childrenRect.width
-
-//            anchors {
-//                bottom: content.bottom
-//                horizontalCenter: content.horizontalCenter
-//            }
+        Image {
+            id: imageLogo
+            source: "qrc:/images/sincroniza-notas-logo-full.svg"
+            height: 60
+            width: 240
+            fillMode: Image.PreserveAspectFit
 
             anchors {
                 horizontalCenter: content.horizontalCenter
                 verticalCenter: content.verticalCenter
-            }
-
-            DsText {
-                id: textDevelopedBy
-                text: 'Um produto desenvolvido por:'
-
-                anchors {
-                    top: parent.top
-                }
-            }
-
-            Image {
-                id: imageLogo
-                source: "qrc:/images/arquivei-main.svg"
-                height: 31.75
-                width: 159.6
-                fillMode: Image.PreserveAspectFit
-
-                anchors {
-                    top: textDevelopedBy.bottom
-                    topMargin: 8
-                    horizontalCenter: textDevelopedBy.horizontalCenter
-                }
             }
         }
     }

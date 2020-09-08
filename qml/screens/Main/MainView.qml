@@ -138,7 +138,7 @@ Page {
             } else if (canDownload) {
                downloadSectionLoader.setSource('partials/DownloadNotConfigured.qml')
             } else {
-               downloadSectionLoader.setSource('../partials/DownloadSectionPurchase.qml', {
+               downloadSectionLoader.setSource('../partials/DownloadPurchaseSection.qml', {
                    isVerifying: isVerifyingDownload,
                    title: Texts.General.DOWNLOAD_SECTION_TITLE,
                    description: Texts.General.DOWNLOAD_SECTION_PURCHASE_DESCRIPTION
@@ -342,20 +342,17 @@ Page {
 
         anchors {
             fill: parent
-            topMargin: 24
-            rightMargin: 32
-            bottomMargin: 46
-            leftMargin: 32
+            margins: 32
+            bottomMargin: 40
         }
 
         Image {
             id: imageLogo
-            source: "qrc:/images/arquivei-icon.svg"
+            source: "qrc:/images/sincroniza-notas-logo.svg"
             fillMode: Image.PreserveAspectFit
 
             anchors {
                 top: parent.top
-                topMargin: 8
                 left: parent.left
             }
         }
@@ -426,15 +423,15 @@ Page {
             DsText {
                 id: titleContent
                 text: root.computerName
-                fontSize: 24
+                fontSize: 16
                 font.weight: 'Bold'
-                lineHeight: 32
+                lineHeight: 19
                 color: Colors.BRAND_TERTIARY_DEFAULT
             }
 
             anchors {
                 top: imageLogo.bottom
-                topMargin: 32
+                topMargin: 52
             }
         }
 
@@ -446,8 +443,8 @@ Page {
             }
 
             anchors {
-                verticalCenter: title.verticalCenter
-                verticalCenterOffset: 4
+                top: imageLogo.bottom
+                topMargin: 50
                 right: content.right
             }
         }
@@ -458,7 +455,7 @@ Page {
             width: parent.width
             anchors {
                 top: title.bottom
-                topMargin: 16
+                topMargin: 24
             }
         }
 
