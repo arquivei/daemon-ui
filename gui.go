@@ -184,7 +184,6 @@ func newGuiInterface() {
 			if resp.Code == "DOWNLOAD_ALLOWED" {
 				qmlBridge.SetCanDownload(true)
 			}
-
 		}()
 	})
 

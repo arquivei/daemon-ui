@@ -14,8 +14,9 @@ type Command struct {
 
 //Response ...
 type Response struct {
-	Error string `json:",omitempty"`
-	Code  string
+	Error         string `json:",omitempty"`
+	Code          string
+	HasPermission bool
 }
 
 //NewCommand method creates a new command
@@ -45,6 +46,12 @@ func NewResponse(data []byte) (r Response, err error) {
 		return r, errors.New(r.Error)
 	}
 
+	if !r.HasPermission {
+		r.Code = "DOWNLOAD_NOT_ALLOWED"
+		return r, nil
+	}
+
+	r.Code = "DOWNLOAD_ALLOWED"
 	return r, nil
 }
 
