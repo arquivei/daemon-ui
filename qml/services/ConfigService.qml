@@ -14,24 +14,35 @@ Item {
     signal saveConfigsSuccess();
     signal saveConfigsError(string code);
 
+    function isConfigTourViewed() {
+        return QmlBridge.isConfigTourViewed;
+    }
+
     function isMainTourViewed() {
         return QmlBridge.isMainTourViewed;
     }
 
     function isConfigured() {
+        const isUploadConfigured = !!(QmlBridge.uploadFolderPaths && QmlBridge.uploadFolderPaths.length)
+        const isDownloadConfigured = !!QmlBridge.downloadFolderPath
+
         if (QmlBridge.canDownload) {
-            return QmlBridge.uploadFolderPath || QmlBridge.downloadFolderPath;
+            return isUploadConfigured || isDownloadConfigured;
         }
 
-        return QmlBridge.uploadFolderPath;
+        return isUploadConfigured;
     }
 
     function getDownloadFolder() {
         return QmlBridge.downloadFolderPath;
     }
 
-    function getUploadFolder() {
-        return QmlBridge.uploadFolderPath;
+    function getUploadFolders() {
+        return QmlBridge.uploadFolderPaths;
+    }
+
+    function setConfigTourIsViewed() {
+        QmlBridge.setConfigTourIsViewed();
     }
 
     function setMainTourIsViewed() {
@@ -54,10 +65,10 @@ Item {
         QmlBridge.checkDownloadPermission();
     }
 
-    function saveConfigs(uploadFolder, downloadFolder) {
-        const _uploadFolder = uploadFolder || null;
+    function saveConfigs(uploadFolders, downloadFolder) {
+        const _uploadFolders = uploadFolders || [];
         const _downloadFolder = downloadFolder || null;
-        QmlBridge.saveConfigs(_uploadFolder, _downloadFolder);
+        QmlBridge.saveConfigs(_uploadFolders, _downloadFolder);
     }
 
     Connections {

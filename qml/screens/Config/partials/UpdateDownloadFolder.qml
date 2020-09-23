@@ -3,6 +3,13 @@ import '../../../components'
 import '../../../constants/texts.js' as Texts
 
 Item {
+    id: root
+
+    property string folderPath
+    property bool isBlocked
+
+    signal updateFolderClicked()
+
     implicitHeight: childrenRect.height
 
     DsIconText {
@@ -22,6 +29,6 @@ Item {
             verticalCenter: iconTextFolder.verticalCenter
         }
 
-        onClick: openDialog()
+        onClick: root.updateFolderClicked()
     }
 }

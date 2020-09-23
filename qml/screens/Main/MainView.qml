@@ -17,8 +17,8 @@ Page {
     property string computerName
     property string webDetailLink
     property string logsPath
-    property string uploadFolderPath
-    property string downloadFolderPath
+    property string downloadFolder
+    property var uploadFolders
     property bool canDownload
     property bool isMainTourViewed
 
@@ -133,7 +133,7 @@ Page {
         ]
 
         function handleDownloadSectionDisplay() {
-            if (canDownload && downloadFolderPath) {
+            if (canDownload && downloadFolder) {
                downloadSectionLoader.setSource('partials/DownloadSection.qml')
             } else if (canDownload) {
                downloadSectionLoader.setSource('partials/DownloadNotConfigured.qml')
@@ -223,7 +223,7 @@ Page {
 
     Tour {
         id: guidedTour
-        steps: root.tourSteps
+        steps: priv.tourSteps
 
         onStarted: {
             if (!isMainTourViewed) {
@@ -451,7 +451,7 @@ Page {
 
         Loader {
             id: uploadSection
-            sourceComponent: uploadFolderPath ? Factory.createPartialFragment('Main', 'UploadSection') : Factory.createPartialFragment('Main', 'UploadNotConfigured')
+            sourceComponent: uploadFolders && uploadFolders.length ? Factory.createPartialFragment('Main', 'UploadSection') : Factory.createPartialFragment('Main', 'UploadNotConfigured')
             width: parent.width
             anchors {
                 top: title.bottom

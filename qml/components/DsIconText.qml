@@ -1,21 +1,22 @@
 import QtQuick 2.12
+import '../helpers/text-helper.js' as TextHelper
 import '../constants/colors.js' as Colors
 
 Item {
-    property alias icon: imageIcon.source
+    id: root
+
     property string text
     property int textMaxLength
 
-    function getTrimmedText() {
-        return text.length > textMaxLength ? `${text.substring(0, textMaxLength)}...` : text;
-    }
+    property alias icon: imageIcon.source
+    property alias font: textLabel.font
 
-    id: root
     height: childrenRect.height
     width: childrenRect.width
 
     Image {
         id: imageIcon
+
         fillMode: Image.PreserveAspectFit
 
         anchors {
@@ -25,11 +26,13 @@ Item {
 
     DsText {
         id: textLabel
-        text: getTrimmedText()
+
+        text: TextHelper.truncate(root.text, textMaxLength)
         color: Colors.GRAYSCALE_500
         fontSize: 14
         font.weight: 'Bold'
-        lineHeight: 22
+        lineHeight: 21
+
         anchors {
             left: imageIcon.right
             leftMargin: 8

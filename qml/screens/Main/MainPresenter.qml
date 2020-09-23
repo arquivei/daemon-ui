@@ -11,11 +11,11 @@ Presenter {
     property MainModel model: MainModel {}
 
     function setValidateFolderTimers() {
-        const uploadFolder = model.getUploadFolder();
+        const uploadFolders = model.getUploadFolders();
         const downloadFolder = model.getDownloadFolder();
 
-        if (uploadFolder) {
-            Timer.setInterval(() => model.validateUploadFolder(uploadFolder), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+        if (uploadFolders && uploadFolders.length === 1) {
+            Timer.setInterval(() => model.validateUploadFolder(uploadFolders[0]), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
         }
 
         if (downloadFolder) {
@@ -118,8 +118,8 @@ Presenter {
         webDetailLink: model.getWebDetailLink() || null
         logsPath: model.getLogsPath() || null
         canDownload: model.canDownload()
-        downloadFolderPath: model.getDownloadFolder() || null
-        uploadFolderPath: model.getUploadFolder() || null
+        downloadFolder: model.getDownloadFolder() || null
+        uploadFolders: model.getUploadFolders() || null
         isMainTourViewed: model.isMainTourViewed()
         anchors.fill: parent;
     }
