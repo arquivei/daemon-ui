@@ -8,7 +8,7 @@ import (
 	"arquivei.com.br/daemon-ui/application"
 )
 
-const maxTries = 30
+const maxTries = 50
 
 //Service ...
 type Service struct {
@@ -39,7 +39,7 @@ func (s *Service) Run() error {
 
 	var totalTries int
 
-	for range time.NewTicker(time.Millisecond * 100).C {
+	for range time.NewTicker(time.Millisecond * 200).C {
 		totalTries++
 
 		err := s.app.Ping()

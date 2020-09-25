@@ -27,12 +27,14 @@ type QmlBridge struct {
 	_ string                                                                         `property:"logsPath"`
 	_ string                                                                         `property:"macAddress"`
 	_ bool                                                                           `property:"isMainTourViewed"`
+	_ bool                                                                           `property:"isConfigTourViewed"`
 	_ func(email string, password string)                                            `slot:"authenticate"`
 	_ func()                                                                         `slot:"logout"`
 	_ func(uploadFolder []string, downloadFolder string)                             `slot:"saveConfigs"`
 	_ func(folder string)                                                            `slot:"validateUploadFolder"`
 	_ func(folder string)                                                            `slot:"validateDownloadFolder"`
 	_ func()                                                                         `slot:"setMainTourIsViewed"`
+	_ func()                                                                         `slot:"setConfigTourIsViewed"`
 	_ func()                                                                         `slot:"checkDownloadPermission"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateUploadFolderSignal"`
@@ -55,7 +57,8 @@ func (bridge *QmlBridge) init() {
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetDownloadFolderPath(clientInformation.DownloadFolder)
 	bridge.SetLogsPath(file.GetURIScheme() + clientInformation.LogsPath)
-	bridge.SetIsMainTourViewed(clientInformation.IsTourViewed)
+	bridge.SetIsMainTourViewed(clientInformation.IsMainTourViewed)
+	bridge.SetIsConfigTourViewed(clientInformation.IsConfigTourViewed)
 	bridge.SetCanDownload(clientInformation.CanDownload)
 	bridge.SetMacAddress(r.macAddress)
 	bridge.SetUploadFolderPaths(clientInformation.UploadFolders)
@@ -136,6 +139,7 @@ func newGuiInterface() {
 		go func() {
 			resp := r.appConnection.Logout()
 			qmlBridge.LogoutSignal(resp.Success, resp.Code)
+			qmlBridge.SetUploadFolderPaths([]string{})
 		}()
 	})
 
@@ -167,8 +171,15 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectSetMainTourIsViewed(func() {
 		go func() {
-			r.appConnection.UpdateTour()
+			r.appConnection.UpdateMainTourStatus()
 			qmlBridge.SetIsMainTourViewed(true)
+		}()
+	})
+
+	qmlBridge.ConnectSetConfigTourIsViewed(func() {
+		go func() {
+			r.appConnection.UpdateConfigTourStatus()
+			qmlBridge.SetIsConfigTourViewed(true)
 		}()
 	})
 

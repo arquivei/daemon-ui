@@ -10,6 +10,7 @@ import (
 //Command ...
 type Command struct {
 	Name commands.CommandName
+	Type string
 }
 
 //Response ...
@@ -18,9 +19,10 @@ type Response struct {
 }
 
 //NewCommand method creates a new command
-func NewCommand() commands.CommandInterface {
+func NewCommand(tourType string) commands.CommandInterface {
 	return &Command{
 		Name: "UPDATE_TOUR_CMD",
+		Type: tourType,
 	}
 }
 

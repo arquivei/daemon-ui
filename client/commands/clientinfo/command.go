@@ -22,7 +22,8 @@ type Response struct {
 	UserEmail           string
 	IsAuthenticated     bool
 	LogsPath            string
-	IsTourViewed        bool
+	IsMainTourViewed    bool
+	IsConfigTourViewed  bool
 	CanDownload         bool
 }
 

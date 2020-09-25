@@ -10,6 +10,7 @@ import (
 	"arquivei.com.br/daemon-ui/client/commands/validatedownload"
 	"arquivei.com.br/daemon-ui/client/commands/validatepermission"
 	"arquivei.com.br/daemon-ui/client/commands/validateupload"
+	"github.com/arquivei/foundationkit/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -61,6 +62,11 @@ func (app App) Authenticate(email, password string) (r authenticate.Response) {
 			WithError(err).
 			WithField("email", email).
 			Error("An error occurred while authenticating")
+
+		if errors.GetErrorCode(err) == client.NoBackendConnectionErrCode {
+			return authenticate.NewBackendConnectionError()
+		}
+
 		r = authenticate.NewGenericError()
 	}
 	return
@@ -108,12 +114,21 @@ func (app App) GetClientStatus() (r clientstatus.Response) {
 	return
 }
 
-//UpdateTour method updates the tour status
-func (app App) UpdateTour() {
-	if err := app.doUpdateTour(); err != nil {
+//UpdateMainTourStatus method updates the main tour status
+func (app App) UpdateMainTourStatus() {
+	if err := app.doUpdateTour("TOUR_MAIN"); err != nil {
 		app.logger.
 			WithError(err).
-			Error("An error occurred while updating main tour")
+			Error("An error occurred while updating main tour status")
+	}
+}
+
+//UpdateConfigTourStatus method updates the config tour status
+func (app App) UpdateConfigTourStatus() {
+	if err := app.doUpdateTour("TOUR_CONFIG"); err != nil {
+		app.logger.
+			WithError(err).
+			Error("An error occurred while updating config tour status")
 	}
 }
 

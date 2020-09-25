@@ -96,8 +96,8 @@ func (app App) doGetClientStatus() (r clientstatus.Response, err error) {
 	return
 }
 
-func (app App) doUpdateTour() (err error) {
-	if _, err := app.c.SendCommand(tour.NewCommand()); err != nil {
+func (app App) doUpdateTour(tourType string) (err error) {
+	if _, err := app.c.SendCommand(tour.NewCommand(tourType)); err != nil {
 		return err
 	}
 	return nil
