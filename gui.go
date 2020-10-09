@@ -140,6 +140,7 @@ func newGuiInterface() {
 			resp := r.appConnection.Logout()
 			qmlBridge.LogoutSignal(resp.Success, resp.Code)
 			qmlBridge.SetUploadFolderPaths([]string{})
+			qmlBridge.SetDownloadFolderPath("")
 		}()
 	})
 
