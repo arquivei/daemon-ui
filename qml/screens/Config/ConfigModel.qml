@@ -1,12 +1,10 @@
 import '../..'
 import '../../services'
 import '../../constants/error-messages.js' as Errors
+import '../../constants/temp.js' as Temp
 
 Model {
     id: root
-
-    property bool hasUploadFolderChanged: false;
-    property bool hasDownloadFolderChanged: false;
 
     signal selectUploadFolderSuccess(string folder);
     signal selectUploadFolderError(string folder, string errorTitle, string errorMessage);
@@ -19,32 +17,41 @@ Model {
     signal saveConfigsError(string errorTitle, string errorMessage);
     signal logoutSuccess();
 
-    function logout() {
-        authService.logout();
-    }
-
-    function selectDownloadFolder(folder) {
-        configService.validateDownloadFolder(folder);
-    }
-
-    function selectUploadFolder(folder) {
-        configService.validateUploadFolder(folder);
-    }
-
-    function saveConfigs(uploadFolder, downloadFolder) {
-        configService.saveConfigs(uploadFolder, downloadFolder);
-    }
-
-    function checkDownloadPermission() {
-        configService.checkDownloadPermission();
-    }
-
-    function getUploadFolder() {
-        return configService.getUploadFolder();
-    }
-
     function getDownloadFolder() {
         return configService.getDownloadFolder();
+    }
+
+    function getLogsPath() {
+        return clientService.getLogsPath();
+    }
+
+    function getMacAddress() {
+        return clientService.getMacAddress();
+    }
+
+    function getSelectedDownloadFolder() {
+        return app.temp[Temp.DOWNLOAD_FOLDER] || getDownloadFolder() || null
+    }
+
+    function getSelectedUploadFolders() {
+        const selectedUploadFolders = app.temp[Temp.UPLOAD_FOLDERS] || getUploadFolders();
+        return selectedUploadFolders && selectedUploadFolders.length ? selectedUploadFolders : null;
+    }
+
+    function getUploadFolders() {
+        return configService.getUploadFolders();
+    }
+
+    function getUserEmail() {
+        return clientService.getUserEmail();
+    }
+
+    function getWebDetailLink() {
+        return clientService.getWebDetailLink();
+    }
+
+    function isConfigTourViewed() {
+        return configService.isConfigTourViewed();
     }
 
     function isConfigured() {
@@ -55,29 +62,43 @@ Model {
         return configService.canDownload();
     }
 
-    function hasBeenEdited() {
-        return hasDownloadFolderChanged || hasUploadFolderChanged;
+    function hasUnsavedChanges() {
+        return !!app.temp[Temp.UNSAVED_CHANGES];
     }
 
-    function getUserEmail() {
-        return clientService.getUserEmail();
+    function setConfigTourIsViewed() {
+        return configService.setConfigTourIsViewed();
     }
 
-    function getLogsPath() {
-        return clientService.getLogsPath();
+    function checkDownloadPermission() {
+        configService.checkDownloadPermission();
     }
 
-    function getWebDetailLink() {
-        return clientService.getWebDetailLink();
+    function clearTemp() {
+        app.temp = {};
     }
 
-    function getMacAddress() {
-        return clientService.getMacAddress();
+    function logout() {
+        authService.logout();
+    }
+
+    function saveConfigs(uploadFolders, downloadFolder) {
+        configService.saveConfigs(uploadFolders, downloadFolder);
+    }
+
+    function selectDownloadFolder(folder) {
+        configService.validateDownloadFolder(folder);
+    }
+
+    function selectUploadFolder(folder) {
+        configService.validateUploadFolder(folder);
     }
 
     AuthService {
         id: authService
+
         onLogoutSuccess: {
+            clearTemp();
             root.logoutSuccess();
         }
     }
@@ -86,21 +107,23 @@ Model {
         id: configService
 
         onValidateDownloadFolderSuccess: {
-            root.hasDownloadFolderChanged = true;
+            app.temp[Temp.DOWNLOAD_FOLDER] = folder;
+            app.temp[Temp.UNSAVED_CHANGES] = true;
             root.selectDownloadFolderSuccess(folder);
         }
 
         onValidateDownloadFolderError: {
-            root.selectDownloadFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
+            root.selectDownloadFolderError(folder, Errors.General.ValidateFolder[code].title, Errors.General.ValidateFolder[code].description);
         }
 
         onValidateUploadFolderSuccess: {
-            root.hasUploadFolderChanged = true;
+            app.temp[Temp.UPLOAD_FOLDERS] = [folder];
+            app.temp[Temp.UNSAVED_CHANGES] = true;
             root.selectUploadFolderSuccess(folder);
         }
 
         onValidateUploadFolderError: {
-            root.selectUploadFolderError(folder, Errors.Config.ValidateFolder[code].title, Errors.Config.ValidateFolder[code].description);
+            root.selectUploadFolderError(folder, Errors.General.ValidateFolder[code].title, Errors.General.ValidateFolder[code].description);
         }
 
         onDownloadAllowed: {
@@ -116,6 +139,7 @@ Model {
         }
 
         onSaveConfigsSuccess: {
+            clearTemp();
             root.saveConfigsSuccess();
         }
 

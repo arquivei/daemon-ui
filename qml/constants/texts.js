@@ -27,7 +27,22 @@ const General = {
             DESCRIPTION: 'Você não possui mais o módulo de download de documentos. Acesse agora o Arquivei e contrate novamente!',
             PRIMARY: 'Contratar agora',
             SECONDARY: 'Fechar'
-        }
+        },
+        ReadingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão',
+            DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_READING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
+            PRIMARY: 'Entendi'
+        },
+        WritingPermissionError: {
+            TITLE: 'Atenção! Erro de permissão',
+            DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_WRITING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
+            PRIMARY: 'Entendi'
+        },
+        SelectFolderUnknownError: {
+            TITLE: 'Atenção! Erro interno',
+            DESCRIPTION: `Ocorreu um erro interno e não foi possível selecionar a pasta. Tente novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
+            PRIMARY: 'Entendi'
+        },
     },
     Menu: {
         CONFIG: 'Configurações',
@@ -80,24 +95,9 @@ const Config = {
             TITLE: 'Atenção! Pasta já selecionada para Download',
             DESCRIPTION: 'A pasta selecionada para Upload de documentos não pode ser a mesma escolhida para Download. Por favor, selecione outra pasta.',
         },
-        ReadingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão',
-            DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_READING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
-            PRIMARY: 'Entendi'
-        },
-        WritingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão',
-            DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_WRITING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
-            PRIMARY: 'Entendi'
-        },
-        SelectFolderUnknownError: {
-            TITLE: 'Atenção! Erro interno',
-            DESCRIPTION: `Ocorreu um erro interno e não foi possível selecionar a pasta. Tente novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
-            PRIMARY: 'Entendi'
-        },
         NotSavedModifications: {
             TITLE: 'Alteração não salva',
-            DESCRIPTION: 'Você alterou suas configurações, mas não salvou a alteração. Deseja voltar mesmo assim?',
+            DESCRIPTION: 'Você editou suas configurações, mas não salvou a alteração. Deseja voltar mesmo assim?',
             PRIMARY: 'Sim',
             SECONDARY: 'Fechar'
         },
@@ -106,6 +106,29 @@ const Config = {
             DESCRIPTION: `Ocorreu um erro interno e não foi possível salvar as configurações. Tente novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`
         }
     }
+}
+
+const ManageUpload = {
+    Modals: {
+        RemoveUploadFolder: {
+            TITLE: 'Remover pasta',
+            DESCRIPTION: 'O envio dos arquivos desta pasta será interrompido:<br><strong>%{0}</strong><br>Deseja remover a pasta mesmo assim?'
+        },
+        UploadFolderAlreadySelectedError: {
+            TITLE: 'Atenção! Pasta já selecionada para Upload',
+            DESCRIPTION: 'A pasta selecionada já está configurada no Upload de arquivos. Por favor, selecione outra pasta.'
+        },
+        SameAsDownloadFolderError: {
+            TITLE: 'Atenção! Pasta já selecionada para Download',
+            DESCRIPTION: 'A pasta selecionada para Upload de arquivos não pode ser a mesma escolhida para Download. Por favor, selecione outra pasta.',
+        },
+        UploadConfigChanged: {
+            TITLE: 'Alteração na configuração de Upload',
+            DESCRIPTION: 'Ao fechar, você irá perder qualquer alteração feita nesta tela. Deseja fechar mesmo assim?',
+            PRIMARY: 'Sim',
+            SECONDARY: 'Não'
+        }
+    },
 }
 
 const Main = {

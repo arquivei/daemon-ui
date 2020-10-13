@@ -1,26 +1,27 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
-import '../../components'
-import './partials'
+import '../../helpers/validator.js' as Validator
 import '../../constants/colors.js' as Colors
 import '../../constants/addresses.js' as Address
 import '../../constants/texts.js' as Texts
-import '../../helpers/factory.js' as Factory
 import '../../lib/google-analytics.js' as GA
+import '../../components'
+import './partials'
 
 Page {
     id: root
 
-    property bool showReturnAction
-    property bool hasBeenEdited
     property bool canDownload
-    property string userEmail
-    property string macAddress
-    property string uploadFolderPath
-    property string downloadFolderPath
-    property string webDetailLink
+    property bool hasUnsavedChanges
+    property bool isConfigTourViewed
+    property bool showReturnAction
+    property string downloadFolder
     property string logsPath
+    property string macAddress
+    property string userEmail
+    property string webDetailLink
+    property var uploadFolders
 
     QtObject {
         id: priv
@@ -75,12 +76,12 @@ Page {
             }
         ]
 
-        function handleDownloadSectionDisplay() {
+        function displayDownloadSection() {
             if (canDownload) {
-                downloadSectionLoader.setSource('partials/ConfigFolderSection.qml', {
+                downloadSectionLoader.setSource('partials/DownloadFolderSection.qml', {
                     title: Texts.General.DOWNLOAD_SECTION_TITLE,
                     description: Texts.Config.DOWNLOAD_SECTION_DESCRIPTION,
-                    folderPath: downloadFolderPath
+                    folder: downloadFolder
                 })
             } else {
                 downloadSectionLoader.setSource('../partials/DownloadPurchaseSection.qml', {
@@ -91,11 +92,25 @@ Page {
             }
         }
 
-        // Comparação de pastas teve que ser dessa forma por causa dos prefixos do
-        // sistema de arquivos que variam de acordo com SO
-        function isSameFolder(selectedFolder, comparedFolder) {
-            const pattern = new RegExp(`${comparedFolder}$`);
-            return pattern.test(selectedFolder);
+        function displayReturnButton() {
+            if (showReturnAction) {
+                returnButtonLoader.setSource('../../components/DsButton.qml', {
+                     text: 'Voltar',
+                     type: DsButton.Types.Inline
+                })
+            } else {
+                returnButtonLoader.source = ''
+            }
+        }
+
+        function displayUnsavedChangesAlert() {
+            if (hasUnsavedChanges) {
+                unsavedChangesAlertLoader.setSource('partials/UnsavedChangesAlert.qml', {
+                    message: 'Alterações não salvas'
+                })
+            } else {
+                unsavedChangesAlertLoader.source = ''
+            }
         }
 
         onIsVerifyingDownloadChanged: {
@@ -105,20 +120,40 @@ Page {
         }
     }
 
-    signal saveConfigs(string uploadFolder, string downloadFolder)
+    signal checkDownloadPermission()
+    signal configTourViewed()
+    signal goToManageUpload()
+    signal logout()
+    signal returnToMain()
+    signal saveConfigs(var uploadFolders, string downloadFolder)
     signal selectDownloadFolder(string folder)
     signal selectUploadFolder(string folder)
-    signal checkDownloadPermission()
-    signal returnToMain()
-    signal logout()
+
+    function openDownloadNotAllowedModal() {
+        downloadNotAllowedModal.open()
+    }
+
+    function openGenericErrorModal(errorTitle, errorMessage) {
+        genericErrorModal.title = errorTitle;
+        genericErrorModal.text = errorMessage;
+        genericErrorModal.open();
+    }
 
     function setDownloadFolder(folder) {
-        downloadFolderPath = folder;
+        downloadFolder = folder;
         changeDownloadConfigModal.open();
     }
 
+    function setUnsavedChanges(hasChanges) {
+        hasUnsavedChanges = hasChanges;
+    }
+
     function setUploadFolder(folder) {
-        uploadFolderPath = folder;
+        uploadFolders = [folder];
+    }
+
+    function showTourNotification() {
+        tourNotificationModal.open();
     }
 
     function toggleIsSavingConfigs() {
@@ -129,24 +164,12 @@ Page {
         priv.isVerifyingDownload = !priv.isVerifyingDownload
     }
 
-    function openGenericErrorModal(errorTitle, errorMessage) {
-        genericErrorModal.title = errorTitle;
-        genericErrorModal.text = errorMessage;
-        genericErrorModal.open();
-    }
-
-    function openDownloadNotAllowedModal() {
-        downloadNotAllowedModal.open()
-    }
-
-    function showTourNotification() {
-        tourNotificationModal.open();
-    }
-
     Component.onCompleted: {
         GA.setClientId(macAddress);
         GA.trackScreen(GA.ScreenNames.CONFIG);
-        priv.handleDownloadSectionDisplay();
+        priv.displayDownloadSection();
+        priv.displayReturnButton();
+        priv.displayUnsavedChangesAlert();
     }
 
     onCanDownloadChanged: {
@@ -154,18 +177,32 @@ Page {
             downloadUnpurshasedModal.open();
         }
 
-        priv.handleDownloadSectionDisplay();
+        priv.displayDownloadSection();
     }
 
-    onDownloadFolderPathChanged: {
+    onDownloadFolderChanged: {
         if (canDownload && downloadSectionLoader.item) {
-            downloadSectionLoader.item.folderPath = downloadFolderPath
+            downloadSectionLoader.item.folder = downloadFolder
         }
+    }
+
+    onHasUnsavedChangesChanged: {
+        priv.displayUnsavedChangesAlert();
+    }
+
+    onShowReturnActionChanged: {
+        priv.displayDownloadSection();
     }
 
     Tour {
         id: guidedTour
         steps: priv.tourSteps
+
+        onStarted: {
+            if (!isConfigTourViewed) {
+                root.configTourViewed()
+            }
+        }
     }
 
     FileDialog {
@@ -175,7 +212,7 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = uploadFolderDialog.fileUrl.toString();
-            if (downloadFolderPath && priv.isSameFolder(url, downloadFolderPath)) {
+            if (Validator.isSameFolder(url, downloadFolder)) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsDownloadFolderError;
                 openGenericErrorModal(TITLE, DESCRIPTION);
                 return;
@@ -191,7 +228,8 @@ Page {
         selectFolder: true
         onAccepted: {
             const url = downloadFolderDialog.fileUrl.toString();
-            if (uploadFolderPath && priv.isSameFolder(url, uploadFolderPath)) {
+
+            if (uploadFolders && uploadFolders.some(folder => Validator.isSameFolder(url, folder))) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsUploadFolderError;
                 openGenericErrorModal(TITLE, DESCRIPTION);
                 return;
@@ -212,7 +250,10 @@ Page {
             tourNotificationModal.close();
             guidedTour.start();
         }
-        onSecondaryAction: tourNotificationModal.close()
+        onSecondaryAction: {
+            root.configTourViewed()
+            tourNotificationModal.close()
+        }
     }
 
     DsModal {
@@ -373,9 +414,18 @@ Page {
             }
         }
 
-        ConfigFolderSection {
+        Loader {
+            id: unsavedChangesAlertLoader
+
+            anchors {
+                bottom: title.bottom
+                right: parent.right
+            }
+        }
+
+        UploadFolderSection {
             id: uploadSection
-            folderPath: uploadFolderPath
+            folders: uploadFolders
             title: Texts.General.UPLOAD_SECTION_TITLE
             description: Texts.Config.UPLOAD_SECTION_DESCRIPTION
 
@@ -384,7 +434,8 @@ Page {
                 topMargin: 24
             }
 
-            onOpenDialog: uploadFolderDialog.open()
+            onSelectFolderClicked: uploadFolderDialog.open()
+            onSettingsClicked: goToManageUpload()
         }
 
         Loader {
@@ -412,18 +463,29 @@ Page {
                 id: downloadConfigConnection
 
                 target: canDownload ? downloadSectionLoader.item : null
-                onOpenDialog: {
-                    downloadFolderDialog.open()
-                }
+                onSelectFolderClicked: downloadFolderDialog.open()
             }
         }
 
         Loader {
             id: returnButtonLoader
-            sourceComponent: showReturnAction ? Factory.createPartialFragment('Config', 'ReturnButton') : null
+
             anchors {
                 left: content.left
                 bottom: content.bottom
+            }
+
+            Connections {
+                id: returnButtonConnection
+
+                target: showReturnAction ? returnButtonLoader.item : null
+                onClicked: {
+                    if (hasUnsavedChanges) {
+                        notSavedChangesAlertModal.open();
+                    } else {
+                        returnToMain();
+                    }
+                }
             }
         }
 
@@ -432,13 +494,13 @@ Page {
             text: 'Salvar'
             loadingText: 'Salvando...'
             type: DsButton.Types.Special
-            enabled: hasBeenEdited ? true : false
+            enabled: hasUnsavedChanges ? true : false
             isLoading: priv.isSavingConfigs
             anchors {
                 right: content.right
                 bottom: content.bottom
             }
-            onClicked: saveConfigs(uploadFolderPath, downloadFolderPath)
+            onClicked: saveConfigs(uploadFolders, downloadFolder)
         }
     }
 }

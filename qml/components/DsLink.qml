@@ -3,14 +3,17 @@ import '../constants/colors.js' as Colors
 import '../helpers/factory.js' as Factory
 
 Item {
+    id: root
+
     property string href
     property string label
-    property bool isHovered: false
     property bool isBlocked: false
     property bool isLoading: false
+    property bool isDisabled: false
 
     property alias fontSize: textLink.font.pixelSize
     property alias lineHeight: textLink.lineHeight
+    property alias isHovered: textLink.isLinkHovered
 
     signal click()
 
@@ -19,12 +22,12 @@ Item {
         return '<a href="' + link + '">' + label + '</a>';
     }
 
-    id: root
     implicitHeight: childrenRect.height
     implicitWidth: childrenRect.width
 
     Loader {
         id: spinnerLoader
+
         sourceComponent: isLoading ? Factory.createComponentFragment('LinkSpinner') : null
 
         anchors {
@@ -34,12 +37,13 @@ Item {
 
     DsText {
         id: textLink
+
         textFormat: Text.StyledText
-        linkColor: Colors.BRAND_SECONDARY_DEFAULT
         text: getText()
         fontSize: 14
         font.weight: "Bold"
         lineHeight: 22
+        linkDisabled: isDisabled
 
         anchors {
             left: isLoading ? spinnerLoader.right : parent.left
@@ -47,24 +51,15 @@ Item {
         }
 
         MouseArea {
-            cursorShape: isLoading || isBlocked ? Qt.ArrowCursor : Qt.PointingHandCursor
+            id: mouseArea
+
+            cursorShape: isLoading || isBlocked || isDisabled ? Qt.ArrowCursor : Qt.PointingHandCursor
             width: parent.width
             height: parent.height
-            onClicked: {
-                if (!isBlocked && !isLoading) {
-                    href ? textLink.linkActivated(href) : root.click()
-                }
-            }
-            hoverEnabled: true
-            onHoveredChanged: {
-                if (!isLoading && !isBlocked) {
-                    isHovered = !isHovered;
-                }
 
-                if (isHovered) {
-                    textLink.linkColor = Colors.BRAND_SECONDARY_DARK;
-                } else {
-                    textLink.linkColor = Colors.BRAND_SECONDARY_DEFAULT;
+            onClicked: {
+                if (!isBlocked && !isLoading && !isDisabled) {
+                    href ? textLink.linkActivated(href) : root.click()
                 }
             }
         }

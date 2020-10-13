@@ -36,8 +36,8 @@ Model {
         return clientService.getLogsPath();
     }
 
-    function getUploadFolder() {
-        return configService.getUploadFolder();
+    function getUploadFolders() {
+        return configService.getUploadFolders();
     }
 
     function getDownloadFolder() {

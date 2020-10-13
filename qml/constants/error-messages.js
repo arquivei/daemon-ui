@@ -6,24 +6,24 @@ const General = {
             title: Texts.General.Modals.CheckDownloadPermissionError.TITLE,
             description: Texts.General.Modals.CheckDownloadPermissionError.DESCRIPTION,
         }
+    },
+    ValidateFolder: {
+        NO_WRITE_PERMISSION: {
+            title: Texts.General.Modals.WritingPermissionError.TITLE,
+            description: Texts.General.Modals.WritingPermissionError.DESCRIPTION
+        },
+        NO_READ_PERMISSION: {
+            title: Texts.General.Modals.ReadingPermissionError.TITLE,
+            description: Texts.General.Modals.ReadingPermissionError.DESCRIPTION
+        },
+        UNKNOWN_SERVER_ERROR: {
+            title: Texts.General.Modals.SelectFolderUnknownError.TITLE,
+            description: Texts.General.Modals.SelectFolderUnknownError.DESCRIPTION
+        }
     }
 }
 
 const Config = {
-    ValidateFolder: {
-        NO_WRITE_PERMISSION: {
-            title: Texts.Config.Modals.WritingPermissionError.TITLE,
-            description: Texts.Config.Modals.WritingPermissionError.DESCRIPTION
-        },
-        NO_READ_PERMISSION: {
-            title: Texts.Config.Modals.ReadingPermissionError.TITLE,
-            description: Texts.Config.Modals.ReadingPermissionError.DESCRIPTION
-        },
-        UNKNOWN_SERVER_ERROR: {
-            title: Texts.Config.Modals.SelectFolderUnknownError.TITLE,
-            description: Texts.Config.Modals.SelectFolderUnknownError.DESCRIPTION
-        }
-    },
     SaveConfigs: {
         UNKNOWN_SERVER_ERROR: {
             title: Texts.Config.Modals.SaveConfigsInternalError.TITLE,

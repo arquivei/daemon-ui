@@ -60,3 +60,11 @@ func NewGenericError() Response {
 		Success: false,
 	}
 }
+
+//NewBackendConnectionError creates a backend connection friendly error
+func NewBackendConnectionError() Response {
+	return Response{
+		Message: "Erro na comunicação entre a interface de processamento. Por favor, entre em contato conosco",
+		Success: false,
+	}
+}

@@ -7,4 +7,17 @@ function isPasswordValid(password) {
     return password.length > 0;
 }
 
+// Comparação de pastas teve que ser dessa forma por causa dos prefixos do
+// sistema de arquivos que variam de acordo com SO
+function isSameFolder(selectedFolder, comparedFolder) {
+    if (!selectedFolder || !comparedFolder) {
+        return false;
+    }
+
+    const pattern = new RegExp(`${comparedFolder}$`);
+    return pattern.test(selectedFolder);
+}
+
+
+
 

@@ -8,6 +8,15 @@ import './services';
 
 ApplicationWindow {
     id: app
+
+    property var temp: ({});
+
+    function navigateTo(screen) {
+        const currentItem = stack.currentItem;
+        stack.replace(currentItem, Factory.createPresenter(screen));
+        currentItem.destroy();
+    }
+
     visible: true
     width: 670
     height: 524
@@ -18,12 +27,6 @@ ApplicationWindow {
     title: 'Arquivei'
     onClosing: {
         app.hide();
-    }
-
-    function navigateTo(screen) {
-        const currentItem = stack.currentItem;
-        stack.replace(currentItem, Factory.createPresenter(screen));
-        currentItem.destroy();
     }
 
     Component.onCompleted: {

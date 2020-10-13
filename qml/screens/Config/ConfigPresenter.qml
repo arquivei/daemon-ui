@@ -14,7 +14,7 @@ Presenter {
         GA.setClientId(model.getMacAddress());
         GA.trackScreen(GA.ScreenNames.CONFIG);
         Timer.setTimeout(() => {
-            if(!model.isConfigured()) {
+            if(!model.isConfigTourViewed() && !model.isConfigured()) {
                 view.showTourNotification();
             }
         }, Times.TOUR_DELAY);
@@ -33,11 +33,18 @@ Presenter {
 
         onSaveConfigs: {
             view.toggleIsSavingConfigs();
-            model.saveConfigs(uploadFolder, downloadFolder);
+            model.saveConfigs(uploadFolders, downloadFolder);
         }
+
+        onConfigTourViewed: {
+            model.setConfigTourIsViewed();
+        }
+
+        onGoToManageUpload: app.navigateTo('ManageUpload')
 
         onReturnToMain: {
             GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.BACK_TO_MAIN);
+            model.clearTemp();
             app.navigateTo('Main');
         }
 
@@ -56,6 +63,7 @@ Presenter {
 
         onSelectUploadFolderSuccess: {
             GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_FOLDER_CHOICE, folder);
+            view.setUnsavedChanges(model.hasUnsavedChanges());
             view.setUploadFolder(folder);
         }
 
@@ -66,6 +74,7 @@ Presenter {
 
         onSelectDownloadFolderSuccess: {
             // Trackear evento GA
+            view.setUnsavedChanges(model.hasUnsavedChanges());
             view.setDownloadFolder(folder);
         }
 
@@ -89,7 +98,7 @@ Presenter {
         }
 
         onSaveConfigsSuccess: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_SAVE_CONFIG, model.getUploadFolder());
+            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_SAVE_CONFIG, model.getUploadFolders());
             view.toggleIsSavingConfigs();
             app.navigateTo('Main');
         }
@@ -108,15 +117,18 @@ Presenter {
 
     ConfigView {
         id: view;
-        uploadFolderPath: model.getUploadFolder() || null
-        downloadFolderPath: model.getDownloadFolder() || null
+
+        canDownload: model.canDownload()
+        downloadFolder: model.getSelectedDownloadFolder()
+        hasUnsavedChanges: model.hasUnsavedChanges()
+        isConfigTourViewed: model.isConfigTourViewed()
+        logsPath: model.getLogsPath() || null
+        macAddress: model.getMacAddress() || null
+        showReturnAction: model.isConfigured()
+        uploadFolders: model.getSelectedUploadFolders()
         userEmail: model.getUserEmail() || null
         webDetailLink: model.getWebDetailLink() || null
-        macAddress: model.getMacAddress() || null
-        logsPath: model.getLogsPath() || null
-        showReturnAction: model.getUploadFolder() || model.getDownloadFolder()
-        canDownload: model.canDownload()
-        hasBeenEdited: model.hasBeenEdited()
+
         anchors.fill: parent;
     }
 }
