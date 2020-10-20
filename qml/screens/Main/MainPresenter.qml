@@ -47,6 +47,7 @@ Presenter {
         }
 
         onCheckDownloadPermission: {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.CLICKED_ON_DOWNLOAD_ALREADY_PURCHASED);
             view.toggleIsVerifyingDownload();
             model.checkDownloadPermission();
         }
@@ -79,12 +80,12 @@ Presenter {
         }
 
         onValidateUploadFolderError: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_FOLDER_SYNC, errorMessage);
+            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_UPLOAD_FOLDER_SYNC, errorMessage);
             view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
         onValidateDownloadFolderError: {
-            // track GA Event
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.ERROR_DOWNLOAD_FOLDER_SYNC, errorMessage);
             view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
@@ -94,6 +95,7 @@ Presenter {
         }
 
         onDownloadNotAllowed: {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.DOWNLOAD_NOT_ALLOWED);
             view.toggleIsVerifyingDownload();
             view.openDownloadNotAllowedModal();
         }

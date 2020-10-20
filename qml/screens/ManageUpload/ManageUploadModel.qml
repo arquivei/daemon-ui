@@ -8,7 +8,11 @@ Model {
 
     signal addUploadFolderError(string folder, string title, string message);
     signal addUploadFolderSuccess(string folder);
-    signal selectUploadFoldersSuccess();
+    signal selectUploadFoldersSuccess(var uploadFolders);
+
+    function getMacAddress() {
+        return clientService.getMacAddress();
+    }
 
     function getSelectedDownloadFolder() {
         return app.temp[Temp.DOWNLOAD_FOLDER] || configService.getDownloadFolder();
@@ -25,7 +29,7 @@ Model {
     function selectUploadFolders(uploadFolders) {
         app.temp[Temp.UPLOAD_FOLDERS] = uploadFolders;
         app.temp[Temp.UNSAVED_CHANGES] = true;
-        root.selectUploadFoldersSuccess();
+        root.selectUploadFoldersSuccess(uploadFolders);
     }
 
     ConfigService {
@@ -38,5 +42,9 @@ Model {
         onValidateUploadFolderError: {
             root.addUploadFolderError(folder, Errors.General.ValidateFolder[code].title, Errors.General.ValidateFolder[code].description);
         }
+    }
+
+    ClientService {
+        id: clientService
     }
 }

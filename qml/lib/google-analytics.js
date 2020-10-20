@@ -5,7 +5,9 @@ const EventCategories = {
     ACTIVITY: 'Atividade',
     AUTHENTICATION: 'Autenticação',
     NAVIGATION: 'Navegação',
-    UPLOAD: 'Upload'
+    UPLOAD: 'Upload',
+    DOWNLOAD: 'Download',
+    CONFIG: 'Configuração'
 };
 
 const EventActions = {
@@ -19,11 +21,24 @@ const EventActions = {
     ERROR_AUTHENTICATION_SYNC: 'Ocorreu problema de autenticação durante sincronização',
 
     // Upload
-    SUCCESS_FOLDER_CHOICE: 'Pasta selecionada com sucesso',
-    ERROR_FOLDER_CHOICE: 'Pasta selecionada com erro',
+    SUCCESS_UPLOAD_FOLDER_CHOICE: 'Pasta de upload selecionada com sucesso',
+    ERROR_UPLOAD_FOLDER_CHOICE: 'Pasta de upload selecionada com erro',
+    ERROR_UPLOAD_FOLDER_SYNC: 'Ocorreu problema de pasta de upload durante sincronização',
+    UPLOAD_FOLDERS_SELECTION_CONFIRM: 'Confirmou seleção de pastas de upload',
+
+    // Download
+    SUCCESS_DOWNLOAD_FOLDER_CHOICE: 'Pasta de download selecionada com sucesso',
+    ERROR_DOWNLOAD_FOLDER_CHOICE: 'Pasta de download selecionada com erro',
+    ERROR_DOWNLOAD_FOLDER_SYNC: 'Ocorreu problema de pasta de download durante sincronização',
+    CLICKED_ON_CHANGE_DOWNLOAD_CONFIG_WEB: 'Clicou em Alterar Configurações de Download na Plataforma',
+    CLICKED_ON_PURCHASE_DOWNLOAD: 'Clicou em Contratar Download',
+    CLICKED_ON_DOWNLOAD_ALREADY_PURCHASED: 'Clicou em Já contratei (Download)',
+    DOWNLOAD_NOT_ALLOWED: 'Download ainda não contratado',
+    DOWNLOAD_UNPURSHASED: 'Download foi descontratado/desabilitado',
+
+    // Configuração
     SUCCESS_SAVE_CONFIG: 'Configurações salvas com sucesso',
     ERROR_SAVE_CONFIG: 'Configurações com erro',
-    ERROR_FOLDER_SYNC: 'Ocorreu problema de pasta durante sincronização',
 
     // Navigation
     BACK_TO_MAIN: 'Voltou para tela principal',
@@ -32,13 +47,16 @@ const EventActions = {
     CLICKED_ON_TOUR_CONFIG: 'Clicou para iniciar Tour de Config',
     CLICKED_ON_ABOUT: 'Clicou para ler informações do App',
     CLICKED_ON_LOGS: 'Clicou para ver Logs',
-    CLICKED_ON_DETAILS_BUTTON: 'Clicou para acessar a plataforma por meio do botão de Detalhes'
+    CLICKED_ON_DETAILS_BUTTON: 'Clicou para acessar a plataforma por meio do botão de Detalhes',
+    GO_TO_MANAGE_UPLOAD: 'Clicou em Gerenciar pastas de Upload (multipastas)',
+    CLOSED_UPLOAD_CONFIG: 'Fechou Configuração de pastas de Upload (Sem salvar)'
 };
 
 const ScreenNames = {
     AUTH: 'Tela de Login',
     CONFIG: 'Tela de Configuração',
-    MAIN: 'Tela Principal'
+    MAIN: 'Tela Principal',
+    MANAGE_UPLOAD: 'Tela de Gerenciamento de Upload'
 };
 
 // Lib Constants
