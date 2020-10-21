@@ -215,6 +215,7 @@ Page {
 
     onCanDownloadChanged: {
         if (!canDownload) {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.DOWNLOAD_UNPURSHASED);
             downloadUnpurshasedModal.open();
         }
 
@@ -473,6 +474,7 @@ Page {
 
                 target: canDownload ? null : downloadSectionLoader.item
                 onPurchase: {
+                    GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.CLICKED_ON_PURCHASE_DOWNLOAD);
                     Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
                 }
                 onVerify: {

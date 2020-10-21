@@ -19,7 +19,11 @@ const General = {
         UNKNOWN_SERVER_ERROR: {
             title: Texts.General.Modals.SelectFolderUnknownError.TITLE,
             description: Texts.General.Modals.SelectFolderUnknownError.DESCRIPTION
-        }
+        },
+        NO_VALID_FOLDER: {
+            title: Texts.General.Modals.UnexistentFolderError.TITLE,
+            description: Texts.General.Modals.UnexistentFolderError.DESCRIPTION
+        },
     }
 }
 

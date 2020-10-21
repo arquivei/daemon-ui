@@ -174,6 +174,7 @@ Page {
 
     onCanDownloadChanged: {
         if (!canDownload) {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.DOWNLOAD_UNPURSHASED);
             downloadUnpurshasedModal.open();
         }
 
@@ -282,6 +283,7 @@ Page {
         }
         onSecondaryAction: {
             changeDownloadConfigModal.close();
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.CLICKED_ON_CHANGE_DOWNLOAD_CONFIG_WEB);
             Qt.openUrlExternally(webDetailLink);
         }
     }
@@ -452,6 +454,7 @@ Page {
 
                 target: canDownload ? null : downloadSectionLoader.item
                 onPurchase: {
+                    GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.CLICKED_ON_PURCHASE_DOWNLOAD);
                     Qt.openUrlExternally(Address.PURCHASE_DOWNLOAD_URL);
                 }
                 onVerify: {

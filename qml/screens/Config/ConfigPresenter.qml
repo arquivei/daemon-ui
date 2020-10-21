@@ -40,7 +40,10 @@ Presenter {
             model.setConfigTourIsViewed();
         }
 
-        onGoToManageUpload: app.navigateTo('ManageUpload')
+        onGoToManageUpload: {
+            GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.GO_TO_MANAGE_UPLOAD)
+            app.navigateTo('ManageUpload');
+        }
 
         onReturnToMain: {
             GA.trackEvent(GA.EventCategories.NAVIGATION, GA.EventActions.BACK_TO_MAIN);
@@ -49,6 +52,7 @@ Presenter {
         }
 
         onCheckDownloadPermission: {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.CLICKED_ON_DOWNLOAD_ALREADY_PURCHASED);
             view.toggleIsVerifyingDownload();
             model.checkDownloadPermission();
         }
@@ -62,24 +66,24 @@ Presenter {
         target: model
 
         onSelectUploadFolderSuccess: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_FOLDER_CHOICE, folder);
+            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_UPLOAD_FOLDER_CHOICE, folder);
             view.setUnsavedChanges(model.hasUnsavedChanges());
             view.setUploadFolder(folder);
         }
 
         onSelectUploadFolderError: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_FOLDER_CHOICE, `${folder} - ${errorMessage}`);
+            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_UPLOAD_FOLDER_CHOICE, `${folder} - ${errorMessage}`);
             view.openGenericErrorModal(errorTitle, errorMessage);
         }
 
         onSelectDownloadFolderSuccess: {
-            // Trackear evento GA
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.SUCCESS_DOWNLOAD_FOLDER_CHOICE, folder);
             view.setUnsavedChanges(model.hasUnsavedChanges());
             view.setDownloadFolder(folder);
         }
 
         onSelectDownloadFolderError: {
-            // Trackear evento GA
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.ERROR_DOWNLOAD_FOLDER_CHOICE, `${folder} - ${errorMessage}`);
             view.openGenericErrorModal(errorTitle, errorMessage);
         }
 
@@ -88,6 +92,7 @@ Presenter {
         }
 
         onDownloadNotAllowed: {
+            GA.trackEvent(GA.EventCategories.DOWNLOAD, GA.EventActions.DOWNLOAD_NOT_ALLOWED);
             view.toggleIsVerifyingDownload();
             view.openDownloadNotAllowedModal();
         }
@@ -98,13 +103,14 @@ Presenter {
         }
 
         onSaveConfigsSuccess: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_SAVE_CONFIG, model.getUploadFolders());
+            const label = `Upload: ${JSON.stringify(model.getUploadFolders())} - Download: ${model.getDownloadFolder()}`;
+            GA.trackEvent(GA.EventCategories.CONFIG, GA.EventActions.SUCCESS_SAVE_CONFIG, label);
             view.toggleIsSavingConfigs();
             app.navigateTo('Main');
         }
 
         onSaveConfigsError: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_SAVE_CONFIG, errorMessage);
+            GA.trackEvent(GA.EventCategories.CONFIG, GA.EventActions.ERROR_SAVE_CONFIG, errorMessage);
             view.toggleIsSavingConfigs();
             view.openGenericErrorModal(errorTitle, errorMessage);
         }

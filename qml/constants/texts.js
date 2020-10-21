@@ -38,6 +38,11 @@ const General = {
             DESCRIPTION: `Não é possível selecionar a pasta por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta. <strong><a href="${Address.ABOUT_NO_WRITING_PERMISSION_ERROR_URL}">Saiba Mais</a></strong>`,
             PRIMARY: 'Entendi'
         },
+        UnexistentFolderError: {
+            TITLE: 'Atenção! Erro ao acessar a pasta',
+            DESCRIPTION: 'Não foi possível acessar a pasta selecionada pois ela está inacessível ou não existe mais. Verifique se as permissões foram alteradas ou escolha uma nova pasta.',
+            PRIMARY: 'Entendi'
+        },
         SelectFolderUnknownError: {
             TITLE: 'Atenção! Erro interno',
             DESCRIPTION: `Ocorreu um erro interno e não foi possível selecionar a pasta. Tente novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
