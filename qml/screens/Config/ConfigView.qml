@@ -230,7 +230,7 @@ Page {
         onAccepted: {
             const url = downloadFolderDialog.fileUrl.toString();
 
-            if (uploadFolders && uploadFolders.some(folder => Validator.isSameFolder(url, folder))) {
+            if (uploadFolders && uploadFolders.some(folder => Validator.isSameFolder(url, folder.path))) {
                 const { TITLE, DESCRIPTION } = Texts.Config.Modals.SameAsUploadFolderError;
                 openGenericErrorModal(TITLE, DESCRIPTION);
                 return;
@@ -428,8 +428,6 @@ Page {
         UploadFolderSection {
             id: uploadSection
             folders: uploadFolders
-            title: Texts.General.UPLOAD_SECTION_TITLE
-            description: Texts.Config.UPLOAD_SECTION_DESCRIPTION
 
             anchors {
                 top: title.bottom
@@ -503,7 +501,10 @@ Page {
                 right: content.right
                 bottom: content.bottom
             }
-            onClicked: saveConfigs(uploadFolders, downloadFolder)
+            onClicked: {
+                const folders = uploadFolders ? uploadFolders.map(folder => folder.path) : [];
+                saveConfigs(folders, downloadFolder)
+            }
         }
     }
 }

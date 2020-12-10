@@ -6,7 +6,7 @@ import '../../constants/temp.js' as Temp
 Model {
     id: root
 
-    signal selectUploadFolderSuccess(string folder);
+    signal selectUploadFolderSuccess(var folder);
     signal selectUploadFolderError(string folder, string errorTitle, string errorMessage);
     signal selectDownloadFolderSuccess(string folder);
     signal selectDownloadFolderError(string folder, string errorTitle, string errorMessage);
@@ -117,9 +117,10 @@ Model {
         }
 
         onValidateUploadFolderSuccess: {
-            app.temp[Temp.UPLOAD_FOLDERS] = [folder];
+            const selectedFolder = { path: folder, code: null };
+            app.temp[Temp.UPLOAD_FOLDERS] = [selectedFolder];
             app.temp[Temp.UNSAVED_CHANGES] = true;
-            root.selectUploadFolderSuccess(folder);
+            root.selectUploadFolderSuccess(selectedFolder);
         }
 
         onValidateUploadFolderError: {

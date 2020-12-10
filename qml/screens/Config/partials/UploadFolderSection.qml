@@ -6,8 +6,6 @@ import '../../../components'
 Card {
     id: root
 
-    property string description
-    property string title
     property var folders
     property bool isBlocked: false
 
@@ -26,6 +24,28 @@ Card {
                     text: Texts.Config.SELECT_FOLDER_BUTTON_LABEL
                 })
             }
+        }
+
+        function getNumOfFolderErrors() {
+            if (!folders) {
+                return 0;
+            }
+
+            return folders.filter(folder => folder.code).length;
+        }
+
+        function getDescription() {
+            const folderErrors = getNumOfFolderErrors();
+
+            if (folderErrors === 1) {
+                return '<strong>Atenção</strong>: verifique o erro da pasta abaixo. Se necessário, selecione uma nova pasta.'
+            }
+
+            if (folderErrors) {
+                return `<strong>Atenção</strong>: ${folderErrors} das ${folders.length} pastas estão com erro de configuração.`
+            }
+
+            return Texts.Config.UPLOAD_SECTION_DESCRIPTION;
         }
     }
 
@@ -46,7 +66,7 @@ Card {
 
     DsText {
         id: titleText
-        text: root.title
+        text: Texts.General.UPLOAD_SECTION_TITLE
         fontSize: 20
         font.weight: 'Bold'
         lineHeight: 24
@@ -62,7 +82,7 @@ Card {
 
     DsText {
         id: descriptionText
-        text: root.description
+        text: priv.getDescription()
         fontSize: 12
         lineHeight: 18
         color: Colors.GRAYSCALE_500

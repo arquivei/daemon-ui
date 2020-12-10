@@ -66,7 +66,7 @@ Presenter {
         target: model
 
         onSelectUploadFolderSuccess: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_UPLOAD_FOLDER_CHOICE, folder);
+            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.SUCCESS_UPLOAD_FOLDER_CHOICE, folder.path);
             view.setUnsavedChanges(model.hasUnsavedChanges());
             view.setUploadFolder(folder);
         }
@@ -103,7 +103,8 @@ Presenter {
         }
 
         onSaveConfigsSuccess: {
-            const label = `Upload: ${JSON.stringify(model.getUploadFolders())} - Download: ${model.getDownloadFolder()}`;
+            const uploadFolders = model.getUploadFolders() || [];
+            const label = `Upload: ${JSON.stringify(uploadFolders.map(folder => folder.path))} - Download: ${model.getDownloadFolder()}`;
             GA.trackEvent(GA.EventCategories.CONFIG, GA.EventActions.SUCCESS_SAVE_CONFIG, label);
             view.toggleIsSavingConfigs();
             app.navigateTo('Main');

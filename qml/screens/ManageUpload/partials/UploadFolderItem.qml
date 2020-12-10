@@ -1,11 +1,12 @@
 import QtQuick 2.0
 import '../../../constants/colors.js' as Colors
+import '../../../constants/texts.js' as Texts
 import '../../../components'
 
 Item {
     id: root
 
-    property string folder
+    property var folder
     property bool hasDivider
 
     implicitHeight: childrenRect.height + 16
@@ -16,9 +17,9 @@ Item {
     DsIconText {
         id: iconTextFolder
 
-        icon: "qrc:/images/material-folder.svg"
+        icon: folder.code ? "qrc:/images/alert-error.svg" : "qrc:/images/material-folder.svg"
         font.weight: 'Normal'
-        text: folder
+        text: folder.path
         textMaxLength: 60
 
         anchors {
@@ -26,6 +27,15 @@ Item {
             topMargin: 16
             left: parent.left
             leftMargin: 8
+        }
+
+        CustomToolTip {
+            id: tooltip
+            visible: !!folder.code && parent.isHovered
+            text: folder.code ? Texts.General.Tooltips.FolderErrors[folder.code] : ''
+            contentWidth: 140
+            y: parent.y - parent.height - tooltip.height
+            x: root.x - 8
         }
     }
 

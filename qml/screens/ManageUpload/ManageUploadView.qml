@@ -16,7 +16,7 @@ Page {
     QtObject {
         id: priv
 
-        property string folderToRemove
+        property var folderToRemove
         property bool hasUploadConfigChanged: false
     }
 
@@ -29,8 +29,8 @@ Page {
         uploadFolders = [...uploadFolders, folder]
     }
 
-    function openConfirmRemoval(folderPath) {
-        const truncatedFolderPath = TextHelper.truncate(folderPath, 52);
+    function openConfirmRemoval(folder) {
+        const truncatedFolderPath = TextHelper.truncate(folder.path, 52);
         removeConfirmationModal.title = Texts.ManageUpload.Modals.RemoveUploadFolder.TITLE
         removeConfirmationModal.text = TextHelper.fillStr(Texts.ManageUpload.Modals.RemoveUploadFolder.DESCRIPTION, truncatedFolderPath);
         removeConfirmationModal.open();
@@ -56,7 +56,7 @@ Page {
                 return;
             }
 
-            if (uploadFolders.some(folder => Validator.isSameFolder(url, folder))) {
+            if (uploadFolders.some(folder => Validator.isSameFolder(url, folder.path))) {
                 const { TITLE, DESCRIPTION } = Texts.ManageUpload.Modals.UploadFolderAlreadySelectedError;
                 openErrorModal(TITLE, DESCRIPTION)
                 return;
@@ -84,7 +84,7 @@ Page {
             removeConfirmationModal.close();
         }
         onPrimaryAction: {
-            uploadFolders = uploadFolders.filter(folder => folder !== priv.folderToRemove)
+            uploadFolders = uploadFolders.filter(folder => folder.path !== priv.folderToRemove.path)
             priv.folderToRemove = null;
             priv.hasUploadConfigChanged = true;
             removeConfirmationModal.close();
@@ -121,6 +121,7 @@ Page {
                 top: parent.top
             }
 
+            numOfFolderErrors: uploadFolders.filter(folder => folder.code).length
             selectedFoldersLength: uploadFolders.length
             onAddFolder: addFolderDialog.open()
         }
@@ -128,7 +129,7 @@ Page {
         UploadFoldersList {
             id: folderList
 
-            items: uploadFolders.map(item => ({ path: item }))
+            items: uploadFolders
 
             anchors {
                 top: header.bottom
@@ -136,8 +137,8 @@ Page {
             }
 
             onRemove: {
-                priv.folderToRemove = path
-                openConfirmRemoval(path)
+                priv.folderToRemove = folder
+                openConfirmRemoval(folder)
             }
         }
 

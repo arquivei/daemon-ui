@@ -5,6 +5,13 @@ const General = {
     DOWNLOAD_SECTION_PURCHASE_DESCRIPTION: 'Comece a usar agora a função de download de documentos do Arquivei',
     UPLOAD_SECTION_TITLE: 'Upload de Arquivos',
     CONFIG_LABEL: 'Configurar agora',
+    Tooltips: {
+        FolderErrors: {
+            NO_WRITE_PERMISSION: 'Sem permissão de escrita',
+            NO_READ_PERMISSION: 'Sem permissão de leitura',
+            NO_VALID_FOLDER: 'Pasta não existe mais'
+        }
+    },
     Modals: {
         LogoutAlert: {
             TITLE: 'Você deseja sair?',
@@ -155,29 +162,13 @@ const Main = {
             TITLE: 'Offline - Erro de conexão!',
             DESCRIPTION: `<strong>Falha ao tentar conectar aos nossos servidores.</strong><br>Verifique sua conexão com a internet, firewall, configuração de proxy ou antivírus. <strong><a href="${Address.ABOUT_CONNECTION_ERROR_URL}">Saiba Mais</a></strong><br><br>Tentaremos reconectar automaticamente a cada 60s...`
         },
-        UploadReadingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão na pasta de Upload',
-            DESCRIPTION: 'Não é possível fazer o upload dos arquivos a partir da pasta selecionada por falta de permissão. Dê permissão de leitura à pasta ou escolha uma nova pasta.',
-            PRIMARY: 'Ir para Configurações',
-            SECONDARY: 'Fechar'
+        SingleUploadFolderError: {
+            TITLE: 'Atenção! Erro na configuração da pasta',
+            DESCRIPTION: 'Não é possível fazer o upload dos arquivos. Esse problema pode ocorrer devido à falta de permissão de leitura ou porque a pasta não existe mais.'
         },
-        UploadWritingPermissionError: {
-            TITLE: 'Atenção! Erro de permissão na pasta de Upload',
-            DESCRIPTION: 'Não é possível fazer o upload dos arquivos a partir da pasta selecionada por falta de permissão. Dê permissão de escrita à pasta ou escolha uma nova pasta.',
-            PRIMARY: 'Ir para Configurações',
-            SECONDARY: 'Fechar'
-        },
-        UploadUseFolderUnknownError: {
-            TITLE: 'Atenção! Erro interno na pasta de Upload',
-            DESCRIPTION: `Não é possível fazer o upload dos arquivos a partir da pasta selecionada por um erro interno. Tente configurar novamente ou fale com a gente em <strong><a href="mailto:?to=${Address.SUPPORT_EMAIL}">${Address.SUPPORT_EMAIL}</a></strong>`,
-            PRIMARY: 'Ir para Configurações',
-            SECONDARY: 'Fechar'
-        },
-        UploadUnexistentFolderError: {
-            TITLE: 'Atenção! Erro ao acessar a pasta',
-            DESCRIPTION: 'Não foi possível acessar a pasta selecionada para o upload dos documentos pois ela está inacessível ou não existe mais. Verifique se as permissões foram alteradas ou escolha uma nova pasta.',
-            PRIMARY: 'Ir para Configurações',
-            SECONDARY: 'Fechar'
+        MultiUploadFolderError: {
+            TITLE: 'Atenção! Erro na configuração de pastas',
+            DESCRIPTION: 'Não é possível fazer o upload dos arquivos de <strong>%{0} das %{1} pastas configuradas</strong>. Esse problema pode ocorrer devido à falta de permissão de leitura ou porque a pasta não existe mais.'
         },
         DownloadReadingPermissionError: {
             TITLE: 'Atenção! Erro de permissão na pasta de Download',
