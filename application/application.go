@@ -3,6 +3,7 @@ package application
 import (
 	"arquivei.com.br/daemon-ui/client"
 	"arquivei.com.br/daemon-ui/client/commands/authenticate"
+	"arquivei.com.br/daemon-ui/client/commands/checkuploadfolders"
 	"arquivei.com.br/daemon-ui/client/commands/clientinfo"
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
@@ -153,6 +154,17 @@ func (app App) ValidatePermission() (r validatepermission.Response) {
 			WithError(err).
 			Error("An unknown error occurred while validating permissions")
 		r = validatepermission.NewGenericError()
+	}
+	return
+}
+
+//CheckUploadFolders method verifies if the upload folders are valid
+func (app App) CheckUploadFolders() (r checkuploadfolders.Response) {
+	r, err := app.doCheckUploadFolders()
+	if err != nil {
+		app.logger.
+			WithError(err).
+			Error("An error occurred while checking upload folders")
 	}
 	return
 }

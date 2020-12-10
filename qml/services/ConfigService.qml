@@ -23,7 +23,8 @@ Item {
     }
 
     function isConfigured() {
-        const isUploadConfigured = !!(QmlBridge.uploadFolderPaths && QmlBridge.uploadFolderPaths.length)
+        var uploadFolders = getUploadFolders()
+        const isUploadConfigured = !!(uploadFolders && uploadFolders.length)
         const isDownloadConfigured = !!QmlBridge.downloadFolderPath
 
         if (QmlBridge.canDownload) {

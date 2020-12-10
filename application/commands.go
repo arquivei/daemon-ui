@@ -2,6 +2,7 @@ package application
 
 import (
 	"arquivei.com.br/daemon-ui/client/commands/authenticate"
+	"arquivei.com.br/daemon-ui/client/commands/checkuploadfolders"
 	"arquivei.com.br/daemon-ui/client/commands/clientinfo"
 	"arquivei.com.br/daemon-ui/client/commands/clientstatus"
 	"arquivei.com.br/daemon-ui/client/commands/logout"
@@ -124,6 +125,20 @@ func (app App) doValidatePermission() (r validatepermission.Response, err error)
 	}
 
 	r, err = validatepermission.NewResponse(data)
+	if err != nil {
+		return r, err
+	}
+
+	return
+}
+
+func (app App) doCheckUploadFolders() (r checkuploadfolders.Response, err error) {
+	data, err := app.c.SendCommand(checkuploadfolders.NewCommand())
+	if err != nil {
+		return r, err
+	}
+
+	r, err = checkuploadfolders.NewResponse(data)
 	if err != nil {
 		return r, err
 	}
