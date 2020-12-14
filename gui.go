@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"strings"
 	"time"
@@ -13,13 +14,13 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-//QmlBridge ...
+//QmlBridge struct is an interface to comunicate with the QML
 type QmlBridge struct {
 	core.QObject
 
 	_ bool                                                                           `property:"isAuthenticated"`
 	_ bool                                                                           `property:"canDownload"`
-	_ []string                                                                       `property:"uploadFolderPaths"`
+	_ string                                                                         `property:"uploadFolderPaths"`
 	_ string                                                                         `property:"downloadFolderPath"`
 	_ string                                                                         `property:"hostName"`
 	_ string                                                                         `property:"userEmail"`
@@ -36,6 +37,7 @@ type QmlBridge struct {
 	_ func()                                                                         `slot:"setMainTourIsViewed"`
 	_ func()                                                                         `slot:"setConfigTourIsViewed"`
 	_ func()                                                                         `slot:"checkDownloadPermission"`
+	_ func()                                                                         `slot:"checkUploadFolders"`
 	_ func(success bool, code string)                                                `signal:"saveConfigsSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateUploadFolderSignal"`
 	_ func(success bool, code, folder string)                                        `signal:"validateDownloadFolderSignal"`
@@ -46,6 +48,12 @@ type QmlBridge struct {
 	_ func()                                                                         `signal:"showMainWindowSignal"`
 	_ func(code string)                                                              `signal:"downloadPermissionSignal"`
 	_ func()                                                                         `constructor:"init"`
+}
+
+//Folder struct represents a upload folder object
+type Folder struct {
+	Code string `json:"code"`
+	Path string `json:"path"`
 }
 
 func (bridge *QmlBridge) init() {
@@ -61,7 +69,7 @@ func (bridge *QmlBridge) init() {
 	bridge.SetIsConfigTourViewed(clientInformation.IsConfigTourViewed)
 	bridge.SetCanDownload(clientInformation.CanDownload)
 	bridge.SetMacAddress(r.macAddress)
-	bridge.SetUploadFolderPaths(clientInformation.UploadFolders)
+	bridge.setUploadFolderPaths(clientInformation.UploadFolders)
 }
 
 func (bridge *QmlBridge) syncStatus(clientStatus clientstatus.Response) {
@@ -81,6 +89,18 @@ func (bridge *QmlBridge) syncStatus(clientStatus clientstatus.Response) {
 	bridge.SetIsAuthenticated(clientInformation.IsAuthenticated)
 	bridge.SetWebDetailLink(clientInformation.ClientWebDetailLink)
 	bridge.SetCanDownload(clientInformation.CanDownload)
+}
+
+func (bridge *QmlBridge) setUploadFolderPaths(paths []string) {
+	var folders []Folder
+	for _, path := range paths {
+		folders = append(folders, Folder{Path: path})
+	}
+	bridge.SetUploadFolderPaths(convertToString(folders))
+}
+
+func (bridge *QmlBridge) setUploadFolders(folders []Folder) {
+	bridge.SetUploadFolderPaths(convertToString(folders))
 }
 
 func newGuiInterface() {
@@ -139,8 +159,8 @@ func newGuiInterface() {
 		go func() {
 			resp := r.appConnection.Logout()
 			qmlBridge.LogoutSignal(resp.Success, resp.Code)
-			qmlBridge.SetUploadFolderPaths([]string{})
 			qmlBridge.SetDownloadFolderPath("")
+			qmlBridge.setUploadFolderPaths([]string{})
 		}()
 	})
 
@@ -149,8 +169,8 @@ func newGuiInterface() {
 			uploadFolders := formatFolderPaths(uploadFolders)
 			resp := r.appConnection.SaveConfigs(uploadFolders, downloadFolder)
 			qmlBridge.SaveConfigsSignal(resp.Success, resp.Code)
-			qmlBridge.SetUploadFolderPaths(uploadFolders)
 			qmlBridge.SetDownloadFolderPath(downloadFolder)
+			qmlBridge.setUploadFolderPaths(uploadFolders)
 		}()
 	})
 
@@ -186,13 +206,25 @@ func newGuiInterface() {
 
 	qmlBridge.ConnectCheckDownloadPermission(func() {
 		go func() {
-			qmlBridge.SetCanDownload(false)
 			resp := r.appConnection.ValidatePermission()
 			qmlBridge.DownloadPermissionSignal(resp.Code)
+			qmlBridge.SetCanDownload(resp.Code == "DOWNLOAD_ALLOWED")
+		}()
+	})
 
-			if resp.Code == "DOWNLOAD_ALLOWED" {
-				qmlBridge.SetCanDownload(true)
+	qmlBridge.ConnectCheckUploadFolders(func() {
+		go func() {
+			var foldersToUpdate []Folder
+			var foldersToReset []Folder
+
+			for _, item := range r.appConnection.CheckUploadFolders().Folders {
+				foldersToUpdate = append(foldersToUpdate, Folder{Path: item.Path, Code: item.Code})
+				foldersToReset = append(foldersToReset, Folder{Path: item.Path})
 			}
+
+			//Force reset upload folders on QML
+			qmlBridge.setUploadFolders(foldersToReset)
+			qmlBridge.setUploadFolders(foldersToUpdate)
 		}()
 	})
 
@@ -221,4 +253,9 @@ func formatFolderPaths(paths []string) []string {
 		formatedPaths = append(formatedPaths, formatFolderPath(path))
 	}
 	return formatedPaths
+}
+
+func convertToString(folders []Folder) string {
+	b, _ := json.Marshal(folders)
+	return string(b)
 }
