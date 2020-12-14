@@ -14,7 +14,7 @@ function isSameFolder(selectedFolder, comparedFolder) {
         return false;
     }
 
-    const pattern = new RegExp(`${comparedFolder}$`);
+    const pattern = new RegExp(`^(file:\/{0,3})?${comparedFolder}$`);
     return pattern.test(selectedFolder);
 }
 

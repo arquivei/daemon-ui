@@ -7,6 +7,7 @@ Item {
     id: root
 
     property int selectedFoldersLength
+    property int numOfFolderErrors
 
     QtObject {
         id: priv
@@ -15,6 +16,14 @@ Item {
 
         function getDetails() {
             const pluralSuffix = selectedFoldersLength > 1 ? 's' : '';
+
+            if (numOfFolderErrors === 1) {
+                return `<strong>Atenção</strong>: verifique o erro da pasta abaixo. Se necessário, selecione uma nova pasta.`;
+            }
+
+            if (numOfFolderErrors) {
+                return `<strong>Atenção:</strong> verifique o erro das ${numOfFolderErrors} pastas destacadas. Se necessário, selecione novas pastas.`;
+            }
 
             return selectedFoldersLength ?
                 `${selectedFoldersLength} pasta${pluralSuffix} raiz configurada${pluralSuffix} para o Upload de Arquivos` :

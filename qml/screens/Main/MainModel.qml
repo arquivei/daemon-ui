@@ -60,12 +60,12 @@ Model {
         configService.validateDownloadFolder(folder);
     }
 
-    function validateUploadFolder(folder) {
-        configService.validateUploadFolder(folder);
-    }
-
     function checkDownloadPermission() {
         configService.checkDownloadPermission();
+    }
+
+    function checkUploadFolders() {
+        configService.checkUploadFolders();
     }
 
     function logout() {
@@ -103,10 +103,6 @@ Model {
 
         onValidateDownloadFolderError: {
             root.validateDownloadFolderError(Errors.Main.ValidateDownloadFolder[code].title, Errors.Main.ValidateDownloadFolder[code].description);
-        }
-
-        onValidateUploadFolderError: {
-            root.validateUploadFolderError(Errors.Main.ValidateUploadFolder[code].title, Errors.Main.ValidateUploadFolder[code].description);
         }
 
         onDownloadAllowed: {

@@ -46,6 +46,7 @@
         <file>qml/helpers/timer.js</file>
         <file>qml/helpers/validator.js</file>
         <file>images/alert-danger.svg</file>
+        <file>images/alert-error.svg</file>
         <file>images/alert-success.svg</file>
         <file>images/material-arrow-down.svg</file>
         <file>images/material-close.svg</file>

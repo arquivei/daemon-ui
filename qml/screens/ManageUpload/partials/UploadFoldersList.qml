@@ -6,7 +6,7 @@ ScrollView {
 
     property var items: []
 
-    signal remove(string path)
+    signal remove(var folder)
 
     width: parent.width
     height: 313
@@ -25,9 +25,9 @@ ScrollView {
         }
 
         delegate: UploadFolderItem {
-            folder: path
+            folder: model
             hasDivider: index + 1 < list.count
-            onRemove: root.remove(path)
+            onRemove: root.remove(model)
         }
 
         anchors {

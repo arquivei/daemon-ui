@@ -23,7 +23,6 @@ const EventActions = {
     // Upload
     SUCCESS_UPLOAD_FOLDER_CHOICE: 'Pasta de upload selecionada com sucesso',
     ERROR_UPLOAD_FOLDER_CHOICE: 'Pasta de upload selecionada com erro',
-    ERROR_UPLOAD_FOLDER_SYNC: 'Ocorreu problema de pasta de upload durante sincronização',
     UPLOAD_FOLDERS_SELECTION_CONFIRM: 'Confirmou seleção de pastas de upload',
 
     // Download

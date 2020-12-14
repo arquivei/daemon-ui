@@ -7,12 +7,23 @@ Item {
 
     property string text
     property int textMaxLength
+    property bool isHovered: false
 
     property alias icon: imageIcon.source
     property alias font: textLabel.font
 
     height: childrenRect.height
     width: childrenRect.width
+
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered) {
+                isHovered = true
+            } else {
+                isHovered = false
+            }
+        }
+    }
 
     Image {
         id: imageIcon

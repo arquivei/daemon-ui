@@ -7,7 +7,7 @@ Model {
     id: root
 
     signal addUploadFolderError(string folder, string title, string message);
-    signal addUploadFolderSuccess(string folder);
+    signal addUploadFolderSuccess(var folder);
     signal selectUploadFoldersSuccess(var uploadFolders);
 
     function getMacAddress() {
@@ -36,7 +36,8 @@ Model {
         id: configService
 
         onValidateUploadFolderSuccess: {
-            root.addUploadFolderSuccess(folder);
+            const addedFolder = { path: folder, code: null };
+            root.addUploadFolderSuccess(addedFolder);
         }
 
         onValidateUploadFolderError: {

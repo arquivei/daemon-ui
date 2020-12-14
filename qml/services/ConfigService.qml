@@ -38,7 +38,8 @@ Item {
     }
 
     function getUploadFolders() {
-        return QmlBridge.uploadFolderPaths;
+        const uploadFolders = QmlBridge.uploadFolderPaths || null;
+        return JSON.parse(uploadFolders);
     }
 
     function setConfigTourIsViewed() {
@@ -63,6 +64,10 @@ Item {
 
     function checkDownloadPermission() {
         QmlBridge.checkDownloadPermission();
+    }
+
+    function checkUploadFolders() {
+        QmlBridge.checkUploadFolders();
     }
 
     function saveConfigs(uploadFolders, downloadFolder) {

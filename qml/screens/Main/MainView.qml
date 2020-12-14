@@ -8,6 +8,7 @@ import '../../constants/addresses.js' as Address
 import '../../constants/texts.js' as Texts
 import '../../lib/google-analytics.js' as GA
 import '../../helpers/factory.js' as Factory
+import '../../helpers/text-helper.js' as TextHelper
 
 Page {
     id: root
@@ -154,6 +155,7 @@ Page {
     }
 
     signal goToConfig()
+    signal goToManageUpload()
     signal mainTourViewed()
     signal checkDownloadPermission()
     signal logout()
@@ -222,6 +224,29 @@ Page {
         priv.handleDownloadSectionDisplay();
     }
 
+    onUploadFoldersChanged: {
+        if (!uploadFolders) {
+            return;
+        }
+
+        const numOfFolderErrors = uploadFolders.filter(folder => folder.code).length;
+        const numOfFolders = uploadFolders.length;
+
+        if (!numOfFolderErrors) {
+            singleUploadFolderErrorModal.close();
+            multiUploadFolderErrorModal.close();
+        }
+
+        if (numOfFolders === 1 && uploadFolders[0].code) {
+            singleUploadFolderErrorModal.open()
+        }
+
+        if (numOfFolders > 1 && numOfFolderErrors > 0) {
+            multiUploadFolderErrorModal.text = TextHelper.fillStr(Texts.Main.Modals.MultiUploadFolderError.DESCRIPTION, numOfFolderErrors, numOfFolders);
+            multiUploadFolderErrorModal.open()
+        }
+    }
+
     Tour {
         id: guidedTour
         steps: priv.tourSteps
@@ -259,6 +284,35 @@ Page {
         }
         onSecondaryAction: {
             folderValidationErrorModal.close();
+        }
+    }
+
+    DsModal {
+        id: singleUploadFolderErrorModal
+        title: Texts.Main.Modals.SingleUploadFolderError.TITLE
+        text: Texts.Main.Modals.SingleUploadFolderError.DESCRIPTION
+        showSecondaryButton: true
+        secondaryActionLabel: 'Fechar'
+        primaryActionLabel: 'Corrigir agora'
+        onPrimaryAction: {
+            goToConfig();
+        }
+        onSecondaryAction: {
+            singleUploadFolderErrorModal.close();
+        }
+    }
+
+    DsModal {
+        id: multiUploadFolderErrorModal
+        title: Texts.Main.Modals.MultiUploadFolderError.TITLE
+        showSecondaryButton: true
+        secondaryActionLabel: 'Fechar'
+        primaryActionLabel: 'Corrigir agora'
+        onPrimaryAction: {
+            goToManageUpload();
+        }
+        onSecondaryAction: {
+            multiUploadFolderErrorModal.close();
         }
     }
 

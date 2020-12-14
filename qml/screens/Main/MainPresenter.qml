@@ -14,8 +14,8 @@ Presenter {
         const uploadFolders = model.getUploadFolders();
         const downloadFolder = model.getDownloadFolder();
 
-        if (uploadFolders && uploadFolders.length === 1) {
-            Timer.setInterval(() => model.validateUploadFolder(uploadFolders[0]), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
+        if (uploadFolders) {
+            Timer.setInterval(() => model.checkUploadFolders(), Times.CHECK_FOLDER_PERMISSION_INTERVAL);
         }
 
         if (downloadFolder) {
@@ -40,6 +40,10 @@ Presenter {
 
         onGoToConfig: {
             app.navigateTo('Config');
+        }
+
+        onGoToManageUpload: {
+            app.navigateTo('ManageUpload');
         }
 
         onMainTourViewed: {
@@ -77,11 +81,6 @@ Presenter {
                 GA.trackEvent(GA.EventCategories.AUTHENTICATION, GA.EventActions.ERROR_AUTHENTICATION_SYNC);
                 view.showNotAuthenticatedModal();
             }
-        }
-
-        onValidateUploadFolderError: {
-            GA.trackEvent(GA.EventCategories.UPLOAD, GA.EventActions.ERROR_UPLOAD_FOLDER_SYNC, errorMessage);
-            view.showFolderValidationErrorModal(errorTitle, errorMessage);
         }
 
         onValidateDownloadFolderError: {
