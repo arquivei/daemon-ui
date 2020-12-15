@@ -17,10 +17,10 @@ Verifique qual o arquivo correto de profile do seu terminal (~/.profile ou ~/.ba
 
 ### Clone o projeto no workspace do Go
 
-Clone direto do bitbucket:
+Clone direto do github:
 
 	$ mkdir -p $(go env GOPATH)/src/arquivei.com.br
-	$ git clone git@bitbucket.org:arquivei/daemon-ui.git
+	$ git clone git@github.com:arquivei/daemon-ui.git
     $ (go env GOPATH)/src/arquivei.com.br/daemon-ui
 
 Entre no diretório do projeto:
@@ -57,4 +57,31 @@ Você pode gerar binário para as plataformas x32 ou x64, que estarão disponív
     $ make build-windows-32
     $ make build-windows-64
     $ make build-linux
+
+## Relatando issues e contribuindo
+
+Se você encontrar bugs ou tiver alguma sugestão de melhoria, por favor crie
+uma issue em https://github.com/arquivei/daemon-ui/issues.
+
+Se você você realizou alguma modificação, por favor crie um
+[Pull Request] (https://github.com/arquivei/daemon-ui/pulls).
+
+## Mantenedores
+
+Os atuais mantenedores do repositório são:
+
+* Fernando Carniel <fernando.carniel@arquivei.com.br>
+* Mateus Constanzo <mateus.silva@arquivei.com.br>
+
+## License/Licença
+
+    This program is a free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+    or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+    for more details.
 
